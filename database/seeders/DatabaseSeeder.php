@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $role = \Spatie\Permission\Models\Role::findByName($roleName);
 
         // Explicitly insert into pivot table to ensure the correct polymorphic type mapping is kept
-        \DB::table('model_has_roles')->insert([
+        DB::table('model_has_roles')->insert([
             'role_id' => $role->id,
             'model_type' => \App\Models\User::class,
             'model_id' => $user->id,
