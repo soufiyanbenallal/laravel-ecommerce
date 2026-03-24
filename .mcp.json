@@ -8,14 +8,21 @@
         "/Users/user/Documents/AS/laravel-ecommerce"
       ]
     },
-    "sqlite": {
+    "mysql": {
       "command": "npx",
+      "type": "stdio",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-sqlite",
-        "--db-path",
-        "/Users/user/Documents/AS/laravel-ecommerce/database/database.sqlite"
-      ]
+        "@berthojoris/mcp-mysql-server"
+      ],
+      "env": {
+        "DB_HOST": "127.0.0.1",
+        "DB_PORT": "3306",
+        "DB_USER": "sail",
+        "DB_PASSWORD": "password",
+        "DB_NAME": "laravel",
+        "MCP_PERMISSIONS": "list,read,utility"
+      }
     },
     "fetch": {
       "command": "npx",
