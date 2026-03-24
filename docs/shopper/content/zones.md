@@ -21,7 +21,7 @@ The components used to manage zones are found in the component configuration fil
 But if you want to update or change the settings components, you can publish them with the command
 
 ```bash
-php artisan shopper:component:publish setting
+sail artisan shopper:component:publish setting
 ```
 This file contains all Livewire components for settings. Here is only the list of zone components
 

@@ -233,16 +233,16 @@ class ProcessPost implements ShouldQueue, ShouldBeUniqueUntilProcessing
 
 ```php
 // Retry failed job
-php artisan queue:retry <job-id>
+sail artisan queue:retry <job-id>
 
 // Retry all failed jobs
-php artisan queue:retry all
+sail artisan queue:retry all
 
 // Flush failed jobs
-php artisan queue:flush
+sail artisan queue:flush
 
 // Prune failed jobs
-php artisan queue:prune-failed --hours=48
+sail artisan queue:prune-failed --hours=48
 
 // Handle in code
 use Illuminate\Support\Facades\Queue;
@@ -260,28 +260,28 @@ Queue::failing(function (JobFailed $event) {
 
 ```bash
 # Start worker
-php artisan queue:work
+sail artisan queue:work
 
 # Process specific queue
-php artisan queue:work --queue=high,default
+sail artisan queue:work --queue=high,default
 
 # Process one job
-php artisan queue:work --once
+sail artisan queue:work --once
 
 # Stop worker gracefully
-php artisan queue:restart
+sail artisan queue:restart
 
 # Timeout settings
-php artisan queue:work --timeout=60
+sail artisan queue:work --timeout=60
 
 # Memory limit
-php artisan queue:work --memory=512
+sail artisan queue:work --memory=512
 
 # Max jobs before restart
-php artisan queue:work --max-jobs=1000
+sail artisan queue:work --max-jobs=1000
 
 # Max time before restart
-php artisan queue:work --max-time=3600
+sail artisan queue:work --max-time=3600
 ```
 
 ## Horizon Setup
@@ -315,19 +315,19 @@ return [
 ];
 
 // Start Horizon
-php artisan horizon
+sail artisan horizon
 
 // Terminate Horizon
-php artisan horizon:terminate
+sail artisan horizon:terminate
 
 // Pause workers
-php artisan horizon:pause
+sail artisan horizon:pause
 
 // Continue workers
-php artisan horizon:continue
+sail artisan horizon:continue
 
 // Check status
-php artisan horizon:status
+sail artisan horizon:status
 ```
 
 ## Monitoring

@@ -10,7 +10,7 @@ Quick start guide for installing and configuring Laravel Shopper on your existin
 
 Shopper is really easy to install. After creating your new app or in an existing Laravel app \(10+\). There are 2 steps to follow to install Shopper.
 
-1. Run `php artisan config:clear` to make sure your config isn't cached.
+1. Run `sail artisan config:clear` to make sure your config isn't cached.
 2. Install `shopper/framework` package with Composer.
   ``` bash
   composer require shopper/framework --with-dependencies
@@ -18,7 +18,7 @@ Shopper is really easy to install. After creating your new app or in an existing
 
 After installing all dependencies in your project via compose and setup the database, now we will automatically install by running the following commands in your Laravel project directory:
 ```bash
-  php artisan shopper:install
+  sail artisan shopper:install
 ```
 
 This will install shopper, publish vendor files, create shopper and storage symlinks if they don't exist in the public folder, run migrations and seeders classes.
@@ -50,7 +50,7 @@ Now we can create a new superuser and sign in into the Dashboard and start creat
 Run the following command to create a user with supreme \(at the moment of creation\) rights:
 
 ```bash
-php artisan shopper:user
+sail artisan shopper:user
 ```
 
 ## New Shopper Directory
@@ -63,10 +63,10 @@ After Shopper is installed, you'll have 1 new directory in your project:
 If you want to publish again Shopper's vendor files run these commands:
 
 ```bash
-php artisan shopper:publish
+sail artisan shopper:publish
 ```
 
-To run the project you may use the built-in server: `php artisan serve`
+To run the project you may use the built-in server: `sail artisan serve`
 
 After that, run `composer dump-autoload` to finish your installation!
 

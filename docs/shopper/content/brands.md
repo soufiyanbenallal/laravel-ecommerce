@@ -50,7 +50,7 @@ return [
 
 1. Create your own Model
     ```bash
-    php artisan make:model Brand
+    sail artisan make:model Brand
     ```
     Once the `app/Models/Brand.php` model is created in your app folder, you need to extend from the `Shopper\Core\Models\Brand` Model.
 
@@ -76,7 +76,7 @@ return [
 By default, brands Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish brand
+sail artisan shopper:component:publish brand
 ```
 
 This command will publish all Livewire components used for brand management (from pages to form components).
@@ -104,7 +104,7 @@ You can update the livewire page component in the configuration file to use your
 To create a Livewire page for Shopper you need to run the following command
 
 ```bash
-php artisan make:shopper-page Brand
+sail artisan make:shopper-page Brand
 ```
 
 This page will extend shopper's default layout, and you can render the view you want.

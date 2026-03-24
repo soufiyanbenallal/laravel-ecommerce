@@ -58,7 +58,7 @@ Once the information is filled in, we can display it to our users in the views w
 To do this we will start by creating a controller that will take care of collecting our information and send it to a view
 
 ```bash
-php artisan make:controller LegalController
+sail artisan make:controller LegalController
 ```
 
 We will add the functions for each of our pages and return the information to present them to our users. Our controller will look like this

@@ -10,10 +10,10 @@ Use this skill when a task touches both backend and frontend in this repository.
 ## Load Context
 Read these first:
 - `AGENTS.md`
-- `docs/ARCHITECTURE.md`
-- `docs/FRONTEND.md`
-- `docs/BACKEND.md`
 - `docs/LOCAL_DEV.md`
+- `docs/MCP_AND_SKILLS.md`
+- `docs/SHOPPER_CONFIGURATION.md`
+- `docs/STRIPE_STEUP.md`
 
 ## Workflow
 1. Confirm route and controller entry points (`routes/web.php`, `app/Http/Controllers/*`).
@@ -29,8 +29,8 @@ Read these first:
 - Use `@/*` imports in React TS code.
 - Prefer Shopper config/extension points for ecommerce concerns.
 - Run:
-  - `php artisan test`
-  - `npm run build`
+  - `sail artisan test`
+  - `pnpm run build`
 
 ## Must Not Do
 - Do not edit package/vendor code.

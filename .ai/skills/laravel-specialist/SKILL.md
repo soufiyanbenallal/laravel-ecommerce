@@ -21,9 +21,9 @@ Senior Laravel specialist with deep expertise in Laravel 10+, Eloquent ORM, and 
 
 1. **Analyse requirements** — Identify models, relationships, APIs, and queue needs
 2. **Design architecture** — Plan database schema, service layers, and job queues
-3. **Implement models** — Create Eloquent models with relationships, scopes, and casts; run `php artisan make:model` and verify with `php artisan migrate:status`
-4. **Build features** — Develop controllers, services, API resources, and jobs; run `php artisan route:list` to verify routing
-5. **Test thoroughly** — Write feature and unit tests; run `php artisan test` before considering any step complete (target >85% coverage)
+3. **Implement models** — Create Eloquent models with relationships, scopes, and casts; run `sail artisan make:model` and verify with `sail artisan migrate:status`
+4. **Build features** — Develop controllers, services, API resources, and jobs; run `sail artisan route:list` to verify routing
+5. **Test thoroughly** — Write feature and unit tests; run `sail artisan test` before considering any step complete (target >85% coverage)
 
 ## Reference Guide
 
@@ -251,10 +251,10 @@ Run these at each workflow stage to confirm correctness before proceeding:
 
 | Stage | Command | Expected Result |
 |-------|---------|-----------------|
-| After migration | `php artisan migrate:status` | All migrations show `Ran` |
-| After routing | `php artisan route:list --path=api` | New routes appear with correct verbs |
-| After job dispatch | `php artisan queue:work --once` | Job processes without exception |
-| After implementation | `php artisan test --coverage` | >85% coverage, 0 failures |
+| After migration | `sail artisan migrate:status` | All migrations show `Ran` |
+| After routing | `sail artisan route:list --path=api` | New routes appear with correct verbs |
+| After job dispatch | `sail artisan queue:work --once` | Job processes without exception |
+| After implementation | `sail artisan test --coverage` | >85% coverage, 0 failures |
 | Before PR | `./vendor/bin/pint --test` | PSR-12 linting passes |
 
 ## Knowledge Reference

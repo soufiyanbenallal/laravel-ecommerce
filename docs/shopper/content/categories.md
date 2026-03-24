@@ -71,7 +71,7 @@ return [
 
 1. Create your own model that you have to use
     ```bash
-    php artisan make:model Category
+    sail artisan make:model Category
     ```
     Once the `app/Models/Category.php` model is created in our app folder, we will make it extend from the `Shopper\Core\Models\Category` model available in Shopper.
 
@@ -97,7 +97,7 @@ return [
 By default, categories Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish category
+sail artisan shopper:component:publish category
 ```
 
 ```php

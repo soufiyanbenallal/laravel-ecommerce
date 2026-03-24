@@ -40,9 +40,9 @@ This repository is a Laravel 12 + Inertia + React TypeScript storefront with Sho
 - Keep route names explicit and stable for Inertia links.
 
 ## Validation Checklist
-- `php artisan test`
-- `npm run build`
-- If changed backend config: `php artisan optimize:clear`
+- `sail artisan test`
+- `pnpm run build`
+- If changed backend config: `sail artisan optimize:clear`
 
 ## Known Cleanup Targets
 - Duplicate controller file at `resources/js/Components/home/HomeController.php` (should not live in JS tree).

@@ -30,7 +30,7 @@ The model used is `Shopper\Core\Models\Discount`.
 By default, discounts Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish discount
+sail artisan shopper:component:publish discount
 ```
 
 This command will publish all Livewire components used for discount management (from pages to form components).

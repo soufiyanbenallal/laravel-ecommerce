@@ -98,7 +98,7 @@ return [
 
 1. Create your own model that you have to use
     ```bash
-    php artisan make:model Collection
+    sail artisan make:model Collection
     ```
     Once the `app/Models/Collection.php` model is created in our app folder, we will make it extend from the `Shopper\Core\Models\Collection` Model.
 
@@ -124,7 +124,7 @@ return [
 By default, collections Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish collection
+sail artisan shopper:component:publish collection
 ```
 
 This command will publish all Livewire components used for collection management (from pages to form components).

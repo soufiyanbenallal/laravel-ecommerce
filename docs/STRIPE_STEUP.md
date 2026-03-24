@@ -13,7 +13,7 @@ The service provider is auto-discovered. It registers the stripe driver with the
 ​
 Configuration
 Publish the config file:
-php artisan vendor:publish --tag=shopper-stripe-config
+sail artisan vendor:publish --tag=shopper-stripe-config
 This creates config/shopper/stripe.php:
 return [
 

@@ -47,7 +47,7 @@ The components used to manage locations are found in the component configuration
 This configuration file is not available by default. But if you want to update or change the settings components, you can publish them with the command
 
 ```bash
-php artisan shopper:component:publish setting
+sail artisan shopper:component:publish setting
 ```
 
 This file contains all Livewire components for settings. Here is only the list of inventory components

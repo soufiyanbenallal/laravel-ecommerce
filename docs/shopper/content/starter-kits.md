@@ -70,7 +70,7 @@ After installing the Starter kits package, you may execute the Artisan command. 
 (`livewire`, `blade (soon)` or `inertia (soon)`)
 
 ```shell
-php artisan shopper:starter-kit:install
+sail artisan shopper:starter-kit:install
 ```
 
 This command will install composer and npm dependencies needed to run the starter kit, and publish the views, routes, controllers and other resources required by your application.

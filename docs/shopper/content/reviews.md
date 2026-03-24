@@ -23,7 +23,7 @@ The model used is `Shopper\Core\Models\Review`.
 By default, review Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish review
+sail artisan shopper:component:publish review
 ```
 
 This command will publish all Livewire components used for review management (from pages to form components).

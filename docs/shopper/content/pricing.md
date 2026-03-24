@@ -22,7 +22,7 @@ The model used is `Shopper\Core\Models\Price`.
 By default, pricing Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish product
+sail artisan shopper:component:publish product
 ```
 
 This command will publish all Livewire components used for product and price management (from pages to form components).

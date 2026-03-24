@@ -42,7 +42,7 @@ During the installation of Shopper, the `name` column of the users table is remo
 By default, brands Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish customer
+sail artisan shopper:component:publish customer
 ```
 
 This command will publish all Livewire components used for brand management (from pages to form components).

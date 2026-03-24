@@ -53,7 +53,7 @@ return [
 
 1. Create your own Model
     ```bash
-    php artisan make:model Product
+    sail artisan make:model Product
     ```
    Once the `app/Models/Product.php` model is created in your app folder, you need to extend from the `Shopper\Core\Models\Product` Model.
 
@@ -79,7 +79,7 @@ return [
 By default, product Livewire components are not published. To customize components, you must publish them.
 
 ```bash
-php artisan shopper:component:publish product
+sail artisan shopper:component:publish product
 ```
 
 This command will publish all Livewire components used for product management (from pages to form components).

@@ -34,7 +34,7 @@ If you update this configuration, you have to republish the assets to take the n
 The assets are dynamically loaded by a symbolic link named as the prefix.
 
 ```php
-php artisan shopper:link
+sail artisan shopper:link
 ```
 :::
 
@@ -54,8 +54,8 @@ If you change this prefix after installation, you'll need to refresh migration f
 'table_prefix' => 'sh_',
 ```
 
-Run laravel refresh migration command: `php artisan migrate:refresh`
-Re-run the Shopper Database table seeder: `php artisan db:seed --class=\Shopper\Core\Database\Seeders\ShopperSeeder` 
+Run laravel refresh migration command: `sail artisan migrate:refresh`
+Re-run the Shopper Database table seeder: `sail artisan db:seed --class=\Shopper\Core\Database\Seeders\ShopperSeeder` 
 
 :::warning
 If you do this knowing that you already have data in your database, you risk losing it. Think carefully, because you'll be on your own afterwards.
@@ -106,7 +106,7 @@ The main features of Shopper is to handle Livewire components to add new functio
 For this purpose you have components files that lists each Livewire components used within Laravel Shopper. 
 You can extend component to add functionality and even change the view to fit your own logic.
 
-Here is a list of components files available. All these files can be published with `php artisan shopper:component:publish`
+Here is a list of components files available. All these files can be published with `sail artisan shopper:component:publish`
 
 ```files theme:github-light
 config/shopper/components
@@ -127,7 +127,7 @@ You can publish each file individually, allowing you to replace or customize com
 All you need to do is issue the same command, but this time specify the name of the configuration file
 
 ```bash
-php artisan shopper:component:publish brand
+sail artisan shopper:component:publish brand
 ```
 
 ### Settings

@@ -25,7 +25,7 @@ To access dashboard, you need to have the role `administrator` this role can be 
 After [creating a super admin](/installation#create-an-admin-user) we get the following result
 
 ```bash
-php artisan shopper:user
+sail artisan shopper:user
 
 Create Admin User for Shopper administration panel
 
@@ -131,7 +131,7 @@ During the installation of Laravel Shopper, no component files are published by 
 However, if you need to customize or replace any components, you can easily publish them using the following Artisan command:
 
 ```bash
-php artisan shopper:component:publish setting
+sail artisan shopper:component:publish setting
 ```
 
 A new `setting.php` file will be created in the `config/shopper/components` folder.

@@ -14,7 +14,7 @@ Before following along with this guide, make sure you have the following require
 In your Shopper app project, after installing the [Starter kit](/docs/starter-kits#installation), you need to run the command:
 
 ```shell
-php artisan shopper:starter-kit:install livewire
+sail artisan shopper:starter-kit:install livewire
 ```
 
 This command publishes views, routes, controllers, and other resources to your application. The starter kits publishes all of its code to your 

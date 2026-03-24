@@ -320,17 +320,17 @@ return response()->streamDownload(function () {
 
 ```bash
 # Generate route cache
-php artisan route:cache
+sail artisan route:cache
 
 # Clear route cache
-php artisan route:clear
+sail artisan route:clear
 
 # List all routes
-php artisan route:list
+sail artisan route:list
 
 # Filter routes
-php artisan route:list --name=api
-php artisan route:list --path=posts
+sail artisan route:list --name=api
+sail artisan route:list --path=posts
 ```
 
 ## API Versioning

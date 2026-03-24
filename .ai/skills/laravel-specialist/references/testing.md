@@ -482,25 +482,25 @@ public function test_user_with_wrong_ability_cannot_access(): void
 
 ```bash
 # Run all tests
-php artisan test
+sail artisan test
 
 # Run specific test
-php artisan test --filter=test_user_can_create_post
+sail artisan test --filter=test_user_can_create_post
 
 # Run test file
-php artisan test tests/Feature/PostTest.php
+sail artisan test tests/Feature/PostTest.php
 
 # Parallel testing
-php artisan test --parallel
+sail artisan test --parallel
 
 # With coverage
-php artisan test --coverage
+sail artisan test --coverage
 
 # Coverage minimum
-php artisan test --coverage --min=80
+sail artisan test --coverage --min=80
 
 # Stop on failure
-php artisan test --stop-on-failure
+sail artisan test --stop-on-failure
 
 # Pest specific
 ./vendor/bin/pest
