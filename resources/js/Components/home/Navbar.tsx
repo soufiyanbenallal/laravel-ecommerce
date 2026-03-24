@@ -151,12 +151,12 @@ export default function Navbar() {
                 {auth?.user?.name}
               </Link>
             ) : (
-              <Link
-                href="/login"
+              <a
+                href="/cpanel/login"
                 className="hidden md:inline-flex items-center px-4 py-2 bg-stone-900 text-white text-[12.5px] font-bold rounded-lg hover:bg-stone-800 transition-colors tracking-wide"
               >
                 Sign In
-              </Link>
+              </a>
             )}
 
             {/* Mobile menu toggle */}
