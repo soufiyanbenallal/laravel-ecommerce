@@ -22,19 +22,19 @@ Runs Laravel app server, queue listener, pail logs, and Vite concurrently.
 
 ## Manual Commands
 ```bash
-php artisan serve
-npm run dev
+sail artisan serve
+pnpm run dev
 ```
 
 ## Testing
 ```bash
-php artisan test
-npm run build
+sail artisan test
+pnpm run build
 ```
 
 ## Useful Operations
 ```bash
-php artisan route:list
-php artisan migrate:status
-php artisan optimize:clear
+sail artisan route:list
+sail artisan migrate:status
+sail artisan optimize:clear
 ```

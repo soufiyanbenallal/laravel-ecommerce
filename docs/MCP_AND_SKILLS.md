@@ -1,7 +1,6 @@
 # MCP and Skills
 
 ## MCP Config Files
-- `.mcp.example.json`: template for new environments
 - `.mcp.json`: local project MCP config
 
 ## Included MCP Servers
