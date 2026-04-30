@@ -8,10 +8,10 @@ use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function __construct(private readonly TravelCatalogService $catalog) {}
+    public function __construct() {}
 
     public function index(): Response
     {
-        return Inertia::render('Home', $this->catalog->homePayload());
+        return Inertia::render('home/home');
     }
 }
