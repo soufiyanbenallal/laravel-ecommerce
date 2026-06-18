@@ -46,4 +46,20 @@ class CartController extends Controller
 
         return to_route('cart.index');
     }
+
+    public function sync(Request $request): RedirectResponse
+    {
+        $payload = $request->validate([
+            'items' => ['required', 'array'],
+            'items.*.id' => ['required', 'integer'],
+            'items.*.quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        session()->forget('checkout.cart');
+        foreach ($payload['items'] as $item) {
+            $this->checkout->updateItemQuantity((int) $item['id'], (int) $item['quantity']);
+        }
+
+        return to_route('checkout.index');
+    }
 }

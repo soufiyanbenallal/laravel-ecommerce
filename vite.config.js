@@ -12,9 +12,15 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
-    server: {
-        watch: {
-            ignored: ["**/storage/framework/views/**"],
+    test: {
+        globals: true,
+        environment: "jsdom",
+        setupFiles: "./resources/js/tests/setup.ts",
+        include: ["resources/js/**/*.test.{ts,tsx}"],
+    },
+    resolve: {
+        alias: {
+            "@": "/resources/js",
         },
     },
 });

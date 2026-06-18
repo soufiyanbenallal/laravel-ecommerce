@@ -68,8 +68,15 @@ class ShopperCheckoutService
 
         $cart = session()->get(self::CART_SESSION_KEY, []);
         $key = (string) $product->id;
+        $existingQty = (int) ($cart[$key] ?? 0);
+        $newQty = max($quantity, 1);
+        $requestedQty = $existingQty + $newQty;
 
-        $cart[$key] = ((int) ($cart[$key] ?? 0)) + max($quantity, 1);
+        if ($product->stock !== null && $requestedQty > $product->stock) {
+            $cart[$key] = max($product->stock, 0);
+        } else {
+            $cart[$key] = $requestedQty;
+        }
 
         session()->put(self::CART_SESSION_KEY, $cart);
     }
@@ -86,6 +93,12 @@ class ShopperCheckoutService
         if ($quantity <= 0) {
             unset($cart[$key]);
         } else {
+            if ($this->hasProductsTable()) {
+                $product = Product::query()->find($productId);
+                if ($product && $product->stock !== null && $quantity > $product->stock) {
+                    $quantity = max($product->stock, 0);
+                }
+            }
             $cart[$key] = $quantity;
         }
 
@@ -362,7 +375,7 @@ class ShopperCheckoutService
     {
         $subtotal = round(array_reduce($cartItems, fn (float $carry, array $item) => $carry + (float) $item['totalPrice'], 0), 2);
         $normalizedPromo = strtoupper(trim((string) $promoCode));
-        $discount = $normalizedPromo === 'MARRAKECH10' ? round($subtotal * 0.10, 2) : 0;
+        $discount = $normalizedPromo === 'KENZ10' ? round($subtotal * 0.10, 2) : 0;
         $total = max(round($subtotal - $discount, 2), 0);
 
         return [

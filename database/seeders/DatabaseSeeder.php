@@ -34,8 +34,13 @@ class DatabaseSeeder extends Seeder
         // Explicitly insert into pivot table to ensure the correct polymorphic type mapping is kept
         DB::table('model_has_roles')->insert([
             'role_id' => $role->id,
-            'model_type' => \App\Models\User::class,
+            'model_type' =>User::class,
             'model_id' => $user->id,
         ]);
+        // Seed Payment Methods
+        $this->call(PaymentMethodsSeeder::class);
+
+        // Seed Initial Content (Full Flow: Products, Categories, Brands, Variants, etc)
+        $this->call(ProductionSeeder::class);
     }
 }
