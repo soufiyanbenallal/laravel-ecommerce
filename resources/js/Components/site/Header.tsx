@@ -8,7 +8,6 @@ import { Link } from "@inertiajs/react";
 
 const flat = [
   { to: "/collections", label: "Collections" },
-  { to: "/journal", label: "Journal" },
 ] as const;
 
 /** Brand logotype — Cormorant display font with gold accent on "KENZ" */
@@ -138,7 +137,7 @@ export function Header() {
             </Link>
 
             <Link
-              href="/account"
+              href="/account/orders"
               aria-label="My account"
               className="hidden hover:text-foreground transition-colors duration-200 sm:block p-1"
             >
@@ -223,7 +222,7 @@ export function Header() {
                 Wishlist
               </Link>
               <Link
-                href="/account"
+                href="/account/orders"
                 onClick={() => setMobileOpen(false)}
                 className="block font-display text-2xl font-light text-foreground hover:text-accent transition-colors duration-200"
               >

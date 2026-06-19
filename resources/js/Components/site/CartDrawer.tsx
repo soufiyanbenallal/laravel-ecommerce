@@ -1,8 +1,9 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui2/sheet";
-import { Button } from "@/components/ui2/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { Minus, Plus, X } from "lucide-react";
 import { useCart, cartTotal } from "@/lib/cart-store";
 import { Link } from "@inertiajs/react";
+
 
 export function CartDrawer() {
   const { items, isOpen, close, setQty, remove } = useCart();

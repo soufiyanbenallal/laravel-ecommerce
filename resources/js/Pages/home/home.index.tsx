@@ -280,48 +280,7 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          11 · JOURNAL TEASER
-      ══════════════════════════════════════════ */}
-      <section className="border-t border-border/40 bg-secondary/20 py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-end justify-between gap-6 mb-12">
-            <div>
-              <SectionMark n="11" label="Journal" />
-              <h2 className="font-display text-4xl font-light md:text-5xl">Notes from the studio.</h2>
-            </div>
-            <Link
-              href="/journal"
-              className="hidden text-[11px] uppercase tracking-[0.22em] text-foreground/55 hover:text-accent transition-colors md:inline-block cursor-pointer"
-            >
-              Read all →
-            </Link>
-          </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              { tag: "Materials", title: "Why we returned to mineral dyes", read: "4 min" },
-              { tag: "Workshop", title: "Three days in Hawick with the knitters", read: "7 min" },
-              { tag: "Care", title: "How to fold cashmere so it lasts a decade", read: "3 min" },
-            ].map((post, i) => (
-              <article key={post.title} className="group cursor-pointer fade-up" style={{ animationDelay: `${i * 80}ms` }}>
-                <div className="aspect-[4/3] overflow-hidden bg-secondary relative">
-                  <div className="h-full w-full bg-gradient-to-br from-muted to-secondary transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute top-4 right-4 font-display text-[10px] tracking-[0.24em] text-foreground/30">0{i + 1}</div>
-                </div>
-                <div className="mt-5">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-accent">
-                    {post.tag} · {post.read} read
-                  </div>
-                  <h3 className="mt-2 font-display text-xl font-light leading-snug group-hover:text-accent transition-colors duration-300">
-                    {post.title}
-                  </h3>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════════
           12 · NEWSLETTER CTA — brand closing

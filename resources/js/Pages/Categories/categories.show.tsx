@@ -1,8 +1,15 @@
 import { useMemo, useState } from "react";
 import { Link, Head } from "@inertiajs/react";
 import { ProductCard } from "@/components/site/ProductCard";
-import { applyFilters, emptyFilters, FiltersDrawer, FiltersSidebar, type FilterState } from "@/components/site/Filters";
+import {
+  applyFilters,
+  emptyFilters,
+  FiltersDrawer,
+  FiltersSidebar,
+  type FilterState,
+} from "@/components/site/Filters";
 import type { ProductModelType } from "@/types/ecommerce.types";
+import { SlidersHorizontal } from "lucide-react";
 
 type CategoryItemType = {
   id: number;
@@ -16,6 +23,17 @@ type CategoryShowPropsType = {
   category: CategoryItemType;
   products: ProductModelType[];
 };
+
+function unique<T>(arr: T[]) {
+  return Array.from(new Set(arr));
+}
+
+const SORT_OPTIONS = [
+  { value: "featured", label: "Featured" },
+  { value: "rating", label: "Top Rated" },
+  { value: "low", label: "Price · Low" },
+  { value: "high", label: "Price · High" },
+] as const;
 
 export default function CategoryPage({ category, products }: CategoryShowPropsType) {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
@@ -37,28 +55,75 @@ export default function CategoryPage({ category, products }: CategoryShowPropsTy
 
   return (
     <div>
-      <Head title={`${category.name} — Atelier Nord`}>
-        <meta name="description" content={category.description ?? `Pieces in our ${category.name.toLowerCase()} category.`} />
+      <Head title={`${category.name} — KENZ Maison`}>
+        <meta
+          name="description"
+          content={
+            category.description ??
+            `${category.name} collection — small batches, named makers, materials we'd wear ourselves.`
+          }
+        />
       </Head>
 
-      <header className="border-b border-border/60">
-        <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
-          <nav className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            <Link href="/" className="hover:text-foreground">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/catalog" className="hover:text-foreground">Shop</Link>
-            <span className="mx-2">/</span>
-            <span className="text-foreground">{category.name}</span>
+      {/* ── Category Header ── */}
+      <header className="relative overflow-hidden border-b border-border/40">
+        {/* Category image backdrop */}
+        {category.image && (
+          <>
+            <div className="absolute inset-0">
+              <img
+                src={category.image}
+                alt={category.name}
+                className="h-full w-full object-cover opacity-15"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30" />
+            </div>
+          </>
+        )}
+
+        {/* Watermark */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-end overflow-hidden select-none"
+          aria-hidden
+        >
+          <span
+            className="font-display text-foreground/[0.04] font-bold leading-none pr-2"
+            style={{ fontSize: "clamp(100px, 16vw, 220px)", letterSpacing: "-0.04em" }}
+          >
+            {category.name.toUpperCase()}
+          </span>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-6 py-14 md:py-20">
+          {/* Breadcrumb */}
+          <nav className="mb-6 flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+            <Link href="/" className="hover:text-accent transition-colors duration-200">Home</Link>
+            <span className="text-accent">✦</span>
+            <Link href="/catalog" className="hover:text-accent transition-colors duration-200">Shop</Link>
+            <span className="text-accent">✦</span>
+            <span className="text-foreground/70">{category.name}</span>
           </nav>
-          <h1 className="mt-6 font-display text-5xl md:text-6xl">{category.name}</h1>
-          <p className="mt-4 max-w-xl text-muted-foreground">
-            {category.description ?? `Pieces in our ${category.name.toLowerCase()} category — small batches, named makers, materials we'd wear ourselves.`}
+
+          <p className="text-[10px] uppercase tracking-[0.3em] text-accent">KENZ Collection</p>
+          <h1 className="mt-3 font-display text-5xl font-light md:text-7xl">{category.name}.</h1>
+          <p className="mt-4 max-w-lg text-[14px] font-light leading-relaxed text-muted-foreground">
+            {category.description ??
+              `Pieces in our ${category.name.toLowerCase()} collection — small batches, named makers, materials we'd wear ourselves.`}
           </p>
+
+          {/* Piece count */}
+          <div className="mt-6 flex items-center gap-3">
+            <span className="font-display text-2xl font-light">{filtered.length}</span>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              {filtered.length === 1 ? "Piece" : "Pieces"}
+            </span>
+          </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="flex items-center justify-between gap-4 border-b border-border/60 pb-4">
+      {/* ── Toolbar ── */}
+      <div className="sticky top-[60px] z-30 border-b border-border/40 bg-background/92 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3">
           <FiltersDrawer
             state={filters}
             onChange={setFilters}
@@ -67,22 +132,24 @@ export default function CategoryPage({ category, products }: CategoryShowPropsTy
             allMaterials={allMaterials}
             count={filtered.length}
           />
-          <div className="flex items-center gap-3 text-sm">
-            <span className="hidden text-muted-foreground sm:inline">{filtered.length} objects</span>
+          <div className="flex items-center gap-1.5 border border-border/50 px-2.5 py-1.5">
+            <SlidersHorizontal className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as typeof sort)}
-              className="border border-border bg-transparent px-2 py-1.5 text-sm outline-none"
+              className="bg-transparent text-[11px] uppercase tracking-[0.16em] outline-none cursor-pointer"
             >
-              <option value="featured">Featured</option>
-              <option value="rating">Top rated</option>
-              <option value="low">Price · Low to high</option>
-              <option value="high">Price · High to low</option>
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
             </select>
           </div>
         </div>
+      </div>
 
-        <div className="mt-10 flex gap-10">
+      {/* ── Product Grid ── */}
+      <div className="mx-auto max-w-7xl px-6 py-14">
+        <div className="mt-0 flex gap-10">
           <FiltersSidebar
             state={filters}
             onChange={setFilters}
@@ -91,25 +158,36 @@ export default function CategoryPage({ category, products }: CategoryShowPropsTy
             allMaterials={allMaterials}
             count={filtered.length}
           />
+
           <div className="flex-1">
             {filtered.length === 0 ? (
-              <div className="py-24 text-center text-muted-foreground">
-                No objects match these filters. <button onClick={() => setFilters(emptyFilters)} className="text-accent underline-offset-4 hover:underline cursor-pointer">Reset</button>
+              <div className="flex flex-col items-center justify-center py-28 text-center">
+                <div className="font-display text-5xl font-light text-foreground/20">∅</div>
+                <p className="mt-4 text-[14px] font-light text-muted-foreground">
+                  No pieces match these filters.
+                </p>
+                <button
+                  onClick={() => setFilters(emptyFilters)}
+                  className="mt-5 text-[11px] uppercase tracking-[0.2em] text-accent hover:underline underline-offset-4 cursor-pointer"
+                >
+                  Reset Filters
+                </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
-                {filtered.map((p, i) => (
-                  <ProductCard key={p.id} product={p} index={i} />
-                ))}
-              </div>
+              <>
+                <p className="mb-8 text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                  {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+                </p>
+                <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
+                  {filtered.map((p, i) => (
+                    <ProductCard key={p.id} product={p} index={i} />
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-function unique<T>(arr: T[]) {
-  return Array.from(new Set(arr));
 }

@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Head, usePage } from "@inertiajs/react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { BrandCursor } from "@/components/site/BrandCursor";
+import { CartDrawer } from "@/components/site/CartDrawer";
 import { CheckCircle, XCircle, X } from "lucide-react";
 
 type MainLayoutPropsType = {
@@ -41,11 +41,11 @@ export default function MainLayout({ children, title }: MainLayoutPropsType) {
   }, [showFlash]);
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-accent/20 selection:text-accent" style={{ cursor: "none" }}>
+    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-accent/20 selection:text-accent">
       <Head title={title ? `${title} | KENZ Maison` : "KENZ Maison — The Art of Dressing Well"} />
 
-      <BrandCursor />
       <Header />
+      <CartDrawer />
 
       <main className="relative">{children}</main>
 

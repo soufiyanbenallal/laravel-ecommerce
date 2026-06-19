@@ -13,10 +13,10 @@ const shopLinks = [
 const maisonLinks = [
   { label: "Our Story", href: "/about" },
   { label: "Sourcing", href: "/sourcing" },
-  { label: "Journal", href: "/journal" },
   { label: "Careers", href: "#" },
   { label: "Press", href: "#" },
 ];
+
 
 const helpLinks = [
   { label: "Shipping & Returns", href: "#" },
