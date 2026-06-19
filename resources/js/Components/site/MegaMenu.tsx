@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "@inertiajs/react";
 import { ArrowRight } from "lucide-react";
 import catWomen from "@/assets/cat-women.jpg";
 import catMen from "@/assets/cat-men.jpg";
@@ -36,10 +36,10 @@ export const megaMenus: Record<string, Group> = {
       {
         heading: "Discover",
         links: [
-          { label: "New Arrivals", to: "/shop" },
-          { label: "Bestsellers", to: "/shop" },
+          { label: "New Arrivals", to: "/catalog" },
+          { label: "Bestsellers", to: "/catalog" },
           { label: "The Edit", to: "/collections" },
-          { label: "Sale", to: "/shop" },
+          { label: "Sale", to: "/catalog" },
         ],
       },
     ],
@@ -69,10 +69,10 @@ export const megaMenus: Record<string, Group> = {
       {
         heading: "Discover",
         links: [
-          { label: "New Arrivals", to: "/shop" },
-          { label: "Bestsellers", to: "/shop" },
+          { label: "New Arrivals", to: "/catalog" },
+          { label: "Bestsellers", to: "/catalog" },
           { label: "The Edit", to: "/collections" },
-          { label: "Sale", to: "/shop" },
+          { label: "Sale", to: "/catalog" },
         ],
       },
     ],
@@ -115,7 +115,7 @@ export function MegaMenuPanel({ group }: { group: Group }) {
     <div className="absolute left-0 right-0 top-full z-50 border-b border-border/60 bg-background shadow-[0_20px_40px_-30px_rgba(0,0,0,0.25)]">
       <div className="mx-auto grid max-w-7xl grid-cols-12 gap-10 px-6 py-10">
         <div className="col-span-5">
-          <Link to={group.feature.href} className="group block overflow-hidden bg-secondary">
+          <Link href={group.feature.href} className="group block overflow-hidden bg-secondary">
             <img
               src={group.feature.image}
               alt={group.feature.title}
@@ -128,7 +128,7 @@ export function MegaMenuPanel({ group }: { group: Group }) {
               <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Featured</div>
               <div className="mt-1 font-display text-xl">{group.feature.title}</div>
             </div>
-            <Link to={group.feature.href} className="inline-flex items-center gap-2 text-sm text-accent hover:underline">
+            <Link href={group.feature.href} className="inline-flex items-center gap-2 text-sm text-accent hover:underline">
               Shop <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -141,19 +141,16 @@ export function MegaMenuPanel({ group }: { group: Group }) {
                 {col.heading}
               </h4>
               <ul className="mt-4 space-y-2.5 text-sm">
-                {col.links.map((l) => (
-                  <li key={l.label}>
-                    {l.params ? (
-                      <Link to={l.to} params={l.params as never} className="text-foreground/80 transition-colors hover:text-accent">
+                {col.links.map((l) => {
+                  const href = l.params ? l.to.replace("$slug", l.params.slug) : l.to;
+                  return (
+                    <li key={l.label}>
+                      <Link href={href} className="text-foreground/80 transition-colors hover:text-accent">
                         {l.label}
                       </Link>
-                    ) : (
-                      <Link to={l.to} className="text-foreground/80 transition-colors hover:text-accent">
-                        {l.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

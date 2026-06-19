@@ -5,16 +5,20 @@ import banner from "@/assets/banner-promo.jpg";
 import catWomen from "@/assets/cat-women.jpg";
 import catMen from "@/assets/cat-men.jpg";
 import catShoes from "@/assets/cat-shoes.jpg";
-import { products, collections } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
+import type { HomePropsType } from "@/types/ecommerce.types";
 
-export default function Home() {
-  const featured = products.slice(0, 4);
-  const bestsellers = [...products].sort((a, b) => b.reviews - a.reviews).slice(0, 4);
+export default function Home({ categories, flash_deals, new_arrivals, collections, testimonials }: HomePropsType) {
+  const featured = new_arrivals.slice(0, 4);
+  const bestsellers = flash_deals.slice(0, 4);
 
   return (
     <div>
+      <Head title="Quiet Objects — Atelier Nord">
+        <meta name="description" content="A small shop of clothing, leather and home pieces, designed with the workshops that make them." />
+      </Head>
+
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-border/60">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 md:grid-cols-12 md:gap-10 md:py-24">
@@ -31,7 +35,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex items-center gap-6 fade-up" style={{ animationDelay: "240ms" }}>
               <Link
-                href="/shop"
+                href="/catalog"
                 className="group inline-flex items-center gap-3 bg-foreground px-7 py-4 text-sm font-medium tracking-wide text-background transition-colors hover:bg-accent"
               >
                 Shop the collection
@@ -86,14 +90,13 @@ export default function Home() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            { img: catWomen, title: "Women", to: "/category/$slug", slug: "apparel", count: "32 pieces" },
-            { img: catMen, title: "Men", to: "/category/$slug", slug: "apparel", count: "26 pieces" },
-            { img: catShoes, title: "Shoes", to: "/category/$slug", slug: "footwear", count: "14 pieces" },
+            { img: catWomen, title: "Women", slug: "apparel", count: "Apparel" },
+            { img: catMen, title: "Men", slug: "apparel", count: "Apparel" },
+            { img: catShoes, title: "Shoes", slug: "footwear", count: "Footwear" },
           ].map((c, i) => (
             <Link
               key={c.title}
-              href={c.to}
-              params={{ slug: c.slug }}
+              href={`/category/${c.slug}`}
               className="group relative block overflow-hidden bg-secondary fade-up"
               style={{ animationDelay: `${i * 90}ms` }}
             >
@@ -123,8 +126,8 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">The Edit</p>
             <h2 className="mt-3 font-display text-4xl md:text-5xl">New this season</h2>
           </div>
-          <Link href="/shop" className="hidden text-sm underline-offset-4 hover:underline md:inline">
-            See all 24 objects →
+          <Link href="/catalog" className="hidden text-sm underline-offset-4 hover:underline md:inline">
+            See all products →
           </Link>
         </div>
         <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4">
@@ -152,8 +155,7 @@ export default function Home() {
               Twelve pieces in cashmere, lambswool and merino. Knitted in small mills in Scotland and Italy — built to outlast a decade of winters.
             </p>
             <Link
-              href="/collection/$slug"
-              params={{ slug: "autumn-volume-07" }}
+              href="/collection/autumn-volume-07"
               className="mt-8 inline-flex items-center gap-2 border border-background/30 px-6 py-3 text-sm font-medium hover:bg-background hover:text-foreground"
             >
               Shop the edit <ArrowRight className="h-4 w-4" />
@@ -182,11 +184,11 @@ export default function Home() {
               style={{ animationDelay: `${i * 60}ms` }}
             >
               <div className="overflow-hidden bg-secondary">
-                <img src={c.image} alt={c.title} loading="lazy" className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <img src={c.image} alt={c.name} loading="lazy" className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
               </div>
               <div className="mt-4">
-                <div className="font-display text-2xl group-hover:text-accent">{c.title}</div>
-                <div className="text-sm text-muted-foreground">{c.tagline}</div>
+                <div className="font-display text-2xl group-hover:text-accent">{c.name}</div>
+                <div className="text-sm text-muted-foreground">{c.description}</div>
               </div>
             </Link>
           ))}
@@ -260,12 +262,8 @@ export default function Home() {
           <h2 className="mt-3 font-display text-4xl md:text-5xl">Worn, kept, repaired.</h2>
         </div>
         <div className="mt-14 grid gap-8 md:grid-cols-3">
-          {[
-            { name: "Marguerite L.", place: "Paris", text: "The Halden coat has lived through three winters and looks better each one. Worth every euro." },
-            { name: "Daichi K.", place: "Kyoto", text: "Loafers that feel like they were made for my feet. The resoling service is a small miracle." },
-            { name: "Anna B.", place: "Copenhagen", text: "I bought the cashmere on a whim and now I own four. Quiet confidence in every stitch." },
-          ].map((r) => (
-            <figure key={r.name} className="border border-border/60 bg-card p-8">
+          {testimonials.map((r) => (
+            <figure key={r.id} className="border border-border/60 bg-card p-8">
               <div className="flex gap-1 text-accent">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-3.5 w-3.5 fill-accent" strokeWidth={0} />
@@ -273,7 +271,7 @@ export default function Home() {
               </div>
               <blockquote className="mt-5 font-display text-xl leading-snug">&ldquo;{r.text}&rdquo;</blockquote>
               <figcaption className="mt-6 text-sm text-muted-foreground">
-                {r.name} · {r.place}
+                {r.name} · {r.city}
               </figcaption>
             </figure>
           ))}
@@ -287,7 +285,7 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Journal</p>
             <h2 className="mt-3 font-display text-4xl md:text-5xl">Notes from the studio</h2>
           </div>
-          <Link href="/journal" className="hidden text-sm underline-offset-4 hover:underline md:inline">
+          <Link href="/about" className="hidden text-sm underline-offset-4 hover:underline md:inline">
             Read all →
           </Link>
         </div>

@@ -173,7 +173,7 @@ function Group({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-export function applyFilters<T extends { sizes?: string[]; colors: string[]; materials: string[]; price: number; compareAtPrice?: number }>(
+export function applyFilters<T extends { sizes?: string[]; colors: string[]; materials: string[]; price: number; old_price?: number | null }>(
   items: T[],
   f: FilterState,
 ): T[] {
@@ -182,7 +182,7 @@ export function applyFilters<T extends { sizes?: string[]; colors: string[]; mat
     if (f.colors.length && !p.colors.some((c) => f.colors.includes(c))) return false;
     if (f.materials.length && !p.materials.some((m) => f.materials.includes(m))) return false;
     if (p.price > f.priceMax) return false;
-    if (f.onSale && !(p.compareAtPrice && p.compareAtPrice > p.price)) return false;
+    if (f.onSale && !(p.old_price && p.old_price > p.price)) return false;
     return true;
   });
 }

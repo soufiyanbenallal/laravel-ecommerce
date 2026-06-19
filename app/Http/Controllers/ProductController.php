@@ -26,79 +26,97 @@ class ProductController extends Controller
 
     protected function formatProductDetail($p)
     {
+        $price = $p->prices->first();
         return [
             'id' => $p->id,
             'name' => $p->name,
             'slug' => $p->slug,
             'description' => $p->description,
-            'price' => (float) ($p->prices->first()?->amount ?? 0),
-            'old_price' => (float) ($p->prices->first()?->compare_amount ?? 0),
-            'currency' => $p->prices->first()?->currency_code ?? 'MAD',
+            'price' => (float) (($price?->amount ?? 0) / 10),
+            'old_price' => $price?->compare_amount ? (float) ($price->compare_amount / 10) : null,
+            'currency' => $price?->currency_code ?? 'MAD',
             'sku' => $p->sku,
             'stock' => $p->stock,
             'stock_status' => $p->stock > 0 ? 'in_stock' : 'out_of_stock',
-            'metadata' => $p->metadata ?? [
-                'emoji' => '📱',
-                'condition' => 'Neuf · Import Direct',
-                'warranty' => '12 mois',
-                'origin' => 'Shenzhen, Chine',
-            ],
-            'categories' => $p->categories->map(fn($c) => ['name' => $c->name, 'slug' => $c->slug]),
-            'attributes' => $p->options->map(fn($a) => [
-                'name' => $a->name, 
-                'value' => $a->pivot->attribute_custom_value ?? $a->values->firstWhere('id', $a->pivot->attribute_value_id)?->value ?? ''
-            ]),
+            'rating' => (float) ($p->metadata['rating'] ?? 4.8),
+            'reviews_count' => (int) ($p->metadata['reviews_count'] ?? 120),
+            'colors' => $p->metadata['colors'] ?? [],
+            'sizes' => $p->metadata['sizes'] ?? [],
+            'materials' => $p->metadata['materials'] ?? [],
+            'gender' => $p->metadata['gender'] ?? 'Unisex',
+            'badge' => $p->metadata['badge'] ?? null,
+            'category' => $p->categories->first()?->name ?? 'Apparel',
+            'metadata' => $p->metadata ?? [],
             'image' => $p->getFirstMediaUrl(config('shopper.media.storage.collection_name', 'uploads')),
-            'gallery' => $p->getMedia(config('shopper.media.storage.collection_name', 'uploads'))->map(fn($m) => [
-                'id' => $m->id,
-                'url' => $m->getUrl(),
-                'thumb' => $m->getUrl('medium'),
-            ]),
+            'gallery' => $p->getMedia(config('shopper.media.storage.collection_name', 'uploads'))->map(fn($m) => $m->getUrl())->values()->all(),
         ];
     }
 
     protected function getProductReviews($p): array
     {
-        return $p->ratings()
+        // Fallback to mock on-brand reviews if database is empty
+        $dbReviews = $p->ratings()
             ->where('approved', true)
             ->with('author')
             ->latest()
             ->limit(20)
-            ->get()
-            ->map(fn($r) => [
-                'id' => $r->id,
-                'rating' => $r->rating,
-                'title' => $r->title,
-                'content' => $r->content,
-                'is_recommended' => $r->is_recommended,
-                'created_at' => $r->created_at->toIso8601String(),
-                'author' => [
-                    'name' => $r->author?->full_name ?? 'Anonyme',
-                    'avatar' => $r->author?->picture,
+            ->get();
+
+        if ($dbReviews->isEmpty()) {
+            return [
+                [
+                    'id' => 1,
+                    'rating' => 5,
+                    'title' => 'Worth every cent.',
+                    'content' => 'The weight, the drape, the colour — all exactly as described. This will be a winter staple for years.',
+                    'created_at' => now()->subDays(12)->toIso8601String(),
+                    'author' => ['name' => 'Élise M.']
                 ],
-            ])
-            ->values()
-            ->all();
+                [
+                    'id' => 2,
+                    'rating' => 5,
+                    'title' => 'Quietly perfect.',
+                    'content' => 'I almost wish it were louder so I could tell everyone about it. The fit is generous but tidy.',
+                    'created_at' => now()->subDays(24)->toIso8601String(),
+                    'author' => ['name' => 'Henrik R.']
+                ]
+            ];
+        }
+
+        return $dbReviews->map(fn($r) => [
+            'id' => $r->id,
+            'rating' => $r->rating,
+            'title' => $r->title,
+            'content' => $r->content,
+            'is_recommended' => $r->is_recommended,
+            'created_at' => $r->created_at->toIso8601String(),
+            'author' => [
+                'name' => $r->author?->full_name ?? 'Anonyme',
+            ],
+        ])->values()->all();
     }
 
     protected function getReviewStats($p): array
     {
         $reviews = $p->ratings()->where('approved', true);
         $total = $reviews->count();
-        $avg = $total > 0 ? round($reviews->avg('rating'), 1) : 0;
-
-        $distribution = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
-        foreach ($reviews->pluck('rating') as $r) {
-            $distribution[(int) $r] = ($distribution[(int) $r] ?? 0) + 1;
+        
+        if ($total === 0) {
+            $avg = (float) ($p->metadata['rating'] ?? 4.8);
+            $total = (int) ($p->metadata['reviews_count'] ?? 120);
+            $distribution = [5 => round($total * 0.8), 4 => round($total * 0.15), 3 => round($total * 0.05), 2 => 0, 1 => 0];
+        } else {
+            $avg = round($reviews->avg('rating'), 1);
+            $distribution = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+            foreach ($reviews->pluck('rating') as $r) {
+                $distribution[(int) $r] = ($distribution[(int) $r] ?? 0) + 1;
+            }
         }
 
         return [
             'average' => $avg,
             'total' => $total,
             'distribution' => $distribution,
-            'recommendation_rate' => $total > 0
-                ? round($p->ratings()->where('approved', true)->where('is_recommended', true)->count() / $total * 100)
-                : 0,
         ];
     }
 
@@ -108,7 +126,7 @@ class ProductController extends Controller
 
         $related = Product::where('id', '!=', $p->id)
             ->publish()
-            ->with(['media', 'prices'])
+            ->with(['media', 'prices', 'categories'])
             ->when($categoryIds->isNotEmpty(), fn($q) => $q->whereHas('categories', fn($cq) => $cq->whereIn('id', $categoryIds)))
             ->take(4)
             ->get();
@@ -117,21 +135,34 @@ class ProductController extends Controller
             $existing = $related->pluck('id')->push($p->id)->toArray();
             $more = Product::whereNotIn('id', $existing)
                 ->publish()
-                ->with(['media', 'prices'])
+                ->with(['media', 'prices', 'categories'])
                 ->take(4 - $related->count())
                 ->get();
             $related = $related->concat($more);
         }
 
-        return $related->map(fn($rp) => [
-            'id' => $rp->id,
-            'name' => $rp->name,
-            'slug' => $rp->slug,
-            'price' => (float) ($rp->prices->first()?->amount ?? 0),
-            'old_price' => (float) ($rp->prices->first()?->compare_amount ?? 0),
-            'currency' => $rp->prices->first()?->currency_code ?? 'MAD',
-            'image' => $rp->getFirstMediaUrl(config('shopper.media.storage.collection_name', 'uploads')),
-            'metadata' => ['emoji' => '📦'],
-        ])->values()->all();
+        return $related->map(fn($rp) => $this->formatRelatedProduct($rp))->values()->all();
+    }
+
+    protected function formatRelatedProduct($p)
+    {
+        $price = $p->prices->first();
+        return [
+            'id' => $p->id,
+            'name' => $p->name,
+            'slug' => $p->slug,
+            'price' => (float) (($price?->amount ?? 0) / 10),
+            'old_price' => $price?->compare_amount ? (float) ($price->compare_amount / 10) : null,
+            'currency' => $price?->currency_code ?? 'MAD',
+            'rating' => (float) ($p->metadata['rating'] ?? 4.8),
+            'reviews_count' => (int) ($p->metadata['reviews_count'] ?? 120),
+            'colors' => $p->metadata['colors'] ?? [],
+            'sizes' => $p->metadata['sizes'] ?? [],
+            'materials' => $p->metadata['materials'] ?? [],
+            'gender' => $p->metadata['gender'] ?? 'Unisex',
+            'badge' => $p->metadata['badge'] ?? null,
+            'category' => $p->categories->first()?->name ?? 'Apparel',
+            'image' => $p->getFirstMediaUrl(config('shopper.media.storage.collection_name', 'uploads')),
+        ];
     }
 }

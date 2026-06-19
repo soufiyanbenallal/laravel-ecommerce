@@ -1,17 +1,27 @@
 import { useMemo, useState } from "react";
-import { products, categories, type Category } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
 import { applyFilters, emptyFilters, FiltersDrawer, FiltersSidebar, type FilterState } from "@/components/site/Filters";
+import type { ProductModelType, CategoryModelType } from "@/types/ecommerce.types";
+import { Head } from "@inertiajs/react";
 
-const cats: ("All" | Category)[] = ["All", ...categories];
+type ProductsListPropsType = {
+  products: ProductModelType[];
+  categories: CategoryModelType[];
+  filters: { search?: string; category?: string; sort?: string };
+};
 
-
-export default function ProductsList() {
-  const [cat, setCat] = useState<(typeof cats)[number]>("All");
-  const [sort, setSort] = useState<"featured" | "low" | "high" | "rating">("featured");
+export default function ProductsList({ products, categories, filters: serverFilters }: ProductsListPropsType) {
+  const cats = useMemo(() => [{ slug: "All", name: "All" }, ...categories], [categories]);
+  const [cat, setCat] = useState<string>(serverFilters?.category || "All");
+  const [sort, setSort] = useState<"featured" | "low" | "high" | "rating">((serverFilters?.sort as any) || "featured");
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
 
-  const base = useMemo(() => products.filter((p) => cat === "All" || p.category === cat), [cat]);
+  const base = useMemo(() => {
+    if (cat === "All") return products;
+    const catObj = categories.find((c) => c.slug === cat);
+    return products.filter((p) => p.category === catObj?.name);
+  }, [products, cat, categories]);
+
   const allSizes = useMemo(() => Array.from(new Set(base.flatMap((p) => p.sizes ?? []))), [base]);
   const allColors = useMemo(() => Array.from(new Set(base.flatMap((p) => p.colors))), [base]);
   const allMaterials = useMemo(() => Array.from(new Set(base.flatMap((p) => p.materials))), [base]);
@@ -28,6 +38,10 @@ export default function ProductsList() {
 
   return (
     <div>
+      <Head title="Catalogue — Atelier Nord">
+        <meta name="description" content="Browse all premium clothing, leather bags, footwear, and home accessories." />
+      </Head>
+
       <header className="border-b border-border/60">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">The Shop</p>
@@ -43,16 +57,16 @@ export default function ProductsList() {
           <div className="flex flex-wrap items-center gap-1 overflow-x-auto">
             {cats.map((c) => (
               <button
-                key={c}
-                onClick={() => setCat(c)}
+                key={c.slug}
+                onClick={() => setCat(c.slug)}
                 className={
-                  "whitespace-nowrap px-3 py-1.5 text-sm transition-colors " +
-                  (cat === c
+                  "whitespace-nowrap px-3 py-1.5 text-sm transition-colors cursor-pointer " +
+                  (cat === c.slug
                     ? "bg-foreground text-background"
                     : "text-foreground/70 hover:text-foreground")
                 }
               >
-                {c}
+                {c.name}
               </button>
             ))}
           </div>
@@ -67,7 +81,7 @@ export default function ProductsList() {
             />
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as typeof sort)}
+              onChange={(e) => setSort(e.target.value as any)}
               className="border border-border bg-transparent px-2 py-1.5 text-sm outline-none"
             >
               <option value="featured">Featured</option>

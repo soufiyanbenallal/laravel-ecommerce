@@ -23,7 +23,7 @@ export function CartDrawer() {
                 Begin somewhere. We suggest the new arrivals.
               </p>
               <Button asChild className="mt-6" onClick={close}>
-                <Link href="/shop">Explore the shop</Link>
+                <Link href="/catalog">Explore the shop</Link>
               </Button>
             </div>
           ) : (
@@ -89,10 +89,10 @@ export function CartDrawer() {
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <Button asChild variant="outline" onClick={close}>
-                <Link to="/cart">View Bag</Link>
+                <Link href="/cart">View Bag</Link>
               </Button>
               <Button asChild className="bg-foreground text-background hover:bg-foreground/90" onClick={close}>
-                <Link to="/checkout">Checkout</Link>
+                <Link href="/checkout">Checkout</Link>
               </Button>
             </div>
           </div>

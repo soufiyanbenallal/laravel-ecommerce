@@ -7,12 +7,18 @@ export type ProductModelType = {
     old_price?: number;
     currency: string;
     image?: string;
-    gallery?: { id: number; url: string; thumb?: string }[];
-    rating?: number;
-    reviews_count?: number;
+    gallery?: string[];
+    rating: number;
+    reviews_count: number;
     is_new?: boolean;
     discount_percentage?: number;
     stock_status: 'in_stock' | 'out_of_stock' | 'backorder';
+    colors: string[];
+    sizes?: string[];
+    materials: string[];
+    gender: string;
+    badge?: string | null;
+    category?: string;
     metadata?: Record<string, any>;
 };
 

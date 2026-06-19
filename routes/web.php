@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
@@ -16,12 +17,27 @@ Route::get('/promotions', [CatalogController::class, 'index'])->name('catalog.pr
 Route::get('/reconditionnes', [CatalogController::class, 'index'])->name('catalog.refurbished');
 Route::get('/grossiste', [CatalogController::class, 'index'])->name('catalog.wholesale');
 
-Route::inertia('/contact', 'Static/Contact')->name('contact');
-Route::inertia('/faq', 'Static/Faq')->name('faq');
-Route::inertia('/sourcing', 'Static/Sourcing')->name('sourcing');
-Route::inertia('/cgv', 'Static/Cgv')->name('cgv');
-Route::inertia('/mentions-legales', 'Static/MentionsLegales')->name('mentions-legales');
-Route::inertia('/politique-confidentialite', 'Static/Confidentialite')->name('confidentialite');
+Route::inertia('/about', 'About/about.index')->name('about');
+Route::inertia('/contact', 'Static/static.contact')->name('contact');
+Route::inertia('/faq', 'Static/static.faq')->name('faq');
+Route::inertia('/sourcing', 'Static/static.sourcing')->name('sourcing');
+Route::inertia('/cgv', 'Static/static.cgv')->name('cgv');
+Route::inertia('/mentions-legales', 'Static/static.mentions-legales')->name('mentions-legales');
+Route::inertia('/politique-confidentialite', 'Static/static.confidentialite')->name('confidentialite');
+
+Route::get('/collections', [CatalogController::class, 'collectionsIndex'])->name('collections.index');
+Route::get('/collection/{slug}', [CatalogController::class, 'collectionShow'])->name('collections.show');
+Route::get('/category/{slug}', [CatalogController::class, 'categoryShow'])->name('categories.show');
+
+Route::get('/wishlist', function () {
+    return Inertia::render('Wishlist/wishlist.index');
+})->name('wishlist');
+
+Route::get('/search', [CatalogController::class, 'search'])->name('search');
+
+Route::get('/api/search', [CatalogController::class, 'apiSearch'])->name('api.search');
+Route::get('/api/search/popular', [CatalogController::class, 'apiPopular'])->name('api.search.popular');
+Route::post('/api/wishlist', [CatalogController::class, 'apiWishlist'])->name('api.wishlist');
 
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

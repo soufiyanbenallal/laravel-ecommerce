@@ -17,7 +17,7 @@ class CheckoutController extends Controller
 
     public function index(): InertiaResponse
     {
-        return Inertia::render('Checkout/Index', $this->checkout->checkoutPayload());
+        return Inertia::render('Checkout/checkout.index', $this->checkout->checkoutPayload());
     }
 
     public function store(StoreCheckoutOrderRequest $request): RedirectResponse
@@ -29,7 +29,7 @@ class CheckoutController extends Controller
 
     public function orders(Request $request): InertiaResponse
     {
-        return Inertia::render('Account/OrdersIndex', [
+        return Inertia::render('Account/account.orders.index', [
             'orders' => $this->checkout->customerOrders((int) $request->user()->id),
         ]);
     }
@@ -40,7 +40,7 @@ class CheckoutController extends Controller
 
         abort_if(! $order, Response::HTTP_NOT_FOUND);
 
-        return Inertia::render('Account/OrderSubmitted', [
+        return Inertia::render('Account/account.orders.submitted', [
             'order' => $order,
         ]);
     }

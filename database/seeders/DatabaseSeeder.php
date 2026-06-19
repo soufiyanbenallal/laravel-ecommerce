@@ -41,6 +41,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentMethodsSeeder::class);
 
         // Seed Initial Content (Full Flow: Products, Categories, Brands, Variants, etc)
-        $this->call(ProductionSeeder::class);
+        $this->call(ClothingStoreSeeder::class);
     }
 }

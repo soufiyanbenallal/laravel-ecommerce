@@ -1,20 +1,20 @@
 import { Heart, Plus, Star } from "lucide-react";
-import type { Product } from "@/lib/products";
+import type { ProductModelType } from "@/types/ecommerce.types";
 import { useCart } from "@/lib/cart-store";
 import { useWishlist } from "@/lib/wishlist-store";
 import { Link } from "@inertiajs/react";
 
-export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+export function ProductCard({ product, index = 0 }: { product: ProductModelType; index?: number }) {
   const add = useCart((s) => s.add);
   const toggle = useWishlist((s) => s.toggle);
-  const inWishlist = useWishlist((s) => s.ids.includes(product.id));
-  const onSale = product.compareAtPrice && product.compareAtPrice > product.price;
-  const off = onSale ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100) : 0;
+  const inWishlist = useWishlist((s) => s.ids.includes(product.id.toString()));
+  const onSale = product.old_price && product.old_price > product.price;
+  const off = onSale ? Math.round(((product.old_price! - product.price) / product.old_price!) * 100) : 0;
 
   return (
     <article className="group fade-up" style={{ animationDelay: `${index * 60}ms` }}>
       <Link
-        href={`/product/${product.id}`}
+        href={`/products/${product.slug}`}
         className="relative block overflow-hidden bg-secondary"
       >
         <img
@@ -44,7 +44,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         <button
           onClick={(e) => {
             e.preventDefault();
-            toggle(product.id);
+            toggle(product.id.toString());
           }}
           aria-label="Save to wishlist"
           className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center bg-background/90 text-foreground transition-colors hover:bg-background"
@@ -57,10 +57,10 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
           onClick={(e) => {
             e.preventDefault();
             add({
-              id: product.id,
+              id: product.id.toString(),
               name: product.name,
               price: product.price,
-              image: product.image,
+              image: product.image ?? "",
               color: product.colors[0],
               size: product.sizes?.[Math.floor(product.sizes.length / 2)],
             });
@@ -77,7 +77,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
             {product.category} · {product.gender}
           </div>
           <Link
-            href={`/product/${product.id}`}
+            href={`/products/${product.slug}`}
             className="mt-1 block truncate text-[15px] hover:text-accent"
           >
             {product.name}
@@ -85,14 +85,14 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
           <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <Star className="h-3 w-3 fill-accent text-accent" strokeWidth={0} />
             <span className="tabular-nums">{product.rating.toFixed(1)}</span>
-            <span>· {product.reviews}</span>
+            <span>· {product.reviews_count}</span>
           </div>
         </div>
         <div className="text-right">
           <div className="text-sm tabular-nums">${product.price}</div>
           {onSale && (
             <div className="text-xs tabular-nums text-muted-foreground line-through">
-              ${product.compareAtPrice}
+              ${product.old_price}
             </div>
           )}
         </div>

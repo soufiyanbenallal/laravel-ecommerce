@@ -1,46 +1,58 @@
 import { useMemo, useState } from "react";
-import { categories, products, type Category } from "@/lib/products";
+import { Link, Head } from "@inertiajs/react";
 import { ProductCard } from "@/components/site/ProductCard";
 import { applyFilters, emptyFilters, FiltersDrawer, FiltersSidebar, type FilterState } from "@/components/site/Filters";
-import { usePage } from "@inertiajs/react";
+import type { ProductModelType } from "@/types/ecommerce.types";
 
+type CategoryItemType = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  image: string | null;
+};
 
+type CategoryShowPropsType = {
+  category: CategoryItemType;
+  products: ProductModelType[];
+};
 
-export default function CategoryPage() {
-  const { cat } = usePage().props;
+export default function CategoryPage({ category, products }: CategoryShowPropsType) {
   const [filters, setFilters] = useState<FilterState>(emptyFilters);
   const [sort, setSort] = useState<"featured" | "low" | "high" | "rating">("featured");
 
-  const base = useMemo(() => products.filter((p) => p.category === cat), [cat]);
-
-  const allSizes = useMemo(() => unique(base.flatMap((p) => p.sizes ?? [])), [base]);
-  const allColors = useMemo(() => unique(base.flatMap((p) => p.colors)), [base]);
-  const allMaterials = useMemo(() => unique(base.flatMap((p) => p.materials)), [base]);
+  const allSizes = useMemo(() => unique(products.flatMap((p) => p.sizes ?? [])), [products]);
+  const allColors = useMemo(() => unique(products.flatMap((p) => p.colors)), [products]);
+  const allMaterials = useMemo(() => unique(products.flatMap((p) => p.materials)), [products]);
 
   const filtered = useMemo(() => {
-    const f = applyFilters(base, filters);
+    const f = applyFilters(products, filters);
     return [...f].sort((a, b) => {
       if (sort === "low") return a.price - b.price;
       if (sort === "high") return b.price - a.price;
       if (sort === "rating") return b.rating - a.rating;
       return 0;
     });
-  }, [base, filters, sort]);
+  }, [products, filters, sort]);
 
   return (
     <div>
+      <Head title={`${category.name} — Atelier Nord`}>
+        <meta name="description" content={category.description ?? `Pieces in our ${category.name.toLowerCase()} category.`} />
+      </Head>
+
       <header className="border-b border-border/60">
         <div className="mx-auto max-w-7xl px-6 py-12 md:py-20">
           <nav className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">Home</Link>
+            <Link href="/" className="hover:text-foreground">Home</Link>
             <span className="mx-2">/</span>
-            <Link to="/shop" className="hover:text-foreground">Shop</Link>
+            <Link href="/catalog" className="hover:text-foreground">Shop</Link>
             <span className="mx-2">/</span>
-            <span className="text-foreground">{cat}</span>
+            <span className="text-foreground">{category.name}</span>
           </nav>
-          <h1 className="mt-6 font-display text-5xl md:text-6xl">{cat}</h1>
+          <h1 className="mt-6 font-display text-5xl md:text-6xl">{category.name}</h1>
           <p className="mt-4 max-w-xl text-muted-foreground">
-            Pieces in our {cat.toLowerCase()} category — small batches, named makers, materials we&apos;d wear ourselves.
+            {category.description ?? `Pieces in our ${category.name.toLowerCase()} category — small batches, named makers, materials we'd wear ourselves.`}
           </p>
         </div>
       </header>
@@ -82,7 +94,7 @@ export default function CategoryPage() {
           <div className="flex-1">
             {filtered.length === 0 ? (
               <div className="py-24 text-center text-muted-foreground">
-                No objects match these filters. <button onClick={() => setFilters(emptyFilters)} className="text-accent underline-offset-4 hover:underline">Reset</button>
+                No objects match these filters. <button onClick={() => setFilters(emptyFilters)} className="text-accent underline-offset-4 hover:underline cursor-pointer">Reset</button>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">

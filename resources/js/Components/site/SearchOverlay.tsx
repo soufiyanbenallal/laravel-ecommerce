@@ -1,12 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
-import { products, searchProducts } from "@/lib/products";
 import { Link } from "@inertiajs/react";
+import type { ProductModelType } from "@/types/ecommerce.types";
 
-const trending = ["Cashmere", "Wool coat", "Leather loafer", "Linen", "Silk scarf"];
+const trending = ["Apparel", "Footwear", "Home", "Bags", "Accessories"];
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [q, setQ] = useState("");
+  const [results, setResults] = useState<ProductModelType[]>([]);
+  const [suggested, setSuggested] = useState<ProductModelType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -19,14 +22,44 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
     };
   }, [open, onClose]);
 
-  const results = useMemo(() => (q ? searchProducts(q).slice(0, 6) : []), [q]);
-  const suggested = products.slice(0, 4);
+  // Fetch popular products on open
+  useEffect(() => {
+    if (open) {
+      fetch("/api/search/popular")
+        .then((res) => res.json())
+        .then((data) => setSuggested(data))
+        .catch(() => {});
+    }
+  }, [open]);
+
+  // Auto-complete debounced search
+  useEffect(() => {
+    if (!q.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setLoading(true);
+    const delayDebounceFn = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setResults(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [q]);
 
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-foreground/30 backdrop-blur-sm">
-      <div className="fade-up w-full bg-background">
+      <div className="fade-up w-full bg-background max-h-[85vh] overflow-y-auto">
         <div className="mx-auto flex max-w-7xl items-center gap-4 border-b border-border/60 px-6 py-5">
           <Search className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
           <input
@@ -36,33 +69,38 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             placeholder="Search products, materials, collections…"
             className="flex-1 bg-transparent text-lg outline-none placeholder:text-muted-foreground"
           />
-          <button onClick={onClose} aria-label="Close search" className="text-muted-foreground hover:text-foreground">
+          <button onClick={onClose} aria-label="Close search" className="text-muted-foreground hover:text-foreground cursor-pointer">
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="mx-auto max-w-7xl px-6 py-10">
           {q ? (
-            results.length === 0 ? (
+            loading ? (
+              <div className="py-12 text-center text-muted-foreground">Searching…</div>
+            ) : results.length === 0 ? (
               <p className="text-muted-foreground">No matches for &ldquo;{q}&rdquo;.</p>
             ) : (
               <div>
-                <div className="mb-6 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  {results.length} result{results.length === 1 ? "" : "s"}
+                <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <span>{results.length} result{results.length === 1 ? "" : "s"}</span>
+                  <Link href={`/search?q=${encodeURIComponent(q)}`} onClick={onClose} className="underline hover:text-foreground">
+                    View all results
+                  </Link>
                 </div>
                 <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
                   {results.map((p) => (
                     <Link
                       key={p.id}
-                      href={`/product/${p.id}`}
+                      href={`/products/${p.slug}`}
                       onClick={onClose}
                       className="group flex gap-4"
                     >
-                      <img src={p.image} alt={p.name} className="h-24 w-20 flex-none object-cover" />
+                      {p.image && <img src={p.image} alt={p.name} className="h-24 w-20 flex-none object-cover" />}
                       <div>
                         <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{p.category}</div>
-                        <div className="mt-1 text-[15px] group-hover:text-accent">{p.name}</div>
-                        <div className="mt-1 text-sm tabular-nums">${p.price}</div>
+                        <div className="mt-1 text-[15px] group-hover:text-accent font-medium">{p.name}</div>
+                        <div className="mt-1 text-sm tabular-nums font-semibold">${p.price}</div>
                       </div>
                     </Link>
                   ))}
@@ -76,7 +114,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                 <ul className="space-y-2.5">
                   {trending.map((t) => (
                     <li key={t}>
-                      <button onClick={() => setQ(t)} className="text-left text-[15px] hover:text-accent">
+                      <button onClick={() => setQ(t)} className="text-left text-[15px] hover:text-accent cursor-pointer">
                         {t}
                       </button>
                     </li>
@@ -89,15 +127,14 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                   {suggested.map((p) => (
                     <Link
                       key={p.id}
-                      to="/product/$id"
-                      params={{ id: p.id }}
+                      href={`/products/${p.slug}`}
                       onClick={onClose}
                       className="group"
                     >
                       <div className="aspect-[4/5] overflow-hidden bg-secondary">
-                        <img src={p.image} alt={p.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
+                        {p.image && <img src={p.image} alt={p.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" />}
                       </div>
-                      <div className="mt-2 text-sm group-hover:text-accent">{p.name}</div>
+                      <div className="mt-2 text-sm group-hover:text-accent font-medium truncate">{p.name}</div>
                       <div className="text-xs tabular-nums text-muted-foreground">${p.price}</div>
                     </Link>
                   ))}

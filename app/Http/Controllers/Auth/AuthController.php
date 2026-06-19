@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     public function showLogin(): Response
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/auth.login');
     }
 
     public function login(Request $request): RedirectResponse
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
     public function showRegister(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/auth.register');
     }
 
     public function register(Request $request): RedirectResponse

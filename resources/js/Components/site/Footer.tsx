@@ -33,10 +33,10 @@ export function Footer() {
               Shop
             </h4>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><Link href="/shop" className="hover:text-accent">All Objects</Link></li>
-              <li><Link href="/shop" className="hover:text-accent">New Arrivals</Link></li>
-              <li><Link href="/shop" className="hover:text-accent">The Archive</Link></li>
-              <li><Link href="/shop" className="hover:text-accent">Gift Cards</Link></li>
+              <li><Link href="/catalog" className="hover:text-accent">All Objects</Link></li>
+              <li><Link href="/catalog" className="hover:text-accent">New Arrivals</Link></li>
+              <li><Link href="/catalog" className="hover:text-accent">The Archive</Link></li>
+              <li><Link href="/catalog" className="hover:text-accent">Gift Cards</Link></li>
             </ul>
           </div>
 
@@ -45,9 +45,9 @@ export function Footer() {
               Maison
             </h4>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><Link to="/about" className="hover:text-accent">Our Story</Link></li>
-              <li><Link to="/journal" className="hover:text-accent">Journal</Link></li>
-              <li><Link to="/contact" className="hover:text-accent">Contact</Link></li>
+              <li><Link href="/about" className="hover:text-accent">Our Story</Link></li>
+              <li><Link href="/journal" className="hover:text-accent">Journal</Link></li>
+              <li><Link href="/contact" className="hover:text-accent">Contact</Link></li>
               <li><a href="#" className="hover:text-accent">Press</a></li>
             </ul>
           </div>

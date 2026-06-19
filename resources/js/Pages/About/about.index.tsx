@@ -1,21 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Head } from "@inertiajs/react";
 import atelierImg from "@/assets/atelier.jpg";
 import { MapPin } from "lucide-react";
 
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "The Atelier — Atelier Nord" },
-      { name: "description", content: "How Atelier Nord works with independent makers across Europe and Japan." },
-      { property: "og:title", content: "The Atelier — Atelier Nord" },
-    ],
-  }),
-  component: About,
-});
-
-function About() {
+export default function About() {
   return (
     <div>
+      <Head title="The Atelier — Atelier Nord">
+        <meta name="description" content="How Atelier Nord works with independent makers across Europe and Japan." />
+      </Head>
+      
       <section className="mx-auto max-w-4xl px-6 py-20 md:py-28">
         <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Est. 2017 · Lisbon</p>
         <h1 className="mt-4 font-display text-5xl leading-[1.05] md:text-7xl">

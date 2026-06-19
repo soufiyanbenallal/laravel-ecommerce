@@ -14,7 +14,7 @@ class CartController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('Cart/Index', $this->checkout->cartPayload());
+        return Inertia::render('Cart/cart.index', $this->checkout->cartPayload());
     }
 
     public function store(Request $request): RedirectResponse
