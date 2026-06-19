@@ -112,40 +112,48 @@ export const megaMenus: Record<string, Group> = {
 
 export function MegaMenuPanel({ group }: { group: Group }) {
   return (
-    <div className="absolute left-0 right-0 top-full z-50 border-b border-border/60 bg-background shadow-[0_20px_40px_-30px_rgba(0,0,0,0.25)]">
+    <div className="absolute left-0 right-0 top-full z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl shadow-[0_24px_48px_-20px_rgba(28,25,23,0.18)]">
       <div className="mx-auto grid max-w-7xl grid-cols-12 gap-10 px-6 py-10">
+        {/* Feature image */}
         <div className="col-span-5">
-          <Link href={group.feature.href} className="group block overflow-hidden bg-secondary">
+          <Link href={group.feature.href} className="group block overflow-hidden bg-secondary cursor-pointer">
             <img
               src={group.feature.image}
               alt={group.feature.title}
               loading="lazy"
-              className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
           </Link>
           <div className="mt-4 flex items-center justify-between">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Featured</div>
-              <div className="mt-1 font-display text-xl">{group.feature.title}</div>
+              <div className="text-[10px] uppercase tracking-[0.26em] text-accent">Featured</div>
+              <div className="mt-1 font-display text-xl font-light">{group.feature.title}</div>
             </div>
-            <Link href={group.feature.href} className="inline-flex items-center gap-2 text-sm text-accent hover:underline">
-              Shop <ArrowRight className="h-3.5 w-3.5" />
+            <Link
+              href={group.feature.href}
+              className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.16em] text-foreground/60 hover:text-accent transition-colors duration-200"
+            >
+              Shop <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         </div>
 
+        {/* Link columns */}
         <div className="col-span-7 grid grid-cols-3 gap-8">
           {group.columns.map((col) => (
             <div key={col.heading}>
-              <h4 className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              <h4 className="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
                 {col.heading}
               </h4>
-              <ul className="mt-4 space-y-2.5 text-sm">
+              <ul className="mt-5 space-y-3">
                 {col.links.map((l) => {
                   const href = l.params ? l.to.replace("$slug", l.params.slug) : l.to;
                   return (
                     <li key={l.label}>
-                      <Link href={href} className="text-foreground/80 transition-colors hover:text-accent">
+                      <Link
+                        href={href}
+                        className="text-[13px] font-light text-foreground/70 transition-colors duration-200 hover:text-accent"
+                      >
                         {l.label}
                       </Link>
                     </li>

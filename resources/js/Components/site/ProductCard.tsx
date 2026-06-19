@@ -4,7 +4,12 @@ import { useCart } from "@/lib/cart-store";
 import { useWishlist } from "@/lib/wishlist-store";
 import { Link } from "@inertiajs/react";
 
-export function ProductCard({ product, index = 0 }: { product: ProductModelType; index?: number }) {
+type ProductCardPropsType = {
+  product: ProductModelType;
+  index?: number;
+};
+
+export function ProductCard({ product, index = 0 }: ProductCardPropsType) {
   const add = useCart((s) => s.add);
   const toggle = useWishlist((s) => s.toggle);
   const inWishlist = useWishlist((s) => s.ids.includes(product.id.toString()));
@@ -13,6 +18,7 @@ export function ProductCard({ product, index = 0 }: { product: ProductModelType;
 
   return (
     <article className="group fade-up" style={{ animationDelay: `${index * 60}ms` }}>
+      {/* ── Image Tile ── */}
       <Link
         href={`/products/${product.slug}`}
         className="relative block overflow-hidden bg-secondary"
@@ -23,36 +29,44 @@ export function ProductCard({ product, index = 0 }: { product: ProductModelType;
           loading="lazy"
           width={900}
           height={1100}
-          className="aspect-[5/6] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+          className="aspect-[5/6] w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
         />
 
-        {/* Badges */}
+        {/* ── Badges ── */}
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
           {product.badge && (
-            <span className="bg-background/90 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-foreground">
+            <span className="bg-background/92 px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.2em] text-foreground">
               {product.badge}
             </span>
           )}
           {onSale && (
-            <span className="bg-accent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-accent-foreground">
+            <span className="bg-accent px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.2em] text-accent-foreground">
               −{off}%
             </span>
           )}
         </div>
 
-        {/* Wishlist */}
+        {/* ── Wishlist button ── */}
         <button
           onClick={(e) => {
             e.preventDefault();
             toggle(product.id.toString());
           }}
-          aria-label="Save to wishlist"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center bg-background/90 text-foreground transition-colors hover:bg-background"
+          aria-label={inWishlist ? "Remove from wishlist" : "Save to wishlist"}
+          className={
+            "absolute right-3 top-3 flex h-8 w-8 items-center justify-center transition-all duration-200 cursor-pointer " +
+            (inWishlist
+              ? "bg-accent text-accent-foreground"
+              : "bg-background/90 text-foreground hover:bg-background")
+          }
         >
-          <Heart className={"h-4 w-4 " + (inWishlist ? "fill-accent text-accent" : "")} strokeWidth={1.5} />
+          <Heart
+            className={"h-3.5 w-3.5 " + (inWishlist ? "fill-current" : "")}
+            strokeWidth={1.5}
+          />
         </button>
 
-        {/* Quick add */}
+        {/* ── Quick Add ── */}
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -66,50 +80,61 @@ export function ProductCard({ product, index = 0 }: { product: ProductModelType;
             });
           }}
           aria-label={`Add ${product.name} to bag`}
-          className="absolute bottom-3 left-3 right-3 flex translate-y-2 items-center justify-center gap-2 bg-foreground py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-background opacity-0 transition-all hover:bg-accent group-hover:translate-y-0 group-hover:opacity-100"
+          className="absolute bottom-0 left-0 right-0 flex translate-y-full items-center justify-center gap-2 bg-foreground py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-background opacity-0 transition-all duration-300 ease-out hover:bg-accent cursor-pointer group-hover:translate-y-0 group-hover:opacity-100"
         >
-          <Plus className="h-3.5 w-3.5" /> Quick add
+          <Plus className="h-3 w-3" />
+          Quick Add
         </button>
       </Link>
-      <div className="mt-4 flex items-baseline justify-between gap-3">
-        <div className="min-w-0">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+
+      {/* ── Product Info ── */}
+      <div className="mt-4 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          {/* Category / Gender tag */}
+          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
             {product.category} · {product.gender}
           </div>
+
+          {/* Name */}
           <Link
             href={`/products/${product.slug}`}
-            className="mt-1 block truncate text-[15px] hover:text-accent"
+            className="mt-1 block truncate text-[14px] font-light hover:text-accent transition-colors duration-200"
           >
             {product.name}
           </Link>
-          <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <Star className="h-3 w-3 fill-accent text-accent" strokeWidth={0} />
+
+          {/* Rating */}
+          <div className="mt-1.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+            <Star className="h-2.5 w-2.5 fill-accent text-accent" strokeWidth={0} />
             <span className="tabular-nums">{product.rating.toFixed(1)}</span>
-            <span>· {product.reviews_count}</span>
+            <span className="opacity-60">({product.reviews_count})</span>
           </div>
         </div>
-        <div className="text-right">
-          <div className="text-sm tabular-nums">${product.price}</div>
+
+        {/* Price */}
+        <div className="text-right shrink-0">
+          <div className="text-[14px] tabular-nums font-light">${product.price}</div>
           {onSale && (
-            <div className="text-xs tabular-nums text-muted-foreground line-through">
+            <div className="text-[11px] tabular-nums text-muted-foreground line-through">
               ${product.old_price}
             </div>
           )}
         </div>
       </div>
-      {/* Color dots */}
+
+      {/* ── Color swatches ── */}
       {product.colors.length > 1 && (
-        <div className="mt-2 flex gap-1.5">
-          {product.colors.slice(0, 4).map((c) => (
+        <div className="mt-2.5 flex items-center gap-1.5">
+          {product.colors.slice(0, 5).map((c) => (
             <span
               key={c}
               title={c}
-              className="h-3 w-3 rounded-full border border-border"
+              className="h-2.5 w-2.5 rounded-full border border-border/60 cursor-pointer hover:scale-125 transition-transform duration-150"
               style={{ background: swatch(c) }}
             />
           ))}
-          {product.colors.length > 4 && (
-            <span className="text-[10px] text-muted-foreground">+{product.colors.length - 4}</span>
+          {product.colors.length > 5 && (
+            <span className="text-[10px] text-muted-foreground">+{product.colors.length - 5}</span>
           )}
         </div>
       )}
@@ -137,6 +162,9 @@ function swatch(name: string): string {
     olive: "#5a5a35",
     sage: "#9aa890",
     camel: "#b8895a",
+    gold: "#B08D57",
+    white: "#f5f5f0",
+    grey: "#8e8e8e",
   };
   return map[name.toLowerCase()] ?? "#b8a78c";
 }
