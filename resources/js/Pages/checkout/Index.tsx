@@ -1,259 +1,221 @@
-import MainLayout from "@/Layouts/main-layout";
-import { Head, Link, useForm, router } from "@inertiajs/react";
-import { useState, useMemo } from "react";
-import { CheckoutCartItem, CheckoutTotals, PaymentMethodItem } from "@/types/ecommerce.types";
+import { useState } from "react";
+import { Check, Lock, ShieldCheck, Truck } from "lucide-react";
+import { useCart, cartTotal } from "@/lib/cart-store";
+import { toast } from "sonner";
+import { Link } from "@inertiajs/react";
 
-type CheckoutPropsType = {
-  cartItems: CheckoutCartItem[];
-  paymentMethods: PaymentMethodItem[];
-  totals: CheckoutTotals;
-};
 
-export default function CheckoutIndex({ cartItems, paymentMethods, totals }: CheckoutPropsType) {
-  const [step, setStep] = useState(1);
-  const { data, setData, post, processing, errors } = useForm({
-    email: "",
-    first_name: "",
-    last_name: "",
-    phone: "",
-    street_address: "",
-    postal_code: "",
-    city: "",
-    country_name: "Maroc",
-    special_notes: "",
-    payment_method_slug: paymentMethods[0]?.slug || "cash",
-    promo_code: "",
-    terms_accepted: false,
-  });
+const steps = ["Contact", "Shipping", "Payment"] as const;
 
-  const subtotal = totals.subtotal;
-  const discount = data.promo_code.toUpperCase() === "KENZ10" ? subtotal * 0.1 : 0;
-  const total = subtotal - discount;
+export default function Checkout() {
+  const { items, clear } = useCart();
+  const subtotal = cartTotal(items);
+  const shipping = subtotal > 250 || subtotal === 0 ? 0 : 18;
+  const tax = Math.round(subtotal * 0.08);
+  const total = subtotal + shipping + tax;
+  const [step, setStep] = useState(0);
+  const [done, setDone] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (step === 1) {
-      setStep(2);
-      window.scrollTo(0, 0);
-      return;
-    }
-    post("/checkout");
-  };
+  if (items.length === 0 && !done) {
+    return (
+      <div className="mx-auto max-w-2xl px-6 py-32 text-center">
+        <h1 className="font-display text-4xl">Your bag is empty.</h1>
+        <Link to="/shop" className="mt-6 inline-block bg-foreground px-6 py-3 text-sm font-medium text-background hover:bg-accent">
+          Browse the shop
+        </Link>
+      </div>
+    );
+  }
 
-  const InputField = ({ label, name, type = "text", placeholder, required = true }: any) => (
-    <div className="space-y-1.5">
-      <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">
-        {label} {required && <span className="text-primary">*</span>}
-      </label>
-      <input 
-        type={type}
-        value={(data as any)[name]}
-        onChange={e => setData(name as any, e.target.value)}
-        placeholder={placeholder}
-        className="w-full px-5 py-3.5 rounded-2xl bg-white border-2 border-black/5 focus:border-primary outline-none transition-all text-sm text-foreground"
-        required={required}
-      />
-      {errors[name as keyof typeof errors] && (
-        <p className="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase">{errors[name as keyof typeof errors]}</p>
-      )}
-    </div>
-  );
+  if (done) {
+    return (
+      <div className="mx-auto max-w-2xl px-6 py-32 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent">
+          <Check className="h-7 w-7" strokeWidth={1.5} />
+        </div>
+        <h1 className="mt-6 font-display text-5xl">Thank you.</h1>
+        <p className="mt-3 text-muted-foreground">
+          Order <span className="font-medium text-foreground">#AN-{Math.floor(Math.random() * 90000 + 10000)}</span> confirmed. A note is on its way to your inbox.
+        </p>
+        <Link to="/shop" className="mt-10 inline-block bg-foreground px-6 py-3 text-sm font-medium text-background hover:bg-accent">
+          Continue browsing
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <MainLayout title="Finaliser ma commande">
-      <div className="min-h-screen bg-background pt-8 pb-20">
-        <div className="max-w-[1240px] mx-auto px-7">
-          <div className="flex flex-col lg:flex-row gap-12 items-start">
-            
-            {/* Left Side: Checkout Form */}
-            <div className="flex-1 w-full">
-              <div className="mb-10">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${step >= 1 ? 'bg-primary text-white' : 'bg-white text-gray-400'}`}>1</div>
-                  <div className="h-px flex-1 bg-black/5" />
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${step >= 2 ? 'bg-primary text-white' : 'bg-white text-gray-400'}`}>2</div>
-                </div>
-                <h1 className="font-heading font-extrabold text-3xl text-foreground">
-                  {step === 1 ? "Informations de Livraison" : "Paiement & Confirmation"}
-                </h1>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-10">
-                {step === 1 ? (
-                  <div className="bg-white rounded-[40px] p-8 md:p-12 border border-black/5 shadow-sm space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <InputField label="Prénom" name="first_name" placeholder="Ex: Ahmed" />
-                      <InputField label="Nom" name="last_name" placeholder="Ex: Bennani" />
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <InputField label="Email" name="email" type="email" placeholder="votre@email.com" />
-                      <InputField label="Téléphone" name="phone" type="tel" placeholder="06 00 00 00 00" />
-                    </div>
-
-                    <InputField label="Adresse complète" name="street_address" placeholder="N°, Rue, Quartier..." />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <InputField label="Ville" name="city" placeholder="Casablanca" />
-                      <InputField label="Code Postal" name="postal_code" placeholder="20000" />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">Notes spéciales (Optionnel)</label>
-                      <textarea 
-                        value={data.special_notes}
-                        onChange={e => setData('special_notes', e.target.value)}
-                        placeholder="Instructions pour la livraison..."
-                        rows={3}
-                        className="w-full px-5 py-4 rounded-2xl bg-white border-2 border-black/5 focus:border-primary outline-none transition-all text-sm text-foreground resize-none"
-                      />
-                    </div>
-
-                    <button 
-                      type="submit"
-                      className="w-full bg-foreground hover:bg-black text-white font-bold py-5 rounded-2xl transition-all shadow-lg hover:-translate-y-1"
-                    >
-                      Continuer vers le paiement →
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-8">
-                    <div className="bg-white rounded-[40px] p-8 md:p-12 border border-black/5 shadow-sm">
-                      <h3 className="font-heading font-bold text-xl mb-8">Méthode de Paiement</h3>
-                      <div className="space-y-4">
-                        {paymentMethods.map((method) => (
-                          <label 
-                            key={method.id} 
-                            className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${data.payment_method_slug === method.slug ? 'border-primary bg-primary/5' : 'border-black/5 hover:border-gray-200'}`}
-                          >
-                            <input 
-                              type="radio" 
-                              name="payment_method"
-                              checked={data.payment_method_slug === method.slug}
-                              onChange={() => setData('payment_method_slug', method.slug)}
-                              className="w-5 h-5 accent-primary"
-                            />
-                            <div className="flex-1">
-                              <div className="font-bold text-foreground">{method.title}</div>
-                              <div className="text-xs text-gray-500">{method.description}</div>
-                            </div>
-                            <div className="text-2xl">
-                              {method.slug === 'cash' ? '💵' : method.slug === 'bank-transfer' ? '🏦' : '💳'}
-                            </div>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="bg-white rounded-[40px] p-8 md:p-12 border border-black/5 shadow-sm">
-                      <div className="flex items-start gap-4 mb-8">
-                        <input 
-                          type="checkbox"
-                          id="terms"
-                          checked={data.terms_accepted}
-                          onChange={e => setData('terms_accepted', e.target.checked)}
-                          className="mt-1.5 w-5 h-5 accent-primary"
-                          required
-                        />
-                        <label htmlFor="terms" className="text-sm text-gray-600 leading-relaxed cursor-pointer">
-                          J'accepte les <Link href="/cgv" className="text-primary font-bold underline">Conditions Générales de Vente</Link> et je confirme que ma commande est ferme et définitive.
-                        </label>
-                      </div>
-
-                      <div className="flex gap-4">
-                        <button 
-                          type="button"
-                          onClick={() => setStep(1)}
-                          className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-5 rounded-2xl transition-all"
-                        >
-                          Retour
-                        </button>
-                        <button 
-                          type="submit"
-                          disabled={processing || !data.terms_accepted}
-                          className="flex-[2] bg-primary hover:bg-primary/90 text-white font-heading font-extrabold text-lg py-5 rounded-2xl transition-all shadow-[0_12px_24px_rgba(255,98,0,0.25)] hover:-translate-y-1 disabled:opacity-50"
-                        >
-                          {processing ? 'Traitement...' : 'Confirmer ma Commande'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </form>
-            </div>
-
-            {/* Right Side: Order Summary */}
-            <aside className="w-full lg:w-96 sticky top-24">
-              <div className="bg-white rounded-[40px] p-8 border border-black/5 shadow-sm">
-                <h3 className="font-heading font-bold text-xl mb-8">Résumé de Commande</h3>
-                
-                <div className="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex gap-4">
-                      <div className="w-16 h-16 rounded-xl bg-gray-50 border border-black/5 flex items-center justify-center text-2xl shrink-0">
-                        {item.image.includes('unsplash') ? '📦' : <img src={item.image} alt="" className="w-full h-full object-cover rounded-xl" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-bold text-foreground truncate">{item.name}</div>
-                        <div className="text-xs text-gray-400">Qté: {item.quantity}</div>
-                      </div>
-                      <div className="text-sm font-bold text-foreground">
-                        {(item.unitPrice * item.quantity).toLocaleString("fr-MA")} MAD
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-4 pt-6 border-t border-black/5 mb-8">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Sous-total</span>
-                    <span className="font-bold text-foreground">{subtotal.toLocaleString("fr-MA")} MAD</span>
-                  </div>
-                  {discount > 0 && (
-                    <div className="flex justify-between text-sm text-emerald-600">
-                      <span>Remise (KENZ10)</span>
-                      <span className="font-bold">-{discount.toLocaleString("fr-MA")} MAD</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Frais de livraison</span>
-                    <span className="font-bold text-emerald-600 uppercase text-[10px] tracking-widest mt-1">Gratuit</span>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-end mb-8">
-                  <span className="font-heading font-bold text-lg">Total</span>
-                  <div className="text-right">
-                    <div className="font-heading font-extrabold text-3xl text-primary">
-                      {total.toLocaleString("fr-MA")} MAD
-                    </div>
-                    <div className="text-[10px] text-gray-400 mt-1 uppercase tracking-tighter">TVA incluse · Import direct</div>
-                  </div>
-                </div>
-
-                {/* Promo Code Input */}
-                <div className="flex gap-2">
-                  <input 
-                    type="text" 
-                    placeholder="Code promo"
-                    value={data.promo_code}
-                    onChange={e => setData('promo_code', e.target.value)}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-background border-none text-[13px] outline-none focus:ring-1 focus:ring-ring"
-                  />
-                  <button className="px-4 py-2.5 bg-foreground text-white rounded-xl text-[11px] font-bold uppercase tracking-wider">Appliquer</button>
-                </div>
-              </div>
-
-              {/* Trust Badge */}
-              <div className="mt-6 flex items-center justify-center gap-3 text-gray-400 opacity-60">
-                <span className="text-xl">🔒</span>
-                <span className="text-[11px] font-bold uppercase tracking-widest">Paiement 100% Sécurisé</span>
-              </div>
-            </aside>
-
-          </div>
-        </div>
+    <div className="mx-auto max-w-7xl px-6 py-12">
+      <div className="flex items-center justify-between">
+        <h1 className="font-display text-3xl">Checkout</h1>
+        <Link to="/cart" className="text-sm text-muted-foreground underline-offset-4 hover:underline">
+          ← Back to bag
+        </Link>
       </div>
-    </MainLayout>
+
+      {/* Stepper */}
+      <ol className="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.18em]">
+        {steps.map((s, i) => (
+          <li key={s} className="flex items-center gap-3">
+            <span
+              className={
+                "flex h-6 w-6 items-center justify-center rounded-full border " +
+                (i <= step ? "border-foreground bg-foreground text-background" : "border-border text-muted-foreground")
+              }
+            >
+              {i + 1}
+            </span>
+            <span className={i <= step ? "text-foreground" : "text-muted-foreground"}>{s}</span>
+            {i < steps.length - 1 && <span className="ml-3 h-px w-10 bg-border" />}
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-10 grid gap-12 lg:grid-cols-3">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (step < 2) {
+              setStep(step + 1);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+              toast.success("Order placed");
+              clear();
+              setDone(true);
+            }
+          }}
+          className="space-y-8 lg:col-span-2"
+        >
+          {step === 0 && (
+            <Section title="Contact information">
+              <Field label="Email"><input type="email" required placeholder="you@example.com" className={inputCls} /></Field>
+              <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                <input type="checkbox" defaultChecked className="h-4 w-4 accent-foreground" />
+                Email me with news and offers
+              </label>
+            </Section>
+          )}
+
+          {step === 1 && (
+            <Section title="Shipping address">
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="First name"><input required className={inputCls} /></Field>
+                <Field label="Last name"><input required className={inputCls} /></Field>
+              </div>
+              <Field label="Address"><input required className={inputCls} /></Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="City"><input required className={inputCls} /></Field>
+                <Field label="Postal code"><input required className={inputCls} /></Field>
+              </div>
+              <Field label="Country">
+                <select className={inputCls} defaultValue="US">
+                  <option>United States</option><option>United Kingdom</option><option>France</option><option>Japan</option>
+                </select>
+              </Field>
+
+              <div className="space-y-2 pt-4">
+                <div className="text-sm font-medium">Delivery method</div>
+                {[
+                  { name: "Standard", days: "3–5 business days", price: shipping },
+                  { name: "Express", days: "1–2 business days", price: 28 },
+                ].map((m, i) => (
+                  <label key={m.name} className="flex cursor-pointer items-center justify-between border border-border p-4">
+                    <div className="flex items-center gap-3">
+                      <input type="radio" name="ship" defaultChecked={i === 0} className="h-4 w-4 accent-foreground" />
+                      <div>
+                        <div className="text-sm font-medium">{m.name}</div>
+                        <div className="text-xs text-muted-foreground">{m.days}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm tabular-nums">{m.price === 0 ? "Free" : `$${m.price}`}</div>
+                  </label>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {step === 2 && (
+            <Section title="Payment">
+              <p className="text-xs text-muted-foreground inline-flex items-center gap-2">
+                <Lock className="h-3.5 w-3.5" /> All transactions are encrypted and secure.
+              </p>
+              <Field label="Card number"><input required placeholder="1234 1234 1234 1234" className={inputCls} /></Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Expiry"><input required placeholder="MM / YY" className={inputCls} /></Field>
+                <Field label="CVC"><input required placeholder="123" className={inputCls} /></Field>
+              </div>
+              <Field label="Name on card"><input required className={inputCls} /></Field>
+            </Section>
+          )}
+
+          <div className="flex items-center justify-between pt-4">
+            {step > 0 ? (
+              <button type="button" onClick={() => setStep(step - 1)} className="text-sm underline-offset-4 hover:underline">
+                ← Back
+              </button>
+            ) : <span />}
+            <button type="submit" className="bg-foreground px-8 py-4 text-sm font-medium tracking-wide text-background hover:bg-accent">
+              {step < 2 ? "Continue" : `Place order — $${total}`}
+            </button>
+          </div>
+        </form>
+
+        <aside className="h-fit border border-border/60 bg-secondary/40 p-6">
+          <h2 className="font-display text-xl">Order summary</h2>
+          <ul className="mt-5 divide-y divide-border/60">
+            {items.map((i) => (
+              <li key={`${i.id}-${i.color}-${i.size ?? ""}`} className="flex gap-3 py-4">
+                <img src={i.image} alt={i.name} className="h-16 w-14 flex-none object-cover" />
+                <div className="flex-1 text-sm">
+                  <div>{i.name}</div>
+                  <div className="text-xs text-muted-foreground">{i.color}{i.size ? ` · ${i.size}` : ""} · ×{i.qty}</div>
+                </div>
+                <div className="text-sm tabular-nums">${i.price * i.qty}</div>
+              </li>
+            ))}
+          </ul>
+          <dl className="mt-4 space-y-2 border-t border-border/60 pt-4 text-sm">
+            <Row k="Subtotal" v={`$${subtotal}`} />
+            <Row k="Shipping" v={shipping === 0 ? "Free" : `$${shipping}`} />
+            <Row k="Tax" v={`$${tax}`} />
+            <div className="flex justify-between border-t border-border/60 pt-3 text-base">
+              <dt>Total</dt>
+              <dd className="font-display text-xl">${total}</dd>
+            </div>
+          </dl>
+          <div className="mt-6 space-y-2 text-xs text-muted-foreground">
+            <p className="flex items-center gap-2"><ShieldCheck className="h-3.5 w-3.5" /> Buyer protection guaranteed</p>
+            <p className="flex items-center gap-2"><Truck className="h-3.5 w-3.5" /> Carbon-neutral delivery</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+const inputCls = "h-11 w-full border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block text-xs uppercase tracking-[0.16em] text-muted-foreground">{label}</span>
+      {children}
+    </label>
+  );
+}
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-4">
+      <h2 className="font-display text-2xl">{title}</h2>
+      {children}
+    </section>
+  );
+}
+function Row({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="flex justify-between">
+      <dt className="text-muted-foreground">{k}</dt>
+      <dd className="tabular-nums">{v}</dd>
+    </div>
   );
 }

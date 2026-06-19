@@ -1,112 +1,316 @@
-import MainLayout from "@/Layouts/main-layout";
-import { HomeHeroPart } from "./partials/home-hero.part";
-import { HomeTrustBarPart } from "./partials/home-trust-bar.part";
-import { HomeCategoriesPart } from "./partials/home-categories.part";
-import { HomeFlashDealsPart } from "./partials/home-flash-deals.part";
-import { HomeNewArrivalsPart } from "./partials/home-new-arrivals.part";
-import { HomeBrandStoryPart } from "./partials/home-brand-story.part";
-import { HomeCollectionsPart } from "./partials/home-collections.part";
-import { HomeValuesPart } from "./partials/home-values.part";
-import { HomeHowItWorksPart } from "./partials/home-how-it-works.part";
-import { HomeTestimonialsPart } from "./partials/home-testimonials.part";
-import { HomeSourcingPart } from "./partials/home-sourcing.part";
-import { HomeMembershipCtaPart } from "./partials/home-membership-cta.part";
-import { motion } from "motion/react";
-import { ProductModelType, CategoryModelType, CollectionModelType, TestimonialType } from "@/types/ecommerce.types";
+import { ArrowRight, Leaf, Hammer, Truck, Star } from "lucide-react";
+import heroImg from "@/assets/hero.jpg";
+import atelierImg from "@/assets/atelier.jpg";
+import banner from "@/assets/banner-promo.jpg";
+import catWomen from "@/assets/cat-women.jpg";
+import catMen from "@/assets/cat-men.jpg";
+import catShoes from "@/assets/cat-shoes.jpg";
+import { products, collections } from "@/lib/products";
+import { ProductCard } from "@/components/site/ProductCard";
+import { Link } from "@inertiajs/react";
 
-// Fallback Mock data
-const MOCK_CATEGORIES: CategoryModelType[] = [
-  { id: 1, icon: "📱", name: "Smartphones", products_count: 1240, color: "#FF6200", slug: "smartphones", image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop" },
-  { id: 2, icon: "💻", name: "Informatique", products_count: 890, color: "#6366F1", slug: "informatique", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop" },
-  { id: 3, icon: "🏠", name: "Maison & Déco", products_count: 2100, color: "#F59E0B", slug: "maison", image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800&auto=format&fit=crop" },
-  { id: 4, icon: "📺", name: "Électronique", products_count: 670, color: "#10B981", slug: "electronique", image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=800&auto=format&fit=crop" },
-  { id: 5, icon: "🚗", name: "Auto & Moto", products_count: 3400, color: "#3B82F6", slug: "auto", image: "https://images.unsplash.com/photo-1492144534655-6f2332ca1fef?q=80&w=800&auto=format&fit=crop" },
-  { id: 6, icon: "🎮", name: "Gaming", products_count: 450, color: "#8B5CF6", slug: "gaming", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" },
-  { id: 7, icon: "📷", name: "Photo & Vidéo", products_count: 320, color: "#EC4899", slug: "photo", image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=800&auto=format&fit=crop" },
-  { id: 8, icon: "🔧", name: "Outillage", products_count: 780, color: "#F97316", slug: "outillage", image: "https://images.unsplash.com/photo-1581244277943-fe4a9c777189?q=80&w=800&auto=format&fit=crop" },
-];
+export default function Home() {
+  const featured = products.slice(0, 4);
+  const bestsellers = [...products].sort((a, b) => b.reviews - a.reviews).slice(0, 4);
 
-const MOCK_FLASH_DEALS: ProductModelType[] = [
-  { id: 1, name: "iPhone 14 Pro Max 256GB", price: 5490, old_price: 8900, discount_percentage: 38, rating: 4.8, reviews_count: 234, metadata: { emoji: "📱", condition: "Reconditionné Grade A+" }, slug: "iphone-14-pro-max", currency: "MAD", stock_status: 'in_stock', image: "https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?q=80&w=800&auto=format&fit=crop" },
-  { id: 2, name: "Smart TV Samsung 65\" 4K", price: 4290, old_price: 6500, discount_percentage: 34, rating: 4.9, reviews_count: 156, metadata: { emoji: "📺", condition: "Neuf · Import Direct" }, slug: "samsung-tv-65", currency: "MAD", stock_status: 'in_stock', image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=800&auto=format&fit=crop" },
-];
-
-const MOCK_COLLECTIONS: CollectionModelType[] = [
-  { id: 1, name: "Tech Premium", description: "Les meilleures marques mondiales à prix import", products_count: 450, color: "#FF6200", metadata: { emoji: "⚡" }, slug: "tech-premium" },
-  { id: 2, name: "Maison Moderne", description: "Transformez votre espace de vie", products_count: 780, color: "#F59E0B", metadata: { emoji: "🏡" }, slug: "maison-moderne" },
-  { id: 3, name: "Auto & Passion", description: "Pour les passionnés de vitesse", products_count: 1200, color: "#10B981", metadata: { emoji: "🏎️" }, slug: "auto-passion" },
-  { id: 4, name: "Mode & Style", description: "Les tendances directes de Chine", products_count: 2300, color: "#8B5CF6", metadata: { emoji: "✨" }, slug: "mode-style" },
-];
-
-const MOCK_TESTIMONIALS: TestimonialType[] = [
-  { id: 1, name: "Karim El Mansouri", city: "Casablanca", rating: 5, text: "Incroyable service ! J'ai commandé un iPhone reconditionné et il est arrivé en parfait état dans les 2 jours. Prix imbattable.", product_name: "iPhone 14 Pro Max", is_verified: true },
-  { id: 2, name: "Fatima Zahra Benali", city: "Rabat", rating: 5, text: "KENZ a transformé ma façon de consommer. Produits 100% authentiques, livraison ultra rapide, et des économies de 40%.", product_name: "Smart TV Samsung 65\"", is_verified: true },
-];
-
-type HomeIndexPropsType = {
-  categories: CategoryModelType[];
-  flash_deals: ProductModelType[];
-  new_arrivals: ProductModelType[];
-  collections: CollectionModelType[];
-  testimonials: TestimonialType[];
-};
-
-const revealProps = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.6, ease: "easeOut" }
-};
-
-export default function HomeIndex({ 
-  categories = [], 
-  flash_deals = [], 
-  new_arrivals = [], 
-  collections = [], 
-  testimonials = [] 
-}: HomeIndexPropsType) {
   return (
-    <MainLayout title="Premium E-Commerce | Sourcing China to Morocco">
-      <HomeHeroPart />
-      <HomeTrustBarPart />
+    <div>
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-border/60">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 md:grid-cols-12 md:gap-10 md:py-24">
+          <div className="md:col-span-5 md:pt-16">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground fade-up">
+              Autumn / Winter — Volume 07
+            </p>
+            <h1 className="mt-6 font-display text-[clamp(3rem,7vw,6rem)] leading-[0.95] fade-up" style={{ animationDelay: "80ms" }}>
+              Quiet objects, <br />
+              <em className="text-accent">made slowly.</em>
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground fade-up" style={{ animationDelay: "160ms" }}>
+              A small shop of clothing, leather and home pieces, designed with the workshops that make them. No seasons, no sales — just things meant to last.
+            </p>
+            <div className="mt-10 flex items-center gap-6 fade-up" style={{ animationDelay: "240ms" }}>
+              <Link
+                href="/shop"
+                className="group inline-flex items-center gap-3 bg-foreground px-7 py-4 text-sm font-medium tracking-wide text-background transition-colors hover:bg-accent"
+              >
+                Shop the collection
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link href="/about" className="text-sm underline-offset-4 hover:underline">
+                Our story
+              </Link>
+            </div>
+          </div>
 
-      <motion.div {...revealProps}>
-        <HomeCategoriesPart categories={categories.length > 0 ? categories : MOCK_CATEGORIES} />
-      </motion.div>
+          <div className="relative md:col-span-7">
+            <div className="relative overflow-hidden bg-secondary">
+              <img
+                src={heroImg}
+                alt="Cream wool coat, AW collection"
+                width={1600}
+                height={1200}
+                className="aspect-4/5 w-full object-cover md:aspect-5/6"
+              />
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-background">
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] opacity-80">Look 01</div>
+                  <div className="font-display text-2xl">The Halden Coat</div>
+                </div>
+                <div className="text-sm tabular-nums">$685</div>
+              </div>
+            </div>
+            <div className="pointer-events-none absolute -left-6 -top-6 hidden font-display text-7xl text-foreground/10 md:block">07</div>
+          </div>
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeFlashDealsPart products={flash_deals.length > 0 ? flash_deals : MOCK_FLASH_DEALS} />
-      </motion.div>
+      {/* MARQUEE */}
+      <section className="overflow-hidden border-b border-border/60 bg-secondary/50 py-5">
+        <div className="marquee flex w-max items-center gap-12 whitespace-nowrap font-display text-2xl">
+          {Array.from({ length: 2 }).flatMap((_, k) =>
+            ["Knitted in Scotland", "•", "Sewn in Florence", "•", "Thrown in Tokyo", "•", "Cut in Porto", "•", "Tanned in Tuscany", "•"].map((t, i) => (
+              <span key={`${k}-${i}`} className={t === "•" ? "text-accent" : ""}>{t}</span>
+            )),
+          )}
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeNewArrivalsPart products={new_arrivals.length > 0 ? new_arrivals : MOCK_FLASH_DEALS} />
-      </motion.div>
+      {/* CATEGORY TILES */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Shop by</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">Three rooms, one house</h2>
+          </div>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {[
+            { img: catWomen, title: "Women", to: "/category/$slug", slug: "apparel", count: "32 pieces" },
+            { img: catMen, title: "Men", to: "/category/$slug", slug: "apparel", count: "26 pieces" },
+            { img: catShoes, title: "Shoes", to: "/category/$slug", slug: "footwear", count: "14 pieces" },
+          ].map((c, i) => (
+            <Link
+              key={c.title}
+              href={c.to}
+              params={{ slug: c.slug }}
+              className="group relative block overflow-hidden bg-secondary fade-up"
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
+              <img
+                src={c.img}
+                alt={c.title}
+                loading="lazy"
+                className="aspect-[4/5] w-full object-cover transition-transform duration-[1200ms] group-hover:scale-[1.05]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-background">
+                <div>
+                  <div className="text-[11px] uppercase tracking-[0.2em] opacity-80">{c.count}</div>
+                  <div className="font-display text-3xl">{c.title}</div>
+                </div>
+                <ArrowRight className="h-5 w-5 translate-x-0 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeBrandStoryPart />
-      </motion.div>
+      {/* FEATURED */}
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">The Edit</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">New this season</h2>
+          </div>
+          <Link href="/shop" className="hidden text-sm underline-offset-4 hover:underline md:inline">
+            See all 24 objects →
+          </Link>
+        </div>
+        <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4">
+          {featured.map((p, i) => (
+            <ProductCard key={p.id} product={p} index={i} />
+          ))}
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeCollectionsPart collections={collections.length > 0 ? collections : MOCK_COLLECTIONS} />
-      </motion.div>
+      {/* PROMO BANNER */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="relative grid items-center gap-0 overflow-hidden md:grid-cols-2">
+          <img
+            src={banner}
+            alt="Autumn knitwear"
+            loading="lazy"
+            className="h-full w-full object-cover md:aspect-[4/3]"
+          />
+          <div className="bg-foreground p-10 text-background md:p-16">
+            <p className="text-xs uppercase tracking-[0.22em] text-background/60">Featured edit</p>
+            <h3 className="mt-4 font-display text-4xl leading-tight md:text-5xl">
+              The Knitwear<br/><em className="text-accent">Edit.</em>
+            </h3>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-background/70">
+              Twelve pieces in cashmere, lambswool and merino. Knitted in small mills in Scotland and Italy — built to outlast a decade of winters.
+            </p>
+            <Link
+              href="/collection/$slug"
+              params={{ slug: "autumn-volume-07" }}
+              className="mt-8 inline-flex items-center gap-2 border border-background/30 px-6 py-3 text-sm font-medium hover:bg-background hover:text-foreground"
+            >
+              Shop the edit <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeValuesPart />
-      </motion.div>
+      {/* COLLECTIONS STRIP */}
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Collections</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">Edits, not seasons</h2>
+          </div>
+          <Link href="/collections" className="hidden text-sm underline-offset-4 hover:underline md:inline">
+            All collections →
+          </Link>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {collections.map((c, i) => (
+            <Link
+              key={c.slug}
+              href={`/collection/${c.slug}`}
+              className="group block fade-up"
+              style={{ animationDelay: `${i * 60}ms` }}
+            >
+              <div className="overflow-hidden bg-secondary">
+                <img src={c.image} alt={c.title} loading="lazy" className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              </div>
+              <div className="mt-4">
+                <div className="font-display text-2xl group-hover:text-accent">{c.title}</div>
+                <div className="text-sm text-muted-foreground">{c.tagline}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeHowItWorksPart />
-      </motion.div>
+      {/* STORY STRIP */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
+          <div className="relative overflow-hidden bg-secondary">
+            <img
+              src={atelierImg}
+              alt="Inside our Lisbon atelier"
+              width={1400}
+              height={1000}
+              loading="lazy"
+              className="aspect-[4/3] w-full object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">The Atelier</p>
+            <h2 className="mt-3 font-display text-4xl leading-tight md:text-5xl">
+              We know the hands <br /> behind every piece.
+            </h2>
+            <p className="mt-6 max-w-lg text-muted-foreground">
+              Atelier Nord works with a handful of independent makers — a knitter in Hawick, a leather workshop in Florence, a ceramicist in Setagaya. Small runs, no warehouses, no waste.
+            </p>
+            <Link href="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
+              Visit the atelier <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeSourcingPart />
-      </motion.div>
+      {/* BESTSELLERS */}
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Loved most</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">Bestsellers</h2>
+          </div>
+        </div>
+        <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4">
+          {bestsellers.map((p, i) => (
+            <ProductCard key={p.id} product={p} index={i} />
+          ))}
+        </div>
+      </section>
 
-      <motion.div {...revealProps}>
-        <HomeTestimonialsPart testimonials={testimonials.length > 0 ? testimonials : MOCK_TESTIMONIALS} />
-      </motion.div>
+      {/* VALUES */}
+      <section className="mt-10 border-y border-border/60 bg-secondary/40">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-3">
+          {[
+            { icon: Hammer, title: "Made by hand", body: "Small batches by named makers — no factories, no shortcuts." },
+            { icon: Leaf, title: "Natural materials", body: "Cashmere, linen, vegetable-tanned leather, porcelain." },
+            { icon: Truck, title: "Carbon-neutral delivery", body: "Free worldwide shipping on orders over $250. 60-day returns." },
+          ].map(({ icon: Icon, title, body }) => (
+            <div key={title} className="flex flex-col">
+              <Icon className="h-6 w-6 text-accent" strokeWidth={1.4} />
+              <h3 className="mt-5 font-display text-2xl">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      <HomeMembershipCtaPart />
-    </MainLayout>
+      {/* TESTIMONIALS */}
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">In their words</p>
+          <h2 className="mt-3 font-display text-4xl md:text-5xl">Worn, kept, repaired.</h2>
+        </div>
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {[
+            { name: "Marguerite L.", place: "Paris", text: "The Halden coat has lived through three winters and looks better each one. Worth every euro." },
+            { name: "Daichi K.", place: "Kyoto", text: "Loafers that feel like they were made for my feet. The resoling service is a small miracle." },
+            { name: "Anna B.", place: "Copenhagen", text: "I bought the cashmere on a whim and now I own four. Quiet confidence in every stitch." },
+          ].map((r) => (
+            <figure key={r.name} className="border border-border/60 bg-card p-8">
+              <div className="flex gap-1 text-accent">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-accent" strokeWidth={0} />
+                ))}
+              </div>
+              <blockquote className="mt-5 font-display text-xl leading-snug">&ldquo;{r.text}&rdquo;</blockquote>
+              <figcaption className="mt-6 text-sm text-muted-foreground">
+                {r.name} · {r.place}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      {/* JOURNAL TEASER */}
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Journal</p>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">Notes from the studio</h2>
+          </div>
+          <Link href="/journal" className="hidden text-sm underline-offset-4 hover:underline md:inline">
+            Read all →
+          </Link>
+        </div>
+        <div className="mt-12 grid gap-10 md:grid-cols-3">
+          {[
+            { tag: "Materials", title: "Why we returned to mineral lenses", read: "4 min read" },
+            { tag: "Workshop", title: "Three days in Hawick with the knitters", read: "7 min read" },
+            { tag: "Care", title: "How to fold cashmere so it lasts a decade", read: "3 min read" },
+          ].map((post) => (
+            <article key={post.title} className="group cursor-pointer">
+              <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                <div className="h-full w-full bg-gradient-to-br from-muted to-secondary transition-transform duration-700 group-hover:scale-105" />
+              </div>
+              <div className="mt-5">
+                <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                  {post.tag} · {post.read}
+                </div>
+                <h3 className="mt-2 font-display text-2xl leading-snug group-hover:text-accent">{post.title}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
