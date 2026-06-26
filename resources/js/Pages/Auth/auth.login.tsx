@@ -15,7 +15,7 @@ export default function Login() {
   };
 
   return (
-    <MainLayout title="Sign In">
+    <main>
       <Head title="Sign In — KENZ Maison" />
       <div className="min-h-[calc(100vh-60px)] flex">
         {/* Left Side: Editorial Art / Brand Statement (Desktop Only) */}
@@ -134,6 +134,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </main>
   );
 }
