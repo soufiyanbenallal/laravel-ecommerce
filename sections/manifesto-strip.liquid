@@ -1,0 +1,61 @@
+<section class="relative overflow-hidden border-y border-border/40 bg-foreground py-20 md:py-28">
+  <!-- Grain texture -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.04]"
+    style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E&quot;);"
+  ></div>
+
+  <!-- KENZ watermark -->
+  <div class="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none" aria-hidden="true">
+    <span
+      class="font-display text-background/[0.03] leading-none font-bold select-none"
+      style="font-size: clamp(200px, 35vw, 500px); letter-spacing: -0.04em;"
+    >
+      KENZ
+    </span>
+  </div>
+
+  <div class="relative mx-auto max-w-5xl px-6 text-center">
+    <!-- Gold diamond -->
+    <div class="mx-auto mb-8 flex h-10 w-10 items-center justify-center">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 0 L16 8 L8 16 L0 8 Z" fill="#B08D57" />
+      </svg>
+    </div>
+
+    <blockquote class="font-display text-[clamp(1.8rem,4vw,3.4rem)] font-light leading-[1.15] text-background">
+      {{ section.settings.blockquote }}
+    </blockquote>
+
+    <div class="mt-8 text-[11px] uppercase tracking-[0.28em] text-background/40">
+      {{ section.settings.author }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Manifesto Strip",
+  "tag": "section",
+  "class": "section-manifesto-strip",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "blockquote",
+      "label": "Quote Text",
+      "default": "\"We believe the most sustainable act of fashion is buying less, and wearing it more.\""
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Author / Footer",
+      "default": "— KENZ Maison, Founded 2019"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manifesto Strip"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+
+/* ── Google Fonts: Cormorant (display) + Jost (body) ── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap');
+
+@theme {
+    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji';
+    --font-display: 'Cormorant', 'Georgia', ui-serif, serif;
+    --font-heading: var(--font-display);
+
+    /* ── Brand Palette: Luxury Editorial ── */
+    --color-background: #FAF9F7;
+    --color-foreground: #1C1917;
+    --color-card: #FFFFFF;
+    --color-card-foreground: #1C1917;
+    --color-popover: #FFFFFF;
+    --color-popover-foreground: #1C1917;
+
+    /* Gold accent – the brand signature */
+    --color-primary: #1C1917;
+    --color-primary-foreground: #FAF9F7;
+    --color-accent: #B08D57;
+    --color-accent-foreground: #FAF9F7;
+    --color-accent-light: #D4B483;
+
+    --color-secondary: #F4F1EC;
+    --color-secondary-foreground: #1C1917;
+    --color-muted: #F4F1EC;
+    --color-muted-foreground: #78716C;
+
+    --color-destructive: #DC2626;
+    --color-border: rgba(28, 25, 23, 0.10);
+    --color-input: rgba(28, 25, 23, 0.08);
+    --color-ring: #B08D57;
+
+    /* ── Border Radius Scale ── */
+    --radius-2xl: 20px;
+    --radius-3xl: 24px;
+    --radius-4xl: 32px;
+
+    /* ── Animation Tokens ── */
+    --animate-marquee: marquee 44s linear infinite;
+    --animate-fade-in-up: fadeInUp .6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-fade-in-left: fadeInLeft .8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-fade-in-right: fadeInRight .8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-pulse-ring: pulseRing 2s ease-out infinite;
+    --animate-gradient-pan: gradientPan 5s ease infinite;
+    --animate-reveal: reveal .9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+    @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(32px) } to { opacity: 1; transform: translateY(0) } }
+    @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-36px) } to { opacity: 1; transform: translateX(0) } }
+    @keyframes fadeInRight { from { opacity: 0; transform: translateX(36px) } to { opacity: 1; transform: translateX(0) } }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg) } 40% { transform: translateY(-16px) rotate(1.5deg) } 70% { transform: translateY(-7px) rotate(-1deg) } }
+    @keyframes pulseRing { 0% { transform: scale(1); opacity: .9 } 100% { transform: scale(1.7); opacity: 0 } }
+    @keyframes gradientPan { 0%, 100% { background-position: 0% 50% } 50% { background-position: 100% 50% } }
+    @keyframes reveal { from { opacity: 0; transform: translateY(20px) scale(0.98) } to { opacity: 1; transform: translateY(0) scale(1) } }
+}
+
+/* ── Base Styles ── */
+@layer base {
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        font-family: var(--font-sans);
+        font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    html {
+        font-family: var(--font-sans);
+        scroll-behavior: smooth;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: -0.01em;
+    }
+    input, select, textarea {
+        color: var(--color-foreground);
+    }
+    * {
+        border-color: var(--color-border);
+        outline-color: rgba(176, 141, 87, 0.5);
+    }
+}
+
+/* ── Utility Classes ── */
+.fade-up {
+    animation: var(--animate-fade-in-up);
+}
+.marquee {
+    animation: var(--animate-marquee);
+}
+.font-display {
+    font-family: var(--font-display);
+}
+
+/* Brand logo treatment */
+.brand-mark {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Gold shimmer effect */
+.gold-shimmer {
+    background: linear-gradient(105deg, #B08D57 0%, #D4B483 40%, #B08D57 70%, #8B6B3D 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+}
+
+/* Glass card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(28, 25, 23, 0.08);
+}
+
+/* Separator lines */
+.divider-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #B08D57, transparent);
+    opacity: 0.4;
+}
+
+/* Scrollbar hidden */
+.scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+/* Film grain overlay */
+.grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+}

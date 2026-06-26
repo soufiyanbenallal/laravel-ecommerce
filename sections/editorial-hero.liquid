@@ -1,0 +1,186 @@
+{{ 'app.css' | asset_url | stylesheet_tag }}
+
+<section class="relative h-[92vh] min-h-[640px] max-h-[960px] overflow-hidden border-b border-border/40" id="EditorialHero-{{ section.id }}">
+  <!-- Background Image with Parallax -->
+  <div class="absolute inset-0 will-change-transform hero-bg-wrapper scale-[1.08]">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 2000 }}"
+        alt="{{ section.settings.image.alt | escape }}"
+        class="h-full w-full object-cover object-center hero-parallax-img"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      <!-- Fallback image using assets/hero.jpg -->
+      <img
+        src="{{ 'hero.jpg' | asset_url }}"
+        alt="KENZ Maison — Editorial Hero"
+        class="h-full w-full object-cover object-center hero-parallax-img"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+    <!-- Vignettes -->
+    <div class="absolute inset-0 bg-gradient-to-r from-background/90 via-background/30 to-background/10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/20"></div>
+  </div>
+
+  <!-- Giant KENZ watermark -->
+  <div class="pointer-events-none absolute inset-0 flex items-end justify-end overflow-hidden select-none" aria-hidden="true">
+    <span class="font-display leading-none text-foreground/[0.04] watermark-text select-none font-bold" style="font-size: clamp(180px, 28vw, 420px); letter-spacing: -0.03em;">
+      KENZ
+    </span>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-16 md:pb-24">
+    <!-- Season Tag -->
+    <div class="mb-6 flex items-center gap-3 fade-up">
+      <div class="h-px w-10 bg-accent/60"></div>
+      <span class="text-[10px] uppercase tracking-[0.32em] text-foreground/60">
+        {{ section.settings.subheading }}
+      </span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="font-display font-light leading-[0.9] fade-up" style="font-size: clamp(3.8rem, 9vw, 9rem); animation-delay: 80ms;">
+      {{ section.settings.title_1 }}
+      <br>
+      <em class="not-italic text-accent">{{ section.settings.title_2 }}</em>
+    </h1>
+
+    <!-- Bottom Row -->
+    <div class="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between fade-up" style="animation-delay: 160ms;">
+      <p class="max-w-xs text-[13px] font-light leading-relaxed text-foreground/60">
+        {{ section.settings.description }}
+      </p>
+      <div class="flex items-center gap-5">
+        <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="group inline-flex items-center gap-3 bg-foreground px-7 py-3.5 text-[11px] uppercase tracking-[0.22em] font-medium text-background transition-all duration-300 hover:bg-accent cursor-pointer">
+          {{ section.settings.button_label }}
+          <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a href="{{ section.settings.story_link | default: '/pages/about' }}" class="text-[11px] uppercase tracking-[0.22em] text-foreground/50 hover:text-foreground transition-colors duration-200">
+          {{ section.settings.story_label }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Trust Micro-row -->
+    <div class="mt-8 flex items-center gap-8 fade-up" style="animation-delay: 240ms;">
+      <div class="hidden sm:block">
+        <div class="font-display text-xl font-light">12+</div>
+        <div class="text-[9px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">Workshops</div>
+      </div>
+      <div class="hidden sm:block">
+        <div class="font-display text-xl font-light">100%</div>
+        <div class="text-[9px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">Natural Fiber</div>
+      </div>
+      <div class="hidden sm:block">
+        <div class="font-display text-xl font-light">60d</div>
+        <div class="text-[9px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">Free Returns</div>
+      </div>
+      <div class="hidden sm:block">
+        <div class="font-display text-xl font-light">∞</div>
+        <div class="text-[9px] uppercase tracking-[0.22em] text-muted-foreground mt-0.5">Lifetime Repair</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 right-8 hidden flex-col items-center gap-2 md:flex fade-up" style="animation-delay: 400ms;">
+    <div class="text-[9px] uppercase tracking-[0.28em] text-muted-foreground" style="writing-mode: vertical-rl;">
+      Scroll
+    </div>
+    <div class="h-12 w-px bg-gradient-to-b from-border to-transparent"></div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const heroSection = document.getElementById('EditorialHero-{{ section.id }}');
+    if (!heroSection) return;
+    
+    const bgWrapper = heroSection.querySelector('.hero-bg-wrapper');
+    const watermark = heroSection.querySelector('.watermark-text');
+    
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      // Parallax translate
+      if (bgWrapper) {
+        bgWrapper.style.transform = `translateY(${scrollY * 0.28}px) scale(1.08)`;
+      }
+      if (watermark) {
+        watermark.style.transform = `translateY(${scrollY * 0.1}px)`;
+      }
+    }, { passive: true });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Editorial Hero",
+  "tag": "section",
+  "class": "section-editorial-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Autumn / Winter 2025 — Vol. 07"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Headline Part 1",
+      "default": "The Art of"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Headline Part 2 (Serif Accent)",
+      "default": "Dressing Well."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Premium clothing sourced from artisan workshops across Europe and North Africa — made to last, not to be replaced."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary Button Label",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "story_label",
+      "label": "Secondary Link Label",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "story_link",
+      "label": "Secondary Link Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Hero"
+    }
+  ]
+}
+{% endschema %}

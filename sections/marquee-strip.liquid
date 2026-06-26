@@ -1,0 +1,68 @@
+<div class="overflow-hidden border-b border-border/40 bg-secondary/30 py-4">
+  <div class="marquee flex w-max items-center gap-16 whitespace-nowrap">
+    <!-- Duplicate items to create infinite scroll illusion -->
+    {%- for i in (1..2) -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60" {{ block.shopify_attributes }}>
+            {{ block.settings.text | escape }}
+          </span>
+          <span class="text-accent text-base">✦</span>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Fallback static items -->
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Morocco · Europe</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Natural Materials</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Artisan Craft</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Small Batch Only</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">60-Day Free Returns</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Worldwide Delivery</span>
+        <span class="text-accent text-base">✦</span>
+        <span class="font-display text-[16px] font-light tracking-[0.1em] text-foreground/60">Lifetime Repair Service</span>
+        <span class="text-accent text-base">✦</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee Strip",
+  "tag": "section",
+  "class": "section-marquee-strip",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Marquee Text Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Natural Materials"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Strip",
+      "blocks": [
+        { "type": "text", "settings": { "text": "Morocco · Europe" } },
+        { "type": "text", "settings": { "text": "Natural Materials" } },
+        { "type": "text", "settings": { "text": "Artisan Craft" } },
+        { "type": "text", "settings": { "text": "Small Batch Only" } },
+        { "type": "text", "settings": { "text": "60-Day Free Returns" } },
+        { "type": "text", "settings": { "text": "Worldwide Delivery" } },
+        { "type": "text", "settings": { "text": "Lifetime Repair Service" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+{
+  "sections": {
+    "editorial_hero": {
+      "type": "editorial-hero",
+      "settings": {
+        "subheading": "Autumn / Winter 2025 — Vol. 07",
+        "title_1": "The Art of",
+        "title_2": "Dressing Well.",
+        "description": "Premium clothing sourced from artisan workshops across Europe and North Africa — made to last, not to be replaced.",
+        "button_label": "Explore Collection",
+        "button_link": "shopify://collections/all",
+        "story_label": "Our Story",
+        "story_link": "shopify://pages/about"
+      }
+    },
+    "marquee_strip": {
+      "type": "marquee-strip",
+      "settings": {}
+    },
+    "lookbook_strip": {
+      "type": "lookbook-strip",
+      "settings": {
+        "subheading": "The Lookbook",
+        "heading": "Wear the story.",
+        "link_text": "All Looks",
+        "link_url": "shopify://collections/all"
+      }
+    },
+    "product_list_fa6P9H": {
+      "type": "product-list",
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "manifesto_strip": {
+      "type": "manifesto-strip",
+      "settings": {
+        "blockquote": "\"We believe the most sustainable act of fashion is buying less, and wearing it more.\"",
+        "author": "— KENZ Maison, Founded 2019"
+      }
+    },
+    "newsletter_cta": {
+      "type": "newsletter-cta",
+      "settings": {
+        "heading": "Join the inner circle. Receive the Edit first.",
+        "subheading": "Early access to new collections, exclusive pieces, and notes from the workshop.",
+        "footer_text": "No spam. Unsubscribe anytime."
+      }
+    }
+  },
+  "order": [
+    "editorial_hero",
+    "marquee_strip",
+    "lookbook_strip",
+    "product_list_fa6P9H",
+    "manifesto_strip",
+    "newsletter_cta"
+  ]
+}

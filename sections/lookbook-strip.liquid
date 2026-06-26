@@ -1,0 +1,195 @@
+<div class="py-16 overflow-hidden" id="LookbookStrip-{{ section.id }}">
+  <!-- Header -->
+  <div class="mx-auto max-w-7xl px-6 mb-8 flex items-end justify-between">
+    <div>
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="font-display text-[11px] text-accent tracking-[0.3em]">✦</span>
+        <span class="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{{ section.settings.subheading }}</span>
+      </div>
+      <h2 class="font-display text-4xl font-light md:text-5xl">
+        {{ section.settings.heading }}
+      </h2>
+    </div>
+    {%- if section.settings.link_url != blank -%}
+      <a
+        href="{{ section.settings.link_url }}"
+        class="hidden text-[11px] uppercase tracking-[0.22em] text-foreground/55 hover:text-accent transition-colors md:inline-block cursor-pointer"
+      >
+        {{ section.settings.link_text }} →
+      </a>
+    {%- endif -%}
+  </div>
+
+  <!-- Horizontal scrolling strip -->
+  <div
+    class="lookbook-strip-container flex gap-4 overflow-x-auto px-6 pb-4 scrollbar-none select-none"
+    style="cursor: grab; scrollbar-width: none; -ms-overflow-style: none;"
+  >
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        <div
+          class="group relative shrink-0 overflow-hidden bg-secondary"
+          style="width: clamp(240px, 28vw, 380px); height: clamp(340px, 44vw, 520px);"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 800 }}"
+              alt="{{ block.settings.title | escape }}"
+              loading="lazy"
+              class="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+            >
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'h-full w-full object-cover bg-neutral-200' }}
+          {%- endif -%}
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-foreground/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <!-- Label -->
+          <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out p-5">
+            <div class="text-[9px] uppercase tracking-[0.28em] text-background/70">{{ block.settings.subtitle }}</div>
+            <div class="font-display text-xl font-light text-background mt-1">{{ block.settings.title }}</div>
+          </div>
+          <!-- Index -->
+          <div class="absolute right-4 top-4 font-display text-[11px] tracking-[0.2em] text-background/40">
+            0{{ forloop.index }}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Default fallback items if no blocks are present -->
+      {%- assign fallback_images = "cat-women.jpg,cat-men.jpg,cat-shoes.jpg,atelier.jpg,banner-promo.jpg" | split: "," -%}
+      {%- assign fallback_subs = "Look 01,Look 02,Look 03,Behind the piece,Vol. 07" | split: "," -%}
+      {%- assign fallback_titles = "Women AW '25,Men Tailoring,Footwear,The Atelier,The Knitwear Edit" | split: "," -%}
+      {%- for index in (0..4) -%}
+        <div
+          class="group relative shrink-0 overflow-hidden bg-secondary"
+          style="width: clamp(240px, 28vw, 380px); height: clamp(340px, 44vw, 520px);"
+        >
+          <img
+            src="{{ fallback_images[index] | asset_url }}"
+            alt="{{ fallback_titles[index] }}"
+            loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-foreground/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out p-5">
+            <div class="text-[9px] uppercase tracking-[0.28em] text-background/70">{{ fallback_subs[index] }}</div>
+            <div class="font-display text-xl font-light text-background mt-1">{{ fallback_titles[index] }}</div>
+          </div>
+          <div class="absolute right-4 top-4 font-display text-[11px] tracking-[0.2em] text-background/40">
+            0{{ index | plus: 1 }}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6 mt-4">
+    <p class="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/60">
+      ← Drag to explore
+    </p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.getElementById('LookbookStrip-{{ section.id }}');
+    if (!section) return;
+    const container = section.querySelector('.lookbook-strip-container');
+    if (!container) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    container.addEventListener('mousedown', (e) => {
+      isDown = true;
+      container.style.cursor = 'grabbing';
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1.6;
+      container.scrollLeft = scrollLeft - walk;
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Lookbook Strip",
+  "tag": "section",
+  "class": "section-lookbook-strip",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The Lookbook"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wear the story."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "All Looks"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Lookbook Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub-label",
+          "default": "Look 01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Main Label",
+          "default": "Women AW '25"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook Strip",
+      "blocks": [
+        { "type": "look", "settings": { "subtitle": "Look 01", "title": "Women AW '25" } },
+        { "type": "look", "settings": { "subtitle": "Look 02", "title": "Men Tailoring" } },
+        { "type": "look", "settings": { "subtitle": "Look 03", "title": "Footwear" } },
+        { "type": "look", "settings": { "subtitle": "Behind the piece", "title": "The Atelier" } },
+        { "type": "look", "settings": { "subtitle": "Vol. 07", "title": "The Knitwear Edit" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

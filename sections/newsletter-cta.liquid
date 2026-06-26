@@ -1,0 +1,112 @@
+<section class="relative overflow-hidden bg-foreground py-20" id="Newsletter-{{ section.id }}">
+  <!-- Grain texture -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.035]"
+    style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E&quot;);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- KENZ watermark -->
+  <div class="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none" aria-hidden="true">
+    <span
+      class="font-display text-background/[0.025] font-bold leading-none select-none"
+      style="font-size: clamp(180px, 30vw, 440px); letter-spacing: -0.04em;"
+    >
+      KENZ
+    </span>
+  </div>
+
+  <div class="relative mx-auto max-w-2xl px-6 text-center z-10">
+    <!-- Star icon -->
+    <div class="mx-auto mb-6 flex h-8 w-8 items-center justify-center">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M7 0 L14 7 L7 14 L0 7 Z" fill="#B08D57" />
+      </svg>
+    </div>
+
+    <!-- Heading -->
+    <h2 class="font-display text-3xl font-light leading-[1.1] text-background md:text-4xl">
+      {{ section.settings.heading }}
+    </h2>
+    <p class="mt-4 text-[13px] font-light text-background/50">
+      {{ section.settings.subheading }}
+    </p>
+
+    <!-- Shopify customer form -->
+    {%- form 'customer', class: 'mt-8 flex max-w-md mx-auto items-center border-b border-background/25 pb-2.5 focus-within:border-accent transition-colors duration-300' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      
+      {%- if form.posted_successfully? -%}
+        <p class="text-accent text-[14px] font-light w-full text-center">
+          Thank you for subscribing to our inner circle.
+        </p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <p class="text-red-500 text-[12px] absolute -bottom-6 left-0">
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}
+          </p>
+        {%- endif -%}
+        
+        <input
+          id="NewsletterForm-{{ section.id }}"
+          type="email"
+          name="contact[email]"
+          value="{{ form.email }}"
+          placeholder="your@email.com"
+          class="flex-1 bg-transparent text-[14px] font-light text-background outline-none placeholder:text-background/30 border-none p-0 focus:ring-0"
+          aria-required="true"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          required
+        >
+        <button
+          type="submit"
+          name="commit"
+          id="Subscribe-{{ section.id }}"
+          class="text-[11px] uppercase tracking-[0.22em] font-medium text-accent hover:text-background transition-colors duration-200 cursor-pointer ml-4 whitespace-nowrap bg-transparent border-none p-0"
+        >
+          Subscribe →
+        </button>
+      {%- endif -%}
+    {%- endform -%}
+
+    <p class="mt-4 text-[10px] uppercase tracking-[0.25em] text-background/25">
+      {{ section.settings.footer_text }}
+    </p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter CTA",
+  "tag": "section",
+  "class": "section-newsletter-cta",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the inner circle. Receive the Edit first."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Early access to new collections, exclusive pieces, and notes from the workshop."
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "No spam. Unsubscribe anytime."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter CTA"
+    }
+  ]
+}
+{% endschema %}

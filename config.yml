@@ -1,0 +1,9 @@
+development:
+  password: shptka_7032c0e6d70c419670c4fac14878c769
+  theme_id: "161373585661"
+  store: wevente.myshopify.com
+prod:
+  password: shptka_7032c0e6d70c419670c4fac14878c769
+  theme_id: "161373585661"
+  store: wevente.myshopify.com
+  timeout: 4m0s
