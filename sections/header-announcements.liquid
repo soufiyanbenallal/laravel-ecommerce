@@ -1,220 +1,53 @@
-{% if section.blocks.size > 1 %}
-  <script
-    src="{{ 'announcement-bar.js' | asset_url }}"
-    type="module"
-    fetchpriority="low"
-  ></script>
-{% endif %}
-
-{% render 'contrast-override', background_color: section.settings.background_color, section_id: section.id %}
-
-<div class="section-background color-custom-{{ section.id }}"></div>
-<aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-custom-{{ section.id }}"
-  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %}"
->
-  {% liquid
-    assign autoplay = false
-    assign show_arrows = false
-    if section.blocks.size > 1
-      assign autoplay = true
-      assign show_arrows = true
-    endif
-  %}
-
-  <announcement-bar-component
-    class="announcement-bar__slider"
-    {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
-    {% endif %}
-  >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
-
-    <div class="announcement-bar__slides">
+<div class="bg-foreground text-background font-sans" id="AnnouncementBar-{{ section.id }}">
+  <div class="mx-auto flex max-w-7xl items-center justify-center gap-4 px-6 py-2.5 text-[10px] uppercase tracking-[0.24em]">
+    <span class="opacity-60 hidden sm:block">—</span>
+    <span class="opacity-85 text-center flex items-center justify-center">
       {% content_for 'blocks' %}
+    </span>
+    <span class="opacity-60 hidden sm:block">—</span>
+    
+    <div class="hidden items-center gap-6 md:flex ml-auto md:ml-0 md:absolute md:right-6">
+      {%- if section.settings.secondary_menu != blank -%}
+        {%- for link in linklists[section.settings.secondary_menu].links -%}
+          <a href="{{ link.url }}" class="opacity-55 hover:opacity-100 transition-opacity duration-200">
+            {{ link.title }}
+          </a>
+          {%- unless forloop.last -%}
+            <span class="opacity-30">|</span>
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- else -%}
+        <a href="/apps/track-order" class="opacity-55 hover:opacity-100 transition-opacity duration-200">Track</a>
+        <span class="opacity-30">|</span>
+        <a href="/pages/stores" class="opacity-55 hover:opacity-100 transition-opacity duration-200">Stores</a>
+        <span class="opacity-30">|</span>
+        <a href="#" class="opacity-55 hover:opacity-100 transition-opacity duration-200">EN · USD</a>
+      {%- endif -%}
     </div>
-  </announcement-bar-component>
-</aside>
-
-{% stylesheet %}
-  .announcement-bar {
-    border-block-end: var(--border-bottom-width) solid var(--color-border);
-  }
-
-  .announcement-bar__slider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-
-    @media screen and (max-width: 749px) {
-      grid-column: 1 / -1;
-    }
-  }
-
-  .announcement-bar__slides {
-    display: grid;
-    grid: [stack] auto / [stack] auto;
-    width: calc(100% - var(--button-size) * 2);
-    max-width: 680px;
-    margin-inline: auto;
-  }
-
-  .announcement-bar__slides > * {
-    grid-area: stack;
-  }
-
-  .announcement-bar__slide {
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    content-visibility: visible;
-
-    &[aria-hidden='true'] {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-
-  .announcement-bar__slider slideshow-arrows {
-    padding: 0;
-    mix-blend-mode: normal;
-  }
-
-  .announcement-bar__slider slideshow-arrows .slideshow-control {
-    color: var(--color-foreground);
-  }
-
-  .announcement-bar__slider .slideshow-control {
-    display: flex;
-    padding: 0;
-    width: var(--button-size);
-    height: var(--button-size);
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    animation: none;
-
-    @media screen and (min-width: 750px) {
-      --slideshow-control-offset: calc((var(--button-size) - var(--icon-size-xs)) / 2);
-
-      .section--page-width &.slideshow-control--previous {
-        transform: translateX(var(--slideshow-control-offset));
-      }
-    }
-  }
-
-  .announcement-bar__slider .slideshow-control .svg-wrapper {
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
-  }
-
-  .announcement-bar__slide {
-    place-content: center;
-  }
-
-  .announcement-bar__text:first-child {
-    margin: 0;
-  }
-
-  .announcement-bar__link {
-    position: absolute;
-    inset: 0;
-  }
-{% endstylesheet %}
+  </div>
+</div>
 
 {% schema %}
 {
-  "name": "t:names.announcement_bar",
+  "name": "Announcement Bar (KENZ)",
+  "tag": "aside",
+  "class": "shopify-section-announcement-bar-kenz",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "secondary_menu",
+      "label": "Secondary Menu (Right Side)",
+      "info": "Leave blank to display default links (Track, Stores, EN · USD)"
+    }
+  ],
   "blocks": [
     {
       "type": "_announcement"
     }
   ],
-  "enabled_on": {
-    "groups": ["header"]
-  },
-  "settings": [
-    {
-      "type": "range",
-      "id": "speed",
-      "label": "t:settings.scroll_speed",
-      "min": 2,
-      "max": 10,
-      "default": 5,
-      "unit": "sec"
-    },
-    {
-      "type": "header",
-      "content": "t:content.appearance"
-    },
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.section_width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "placeholder": "t:settings.default"
-    },
-    {
-      "type": "range",
-      "id": "divider_width",
-      "label": "t:settings.divider_thickness",
-      "min": 0,
-      "max": 5,
-      "step": 0.5,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "divider_color",
-      "label": "t:settings.divider_color",
-      "placeholder": "t:settings.default",
-      "visible_if": "{{ section.settings.divider_width > 0 }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 15
-    }
-  ],
   "presets": [
     {
-      "name": "t:names.announcement_bar",
+      "name": "Announcement Bar (KENZ)",
       "blocks": {
         "announcement_1": {
           "type": "_announcement"

@@ -1,261 +1,296 @@
-{% liquid
-  if section.settings.background_color != blank
-    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
-  endif
-%}
+<footer class="mt-24 border-t border-border/60" id="Footer-{{ section.id }}">
+  <!-- Upper footer -->
+  <div class="bg-secondary/30">
+    <div class="mx-auto max-w-7xl px-6 py-16">
+      <div class="grid gap-14 md:grid-cols-12">
+        <!-- Brand column -->
+        <div class="md:col-span-4">
+          <!-- Brand mark -->
+          <div class="font-display text-4xl font-light tracking-[0.14em] uppercase">
+            {{ section.settings.logo_text | default: 'K' }}<span class="text-accent">{{ section.settings.logo_accent | default: 'ENZ' }}</span>
+            <span class="ml-2.5 text-[13px] tracking-[0.28em] text-muted-foreground align-middle">{{ section.settings.logo_subtext | default: 'Maison' }}</span>
+          </div>
 
-<div
-  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
-></div>
-<div
-  class="section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
->
-  {% liquid
-    assign total_blocks = section.blocks.size
+          <p class="mt-5 max-w-[280px] text-[13px] leading-relaxed text-muted-foreground font-light">
+            {{ section.settings.brand_description | default: 'Premium clothing designed with the workshops that craft them. Small batches, natural materials, built to outlast decades.' }}
+          </p>
 
-    # Grid layout calculations
-    assign grid_columns = total_blocks | at_most: 4
+          <!-- Newsletter -->
+          <div class="mt-8">
+            <p class="text-[11px] uppercase tracking-[0.22em] text-foreground/60 mb-3">
+              {{ section.settings.newsletter_tag | default: 'Join the inner circle' }}
+            </p>
+            {%- form 'customer', class: 'flex max-w-[300px] items-center border-b border-foreground/25 pb-2.5 transition-colors focus-within:border-accent' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              
+              {%- if form.posted_successfully? -%}
+                <p class="text-accent text-[13px] font-light">
+                  Thank you for subscribing.
+                </p>
+              {%- else -%}
+                <input
+                  type="email"
+                  name="contact[email]"
+                  value="{{ form.email }}"
+                  placeholder="{{ section.settings.newsletter_placeholder | default: 'your@email.com' }}"
+                  class="flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground/70 font-light border-none p-0 focus:ring-0"
+                  aria-label="Email for newsletter"
+                  required
+                >
+                <button
+                  type="submit"
+                  class="text-[11px] font-medium tracking-[0.18em] uppercase text-accent hover:text-foreground transition-colors duration-200 cursor-pointer ml-3 bg-transparent border-none p-0"
+                >
+                  {{ section.settings.newsletter_button_text | default: 'Subscribe' }}
+                </button>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
 
-    # Calculate last row counts using modulo arithmetic
-    # last_row_count = (total_blocks - 1) % N + 1
-    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
+          <!-- Social links -->
+          <div class="mt-8 flex items-center gap-4">
+            {%- assign instagram = section.settings.social_instagram | default: settings.social_instagram_link -%}
+            {%- assign twitter = section.settings.social_twitter | default: settings.social_twitter_link -%}
+            {%- assign facebook = section.settings.social_facebook | default: settings.social_facebook_link -%}
 
-    # Check if there are orphaned elements (single item in last row)
-    assign has_isolated_grid_item_desktop = false
-    assign has_isolated_grid_item_tablet = false
+            {%- if instagram != blank -%}
+              <a href="{{ instagram }}" aria-label="Instagram" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+              </a>
+            {%- endif -%}
+            {%- if twitter != blank -%}
+              <a href="{{ twitter }}" aria-label="Twitter / X" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+              </a>
+            {%- endif -%}
+            {%- if facebook != blank -%}
+              <a href="{{ facebook }}" aria-label="Facebook" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
 
-    if total_blocks > 4 and last_row_count == 1
-      assign has_isolated_grid_item_desktop = true
-    endif
+        <!-- Link columns -->
+        <div class="md:col-span-8 grid grid-cols-2 gap-10 sm:grid-cols-3">
+          <!-- Column 1: Shop -->
+          <div>
+            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
+              {{ section.settings.col_1_title | default: 'Shop' }}
+            </h4>
+            <ul class="space-y-3">
+              {%- for link in linklists[section.settings.col_1_menu].links -%}
+                <li>
+                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- else -%}
+                <!-- Fallbacks -->
+                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">New Arrivals</a></li>
+                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Women</a></li>
+                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Men</a></li>
+                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Footwear</a></li>
+                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Collections</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
 
-    if total_blocks == 5
-      assign has_isolated_grid_item_tablet = true
-    endif
-  %}
-  <div
-    class="
-      footer-content
-      spacing-style
-      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-    "
-    style="
-      {%  render 'spacing-style', settings: section.settings %}
-      --footer-gap: {{ section.settings.gap }}px;
-      --grid-columns: {{ grid_columns }};
-      --last-row-count: {{ last_row_count }};
-      --tablet-last-row-count: {{ tablet_last_row_count }};
-    "
-  >
-    {% content_for 'blocks' %}
+          <!-- Column 2: Maison -->
+          <div>
+            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
+              {{ section.settings.col_2_title | default: 'Maison' }}
+            </h4>
+            <ul class="space-y-3">
+              {%- for link in linklists[section.settings.col_2_menu].links -%}
+                <li>
+                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- else -%}
+                <!-- Fallbacks -->
+                <li><a href="/pages/about" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Our Story</a></li>
+                <li><a href="/pages/about" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Sourcing</a></li>
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Careers</a></li>
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Press</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <!-- Column 3: Help -->
+          <div>
+            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
+              {{ section.settings.col_3_title | default: 'Help' }}
+            </h4>
+            <ul class="space-y-3">
+              {%- for link in linklists[section.settings.col_3_menu].links -%}
+                <li>
+                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- else -%}
+                <!-- Fallbacks -->
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Shipping & Returns</a></li>
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Size Guide</a></li>
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Care Instructions</a></li>
+                <li><a href="/pages/contact" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Contact Us</a></li>
+                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Track Order</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-{% stylesheet %}
-  .footer-content {
-    contain: content;
-    content-visibility: auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--footer-gap);
-    align-items: start;
-  }
-
-  .footer-content .menu__heading__default {
-    font-weight: var(--font-heading--weight);
-  }
-
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .footer-content {
-      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
-      grid-auto-flow: row;
-    }
-
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-content--isolated-grid-item-tablet > :last-child {
-      grid-column: 1 / -1;
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .footer-content {
-      grid-template-columns: repeat(var(--grid-columns), 1fr);
-    }
-
-    /* Single item centered */
-    .footer-content[style*='--grid-columns: 1'] {
-      justify-items: center;
-    }
-
-    .footer-content--isolated-grid-item-desktop > :last-child {
-      grid-column: 1 / -1;
-    }
-  }
-{% endstylesheet %}
+  <!-- Bottom bar -->
+  <div class="border-t border-border/50 bg-secondary/20">
+    <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-6 py-5 text-[11px] text-muted-foreground sm:flex-row sm:items-center">
+      <div class="tracking-wide">
+        &copy; {{ 'now' | date: '%Y' }} <span class="font-medium uppercase tracking-[0.14em]">{{ section.settings.logo_text | default: 'K' }}{{ section.settings.logo_accent | default: 'ENZ' }} {{ section.settings.logo_subtext | default: 'Maison' }}</span>. All rights reserved.
+      </div>
+      <div class="flex flex-wrap items-center gap-4 uppercase tracking-[0.18em]">
+        {%- for link in linklists[section.settings.bottom_menu].links -%}
+          <a href="{{ link.url }}" class="hover:text-foreground transition-colors duration-200">{{ link.title }}</a>
+        {%- else -%}
+          <!-- Fallbacks -->
+          <a href="#" class="hover:text-foreground transition-colors duration-200">Privacy</a>
+          <a href="#" class="hover:text-foreground transition-colors duration-200">Terms</a>
+          <a href="#" class="hover:text-foreground transition-colors duration-200">Cookies</a>
+          <a href="#" class="hover:text-foreground transition-colors duration-200">Accessibility</a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</footer>
 
 {% schema %}
 {
-  "name": "t:names.footer",
-  "class": "section-wrapper",
-  "blocks": [
-    {
-      "type": "_divider"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "follow-on-shop"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "menu"
-    },
-    {
-      "type": "payment-icons"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "jumbo-text"
-    },
-    {
-      "type": "social-links"
-    },
-    {
-      "type": "email-signup"
-    }
-  ],
-  "enabled_on": {
-    "groups": ["footer"]
-  },
+  "name": "Footer (KENZ Maison)",
+  "tag": "footer",
+  "class": "shopify-section-footer-kenz",
   "settings": [
     {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
+      "type": "header",
+      "content": "Brand Details"
     },
     {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "K"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "default": "{{ settings.colors.foreground }}"
+      "type": "text",
+      "id": "logo_accent",
+      "label": "Logo Gold Accent",
+      "default": "ENZ"
+    },
+    {
+      "type": "text",
+      "id": "logo_subtext",
+      "label": "Logo Subtext",
+      "default": "Maison"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "Premium clothing designed with the workshops that craft them. Small batches, natural materials, built to outlast decades."
     },
     {
       "type": "header",
-      "content": "t:content.padding"
+      "content": "Newsletter Details"
     },
     {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "text",
+      "id": "newsletter_tag",
+      "label": "Newsletter Tag",
+      "default": "Join the inner circle"
     },
     {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter Placeholder",
+      "default": "your@email.com"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_text",
+      "label": "Newsletter Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "header",
+      "content": "Social Links Override"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "header",
+      "content": "Link Columns"
+    },
+    {
+      "type": "text",
+      "id": "col_1_title",
+      "label": "Column 1 Title",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "col_1_menu",
+      "label": "Column 1 Menu"
+    },
+    {
+      "type": "text",
+      "id": "col_2_title",
+      "label": "Column 2 Title",
+      "default": "Maison"
+    },
+    {
+      "type": "link_list",
+      "id": "col_2_menu",
+      "label": "Column 2 Menu"
+    },
+    {
+      "type": "text",
+      "id": "col_3_title",
+      "label": "Column 3 Title",
+      "default": "Help"
+    },
+    {
+      "type": "link_list",
+      "id": "col_3_menu",
+      "label": "Column 3 Menu"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "bottom_menu",
+      "label": "Bottom Bar Menu"
     }
   ],
   "presets": [
     {
-      "name": "t:names.footer",
-      "category": "t:categories.footer",
-      "settings": {
-        "gap": 20,
-        "padding-block-start": 36,
-        "padding-block-end": 36
-      },
-      "blocks": {
-        "newsletter-group": {
-          "type": "group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "gap": 6,
-            "width": "fill"
-          },
-          "blocks": {
-            "newsletter-heading": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.join_our_email_list",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "h3"
-              }
-            },
-            "newsletter-text": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.get_exclusive_deals_and_early_access_to_new_products",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "rte"
-              }
-            }
-          },
-          "block_order": ["newsletter-heading", "newsletter-text"]
-        },
-        "newsletter-form": {
-          "type": "email-signup",
-          "settings": {
-            "width": "fill"
-          }
-        }
-      },
-      "block_order": ["newsletter-group", "newsletter-form"]
+      "name": "Footer (KENZ Maison)"
     }
   ]
 }

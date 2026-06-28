@@ -66,16 +66,9 @@
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
     "content_for_index": [],
-    "badge_sold_out_background_color": "{{ settings.colors.color2 }}",
-    "palette_input_border": "{{ settings.colors.color3 }}",
-    "palette_variant_border": "{{ settings.colors.color3 }}",
-    "colors": {
-      "background": "#FAF9F7",
-      "foreground": "#1C1917",
-      "color1": "#B08D57",
-      "color2": "#F4F1EC",
-      "color3": "#E5E1DA"
-    },
+    "badge_sold_out_background_color": "{{ settings.color_palette.color2 }}",
+    "palette_input_border": "{{ settings.color_palette.color3 }}",
+    "palette_variant_border": "{{ settings.color_palette.color3 }}",
     "color_palette": {
       "background": "#FAF9F7",
       "foreground": "#1C1917",
@@ -86,16 +79,9 @@
   },
   "presets": {
     "Default": {
-      "badge_sold_out_background_color": "{{ settings.colors.color2 }}",
-      "palette_input_border": "{{ settings.colors.color3 }}",
-      "palette_variant_border": "{{ settings.colors.color3 }}",
-      "colors": {
-        "background": "#FAF9F7",
-        "foreground": "#1C1917",
-        "color1": "#B08D57",
-        "color2": "#F4F1EC",
-        "color3": "#E5E1DA"
-      },
+      "badge_sold_out_background_color": "{{ settings.color_palette.color2 }}",
+      "palette_input_border": "{{ settings.color_palette.color3 }}",
+      "palette_variant_border": "{{ settings.color_palette.color3 }}",
       "color_palette": {
         "background": "#FAF9F7",
         "foreground": "#1C1917",

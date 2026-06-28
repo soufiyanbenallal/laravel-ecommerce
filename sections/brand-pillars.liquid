@@ -1,0 +1,86 @@
+<section class="border-t border-border/40 py-20 bg-secondary/15" id="BrandPillars-{{ section.id }}">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="flex items-baseline gap-3 mb-3">
+      <span class="font-display text-[11px] text-accent tracking-[0.3em]">✦</span>
+      <span class="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{{ section.settings.subheading }}</span>
+    </div>
+    <h2 class="font-display text-4xl font-light md:text-5xl mb-12">
+      {{ section.settings.heading }}
+    </h2>
+    
+    <div class="grid gap-8 md:grid-cols-3">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="border border-border/50 p-8 hover:border-accent/40 transition-colors duration-300" {{ block.shopify_attributes }}>
+            <span class="font-display text-xs text-accent tracking-widest">0{{ forloop.index }}</span>
+            <h3 class="font-display text-2xl font-light mt-4 mb-3">{{ block.settings.title }}</h3>
+            <p class="text-[13px] font-light leading-relaxed text-muted-foreground">{{ block.settings.description }}</p>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <!-- Default fallback items if no blocks are present -->
+        {%- assign fallback_titles = "Artisan Craft,Natural Materials,Ethical Delivery" | split: "," -%}
+        {%- assign fallback_descs = "Sourced from family-owned workshops across Europe and North Africa, keeping ancient skills alive.,100% cashmere, organic linen, virgin wool, and vegetable-tanned leathers. No synthetics.,Carbon-neutral shipping, plastic-free packaging, and a lifetime repair program for all garments." | split: "," -%}
+        {%- for index in (0..2) -%}
+          <div class="border border-border/50 p-8 hover:border-accent/40 transition-colors duration-300">
+            <span class="font-display text-xs text-accent tracking-widest">0{{ index | plus: 1 }}</span>
+            <h3 class="font-display text-2xl font-light mt-4 mb-3">{{ fallback_titles[index] }}</h3>
+            <p class="text-[13px] font-light leading-relaxed text-muted-foreground">{{ fallback_descs[index] }}</p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Pillars",
+  "tag": "section",
+  "class": "section-brand-pillars",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our Pillars"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Values we stand by."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Artisan Craft"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Sourced from family-owned workshops across Europe and North Africa, keeping ancient skills alive."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Pillars",
+      "blocks": [
+        { "type": "pillar", "settings": { "title": "Artisan Craft", "description": "Sourced from family-owned workshops across Europe and North Africa, keeping ancient skills alive." } },
+        { "type": "pillar", "settings": { "title": "Natural Materials", "description": "100% cashmere, organic linen, virgin wool, and vegetable-tanned leathers. No synthetics." } },
+        { "type": "pillar", "settings": { "title": "Ethical Delivery", "description": "Carbon-neutral shipping, plastic-free packaging, and a lifetime repair program for all garments." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

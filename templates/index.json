@@ -26,13 +26,17 @@
         "link_url": "shopify://collections/all"
       }
     },
+    "divider_kenz_1": {
+      "type": "divider-kenz",
+      "settings": {}
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "settings": {
         "collection": "all",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 8,
+        "max_products": 4,
         "columns": 4,
         "mobile_columns": "2",
         "columns_gap": 8,
@@ -53,6 +57,64 @@
         "author": "— KENZ Maison, Founded 2019"
       }
     },
+    "editorial_promo_banner": {
+      "type": "editorial-promo-banner",
+      "settings": {
+        "image_position": "left",
+        "brand_mark": "KENZ · Featured",
+        "sub_tag": "Featured Edit",
+        "title_1": "The Knitwear",
+        "title_2": "Collection.",
+        "description": "Twelve pieces in cashmere, lambswool and merino — knitted in small mills across Scotland and Italy. Built to outlast a decade of winters.",
+        "button_label": "Shop the Edit",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "divider_kenz_2": {
+      "type": "divider-kenz",
+      "settings": {}
+    },
+    "home_collections": {
+      "type": "home-collections",
+      "settings": {
+        "subheading": "The Edits",
+        "heading": "Shop by Edit."
+      }
+    },
+    "product_list_bestsellers": {
+      "type": "product-list",
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "brand_pillars": {
+      "type": "brand-pillars",
+      "settings": {
+        "subheading": "Our Pillars",
+        "heading": "Values we stand by."
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "subheading": "The Experience",
+        "heading": "Worn. Kept. Repaired."
+      }
+    },
     "newsletter_cta": {
       "type": "newsletter-cta",
       "settings": {
@@ -66,8 +128,15 @@
     "editorial_hero",
     "marquee_strip",
     "lookbook_strip",
+    "divider_kenz_1",
     "product_list_fa6P9H",
     "manifesto_strip",
+    "editorial_promo_banner",
+    "divider_kenz_2",
+    "home_collections",
+    "product_list_bestsellers",
+    "brand_pillars",
+    "testimonials",
     "newsletter_cta"
   ]
 }

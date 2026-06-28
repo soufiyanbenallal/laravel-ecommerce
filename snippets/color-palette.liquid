@@ -9,7 +9,7 @@
   assign palette_darkest = '#000000'
   assign palette_darkest_brightness = 256
 
-  for palette_color in settings.colors
+  for palette_color in settings.color_palette
     if palette_color != blank and palette_color.alpha == 1
       assign b = palette_color | color_brightness
       if b > palette_lightest_brightness

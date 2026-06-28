@@ -1,0 +1,36 @@
+<div class="mx-auto max-w-7xl px-6 py-8" id="Divider-{{ section.id }}">
+  <div class="flex items-center gap-4">
+    <div class="h-px flex-1 bg-border/60" style="background-color: {{ section.settings.line_color | default: 'rgba(28, 25, 23, 0.1)' }};"></div>
+    <svg width="10" height="10" viewBox="0 0 10 10" class="shrink-0 rotate-45">
+      <rect x="2" y="2" width="6" height="6" fill="none" stroke="{{ section.settings.diamond_color | default: '#B08D57' }}" stroke-width="1" />
+    </svg>
+    <div class="h-px flex-1 bg-border/60" style="background-color: {{ section.settings.line_color | default: 'rgba(28, 25, 23, 0.1)' }};"></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "KENZ Divider",
+  "tag": "section",
+  "class": "section-kenz-divider",
+  "settings": [
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Line Color",
+      "default": "rgba(28, 25, 23, 0.1)"
+    },
+    {
+      "type": "color",
+      "id": "diamond_color",
+      "label": "Diamond Color",
+      "default": "#B08D57"
+    }
+  ],
+  "presets": [
+    {
+      "name": "KENZ Divider"
+    }
+  ]
+}
+{% endschema %}

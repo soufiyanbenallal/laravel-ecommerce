@@ -8,22 +8,7 @@
         "<ABSOLUTE_PATH_TO_REPO>"
       ]
     },
-    "mysql": {
-      "command": "npx",
-      "type": "stdio",
-      "args": [
-        "-y",
-        "@berthojoris/mcp-mysql-server"
-      ],
-      "env": {
-        "DB_HOST": "127.0.0.1",
-        "DB_PORT": "3306",
-        "DB_USER": "<MYSQL_USER>",
-        "DB_PASSWORD": "<MYSQL_PASSWORD>",
-        "DB_NAME": "<MYSQL_DATABASE>",
-        "MCP_PERMISSIONS": "list,read,utility"
-      }
-    },
+ 
     "sqlite": {
       "command": "npx",
       "args": [
@@ -38,6 +23,13 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-fetch"
+      ]
+    },
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@shopify/dev-mcp@latest"
       ]
     }
   }

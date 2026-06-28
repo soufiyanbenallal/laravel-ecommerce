@@ -8,27 +8,18 @@
         "/Users/user/Documents/AS/laravel-ecommerce"
       ]
     },
-    "mysql": {
-      "command": "npx",
-      "type": "stdio",
-      "args": [
-        "-y",
-        "@berthojoris/mcp-mysql-server"
-      ],
-      "env": {
-        "DB_HOST": "127.0.0.1",
-        "DB_PORT": "3306",
-        "DB_USER": "sail",
-        "DB_PASSWORD": "password",
-        "DB_NAME": "laravel",
-        "MCP_PERMISSIONS": "list,read,utility"
-      }
-    },
     "fetch": {
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-fetch"
+      ]
+    },
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@shopify/dev-mcp@latest"
       ]
     }
   }

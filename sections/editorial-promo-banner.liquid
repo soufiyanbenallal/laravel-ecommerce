@@ -1,0 +1,137 @@
+<section class="mx-auto max-w-7xl px-6 py-20" id="PromoBanner-{{ section.id }}">
+  <div class="relative grid items-stretch overflow-hidden {% if section.settings.image_position == 'right' %}md:grid-cols-[2fr_3fr]{% else %}md:grid-cols-[3fr_2fr]{% endif %}">
+    <!-- Image Column -->
+    <div class="overflow-hidden {% if section.settings.image_position == 'right' %}md:order-2{% endif %}">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          alt="{{ section.settings.title_1 | escape }}"
+          loading="lazy"
+          class="h-full min-h-[400px] w-full object-cover md:aspect-auto transition-transform duration-[1200ms] hover:scale-[1.02]"
+        >
+      {%- else -%}
+        <!-- Fallback to asset atelier.jpg -->
+        <img
+          src="{{ 'atelier.jpg' | asset_url }}"
+          alt="KENZ Maison — Atelier"
+          loading="lazy"
+          class="h-full min-h-[400px] w-full object-cover md:aspect-auto transition-transform duration-[1200ms] hover:scale-[1.02]"
+        >
+      {%- endif -%}
+    </div>
+
+    <!-- Content Column -->
+    <div class="flex flex-col justify-center bg-foreground p-10 md:p-14 {% if section.settings.image_position == 'right' %}md:order-1{% endif %}">
+      <!-- Mini Brand Mark -->
+      <div class="mb-6 font-display text-[11px] tracking-[0.3em] uppercase text-background/30">
+        {{ section.settings.brand_mark }}
+      </div>
+      
+      <!-- Sub-tag -->
+      <p class="text-[10px] uppercase tracking-[0.28em] text-accent mb-4">
+        {{ section.settings.sub_tag }}
+      </p>
+      
+      <!-- Main Title -->
+      <h3 class="font-display text-3xl font-light leading-[1.1] text-background md:text-4xl">
+        {{ section.settings.title_1 }}<br />
+        <em class="not-italic text-accent">{{ section.settings.title_2 }}</em>
+      </h3>
+      
+      <!-- Description -->
+      <p class="mt-5 text-[13px] leading-relaxed text-background/55 font-light">
+        {{ section.settings.description }}
+      </p>
+      
+      <!-- Button Link -->
+      {%- if section.settings.button_link != blank -%}
+        <a
+          href="{{ section.settings.button_link }}"
+          class="mt-8 self-start inline-flex items-center gap-2.5 border border-background/20 px-6 py-3.5 text-[11px] uppercase tracking-[0.22em] font-medium text-background hover:bg-background hover:text-foreground transition-all duration-300 cursor-pointer"
+        >
+          {{ section.settings.button_label }}
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Promo Banner",
+  "tag": "section",
+  "class": "section-editorial-promo-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "brand_mark",
+      "label": "Mini Brand Mark",
+      "default": "KENZ · Featured"
+    },
+    {
+      "type": "text",
+      "id": "sub_tag",
+      "label": "Sub-tag Label",
+      "default": "Featured Edit"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title Part 1",
+      "default": "The Knitwear"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title Part 2 (Serif Accent)",
+      "default": "Collection."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Twelve pieces in cashmere, lambswool and merino — knitted in small mills across Scotland and Italy. Built to outlast a decade of winters."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop the Edit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Promo Banner"
+    }
+  ]
+}
+{% endschema %}
