@@ -1,33 +1,45 @@
-# Laravel Ecommerce (Shopper + Inertia + React TS)
+# Hydrogen template: Skeleton
 
-Modern ecommerce starter built with Laravel 12, Shopper, Inertia, React TypeScript, Tailwind CSS v4, and Filament.
+Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **minimal setup** of components, queries and tooling to get started with Hydrogen.
 
-## Stack
-- Laravel 12
-- Shopper Framework 2.1
-- Inertia.js (Laravel + React)
-- React 19 + TypeScript
-- Tailwind CSS v4
-- Filament 3
+[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
+[Get familiar with Remix](https://remix.run/docs/en/v1)
 
-## Quick Start
+## What's included
+
+- Remix
+- Hydrogen
+- Oxygen
+- Vite
+- Shopify CLI
+- ESLint
+- Prettier
+- GraphQL generator
+- TypeScript and JavaScript flavors
+- Minimal setup of components and routes
+
+## Getting started
+
+**Requirements:**
+
+- Node.js version 18.0.0 or higher
+
 ```bash
-composer setup
-composer dev
+pnpm create @shopify/hydrogen@latest
 ```
 
-## Project Docs
-- `AGENTS.md`
-- `docs/ARCHITECTURE.md`
-- `docs/FRONTEND.md`
-- `docs/BACKEND.md`
-- `docs/LOCAL_DEV.md`
-- `docs/MCP_AND_SKILLS.md`
+## Building for production
 
-## MCP + Skills
-- MCP templates: `.mcp.example.json`, `.mcp.json`
-- Skills: `.ai/skills/*`
+```bash
+pnpm run build
+```
 
-## Current Notes
-- Homepage data is currently mocked in `app/Http/Controllers/HomeController.php`.
-- Shopper and Filament are installed and ready for domain feature expansion.
+## Local development
+
+```bash
+pnpm run dev
+```
+
+## Setup for using Customer Account API (`/account` section)
+
+Follow step 1 and 2 of <https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/hydrogen#step-1-set-up-a-public-domain-for-local-development>
