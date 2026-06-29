@@ -9,16 +9,14 @@
     "build": "vite build && pnpm run build:css",
     "build:css": "npx @tailwindcss/cli -i src/app.css -o assets/app.css --minify",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.tsx",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "lint": "eslint src --ext .ts,.tsx --fix",
     "format": "biome format --write src",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "push": "shopify theme push --store wevente.myshopify.com --theme 161373585661 --password shptka_7032c0e6d70c419670c4fac14878c769 --allow-live",
-    "pull": "shopify theme pull --store wevente.myshopify.com --theme 161373585661 --password shptka_7032c0e6d70c419670c4fac14878c769",
-    "prepare": "husky"
+    "pull": "shopify theme pull --store wevente.myshopify.com --theme 161373585661 --password shptka_7032c0e6d70c419670c4fac14878c769"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -34,7 +32,6 @@
     "react-hook-form": "^7.54.0",
     "tailwind-merge": "^2.6.0",
     "three": "^0.185.0",
-    "zod": "^3.24.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
