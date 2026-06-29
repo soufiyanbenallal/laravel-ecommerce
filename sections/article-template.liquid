@@ -1,0 +1,438 @@
+{%- comment -%}
+  sections/article-template.liquid
+  Blog article page template
+{%- endcomment -%}
+
+<div
+  class="article-template"
+  data-section-id="{{ section.id }}"
+  data-section-type="article-template"
+>
+  <article class="article" itemscope itemtype="http://schema.org/BlogPosting">
+    {%- comment -%} Article Header {%- endcomment -%}
+    <header class="article__header">
+      <div class="article__header-inner">
+        <div class="article__meta">
+          {%- if article.tags.size > 0 -%}
+            <span class="article__tag">{{ article.tags.first }}</span>
+          {%- endif -%}
+          <time class="article__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: "%B %d, %Y" }}
+          </time>
+          {%- if section.settings.show_author -%}
+            <span class="article__author">by {{ article.author }}</span>
+          {%- endif -%}
+        </div>
+
+        <h1 class="article__title" itemprop="headline">{{ article.title }}</h1>
+
+        {%- if article.excerpt != blank -%}
+          <p class="article__excerpt" itemprop="description">{{ article.excerpt | strip_html }}</p>
+        {%- endif -%}
+      </div>
+    </header>
+
+    {%- comment -%} Featured Image {%- endcomment -%}
+    {%- if article.image -%}
+      <div class="article__featured-image">
+        <img
+          src="{{ article.image | image_url: width: 1400 }}"
+          alt="{{ article.image.alt | default: article.title }}"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          loading="eager"
+          itemprop="image"
+        >
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Article Content {%- endcomment -%}
+    <div class="article__content" itemprop="articleBody">
+      {{ article.content }}
+    </div>
+
+    {%- comment -%} Article Footer {%- endcomment -%}
+    <footer class="article__footer">
+      {%- comment -%} Share {%- endcomment -%}
+      <div class="article__share">
+        <span class="article__share-label">Share:</span>
+        <div class="article__share-links">
+          <a
+            href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ article.url }}&text={{ article.title }}"
+            class="article__share-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Share on Twitter"
+          >
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M22 4C21.0424 4.67548 19.9821 5.19211 18.86 5.52997C18.3296 4.93656 17.6684 4.48785 16.93 4.22593C16.1916 3.96401 15.4016 3.89783 14.63 4.03393C13.8584 4.17003 13.1349 4.5047 12.5356 5.00469C11.9363 5.50469 11.4869 6.15357 11.236 6.87679C10.9851 7.60001 10.9435 8.37194 11.116 9.10997C9.24077 8.96887 7.41698 8.45562 5.79565 7.61196C4.17433 6.7683 2.80289 5.62046 1.79 4.25997C1.44167 4.86396 1.25781 5.54608 1.2583 6.24197C1.2583 6.93786 1.44273 7.61896 1.79 8.22197C2.70897 8.08748 3.59321 7.76744 4.4 7.27997V7.27997C4.39996 7.92494 4.21397 8.55565 3.86499 9.09485C3.51601 9.63405 3.01947 10.0601 2.435 10.32C3.20139 10.5293 4.00021 10.564 4.372 10.568C3.69511 11.1194 3.16639 11.8203 2.83359 12.6017C2.50079 13.3831 2.37505 14.2191 2.469 15.04C2.93325 15.6837 3.53399 16.2101 4.22199 16.578C4.90999 16.946 5.66699 17.145 6.44 17.16C5.74027 17.7093 4.91849 18.0941 4.042 18.288C3.16551 18.4819 2.25696 18.4799 1.38 18.282C2.12575 18.7661 2.94838 19.0963 3.81 19.254C2.75019 20.0906 1.93594 21.1813 1.46738 22.4036C0.998831 23.626 0.896273 24.9322 1.17072 26.1995C1.44516 27.4669 2.08528 28.6442 3.00999 29.58C3.79599 30.328 4.72199 30.888 5.72399 31.224C6.72599 31.56 7.77999 31.666 8.82 31.536C16.38 31.14 22.5 24.876 22.5 17.28C22.5 17.064 22.492 16.848 22.476 16.632C23.5128 15.8747 24.3955 14.9428 25.08 13.884C24.0254 14.3497 22.9113 14.617 21.78 14.676C22.8808 13.9388 23.6768 12.7925 24.0029 11.4762C24.329 10.1599 24.1629 8.77793 23.542 7.59197C24.5523 6.40873 25.2021 4.98622 25.41 3.47997C24.5492 3.96895 23.6172 4.30893 22.648 4.48797L22 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a
+            href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"
+            class="article__share-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Share on Facebook"
+          >
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a
+            href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ article.url }}&media={{ article.image | image_url: width: 1200 }}&description={{ article.title }}"
+            class="article__share-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Share on Pinterest"
+          >
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C6.477 2 2 6.477 2 12C2 16.237 4.467 19.867 8.084 21.348C8.061 19.628 8.176 18.168 8.536 16.812L7.38 12.372C7.38 12.372 7.68 11.772 7.68 10.872C7.68 9.432 8.52 8.352 9.6 8.352C10.56 8.352 11.04 9.072 11.04 10.032C11.04 11.112 10.32 12.732 9.96 14.232C9.66 15.492 10.68 16.512 11.94 16.512C14.28 16.512 16.02 14.052 16.02 10.572C16.02 7.812 13.98 5.952 11.16 5.952C8.04 5.952 6.24 8.292 6.24 10.872C6.24 11.892 6.66 12.972 7.2 13.632C7.32 13.752 7.32 13.812 7.26 13.992C7.14 14.532 7.08 14.772 6.96 15.252C6.84 15.732 6.48 16.692 6.42 16.932C6.36 17.172 6.12 17.232 5.88 17.112C4.32 16.332 3.36 14.472 3.36 12.252C3.36 8.832 5.88 5.292 10.56 5.292C14.34 5.292 17.22 7.992 17.22 11.532C17.22 15.852 14.46 19.432 10.68 19.432C9.48 19.432 8.34 18.792 7.92 18.072L7.2 21.012C6.96 21.852 6.42 22.932 5.88 23.652C7.02 23.952 8.22 24.132 9.48 24.132C15.006 24.132 19.5 19.638 19.5 14.004C19.5 8.37 15.006 3.876 9.48 3.876" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {%- comment -%} Author Bio {%- endcomment -%}
+      {%- if section.settings.show_author_bio -%}
+        <div class="article__author-bio">
+          <div class="article__author-avatar">
+            {{ article.author | slice: 0 }}
+          </div>
+          <div class="article__author-info">
+            <span class="article__author-name">{{ article.author }}</span>
+            <p class="article__author-description">
+              Contributing writer for {{ shop.name }}.
+            </p>
+          </div>
+        </div>
+      {%- endif -%}
+    </footer>
+
+    {%- comment -%} Navigation {%- endcomment -%}
+    <nav class="article__navigation">
+      {%- if article.previous -%}
+        <a href="{{ article.previous.url }}" class="article__nav-link article__nav-link--prev">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="article__nav-label">Previous Article</span>
+          <span class="article__nav-title">{{ article.previous.title }}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if article.next -%}
+        <a href="{{ article.next.url }}" class="article__nav-link article__nav-link--next">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="article__nav-label">Next Article</span>
+          <span class="article__nav-title">{{ article.next.title }}</span>
+        </a>
+      {%- endif -%}
+    </nav>
+  </article>
+</div>
+
+<style>
+  .article-template {
+    padding-top: 100px;
+  }
+
+  @media (min-width: 768px) {
+    .article-template {
+      padding-top: 120px;
+    }
+  }
+
+  /* Header */
+  .article__header {
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .article__header {
+      padding: 4rem 3rem 3rem;
+    }
+  }
+
+  .article__header-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .article__meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--color-muted, #78716C);
+  }
+
+  .article__tag {
+    padding: 0.25rem 0.75rem;
+    background-color: var(--color-accent, #CA8A04);
+    color: white;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .article__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .article__title {
+      font-size: 2.75rem;
+    }
+  }
+
+  .article__excerpt {
+    font-size: 1.125rem;
+    color: var(--color-muted, #78716C);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Featured Image */
+  .article__featured-image {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+  }
+
+  .article__featured-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Content */
+  .article__content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .article__content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .article__content h2 {
+    font-family: var(--font-heading, serif);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 3rem 0 1.5rem;
+  }
+
+  .article__content h3 {
+    font-family: var(--font-heading, serif);
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+  }
+
+  .article__content img {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+  }
+
+  .article__content blockquote {
+    border-left: 3px solid var(--color-accent, #CA8A04);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-muted, #78716C);
+  }
+
+  .article__content ul,
+  .article__content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .article__content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .article__content a {
+    color: var(--color-accent, #CA8A04);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .article__content a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Footer */
+  .article__footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    border-top: 1px solid var(--color-border, #E7E5E4);
+  }
+
+  /* Share */
+  .article__share {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .article__share-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .article__share-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .article__share-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border, #E7E5E4);
+    color: var(--color-muted, #78716C);
+    transition: all 0.2s;
+  }
+
+  .article__share-link:hover {
+    border-color: var(--color-foreground, #0C0A09);
+    color: var(--color-foreground, #0C0A09);
+  }
+
+  .article__share-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Author Bio */
+  .article__author-bio {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--color-muted, #F5F5F4);
+  }
+
+  .article__author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--color-accent, #CA8A04);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .article__author-name {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .article__author-description {
+    font-size: 0.875rem;
+    color: var(--color-muted, #78716C);
+    margin: 0;
+  }
+
+  /* Navigation */
+  .article__navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .article__nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-muted, #F5F5F4);
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+
+  .article__nav-link:hover {
+    background-color: var(--color-border, #E7E5E4);
+  }
+
+  .article__nav-link--next {
+    text-align: right;
+  }
+
+  .article__nav-link--next svg {
+    margin-left: auto;
+  }
+
+  .article__nav-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-muted, #78716C);
+  }
+
+  .article__nav-title {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .article__nav-link svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-muted, #78716C);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Article Template",
+  "tag": "section",
+  "class": "section-article",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show Author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_bio",
+      "label": "Show Author Bio",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article Template"
+    }
+  ]
+}
+{% endschema %}

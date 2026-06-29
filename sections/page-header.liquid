@@ -1,0 +1,144 @@
+{%- comment -%}
+  sections/page-header.liquid
+  Reusable page header section
+{%- endcomment -%}
+
+<div
+  class="page-header"
+  data-section-id="{{ section.id }}"
+  data-section-type="page-header"
+>
+  <div class="page-header__inner">
+    {%- if section.settings.subheading != blank -%}
+      <p class="page-header__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h1 class="page-header__title">{{ section.settings.title }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="page-header__description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li aria-current="page">{{ section.settings.title | default: page_title }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .page-header {
+    padding: 100px 1.5rem 3rem;
+    background-color: var(--color-muted, #F5F5F4);
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .page-header {
+      padding: 120px 3rem 4rem;
+    }
+  }
+
+  .page-header__inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-header__subheading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent, #CA8A04);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .page-header__title {
+      font-size: 3rem;
+    }
+  }
+
+  .page-header__description {
+    font-size: 1rem;
+    color: var(--color-muted, #78716C);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .page-header__breadcrumb {
+    font-size: 0.75rem;
+  }
+
+  .page-header__breadcrumb ol {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .page-header__breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-muted, #78716C);
+  }
+
+  .page-header__breadcrumb li:not(:last-child)::after {
+    content: '/';
+  }
+
+  .page-header__breadcrumb a {
+    color: var(--color-muted, #78716C);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .page-header__breadcrumb a:hover {
+    color: var(--color-foreground, #0C0A09);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Page Header",
+  "tag": "section",
+  "class": "section-page-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Header"
+    }
+  ]
+}
+{% endschema %}

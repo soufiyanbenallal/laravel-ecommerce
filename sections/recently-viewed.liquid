@@ -1,0 +1,183 @@
+{%- comment -%}
+  sections/recently-viewed.liquid
+{%- endcomment -%}
+
+<div
+  class="recently-viewed"
+  data-section-id="{{ section.id }}"
+  data-section-type="recently-viewed"
+>
+  <div class="recently-viewed__inner">
+    <recently-viewed-products
+      data-title="{{ section.settings.title }}"
+      data-limit="{{ section.settings.limit }}"
+    ></recently-viewed-products>
+  </div>
+</div>
+
+<script>
+  class RecentlyViewedProducts extends HTMLElement {
+    constructor() {
+      super();
+      this.title = this.dataset.title || 'Recently Viewed';
+      this.limit = parseInt(this.dataset.limit) || 10;
+      this.storageKey = 'kenz-recently-viewed';
+      this.render();
+    }
+
+    getRecentlyViewed() {
+      try {
+        const stored = localStorage.getItem(this.storageKey);
+        return stored ? JSON.parse(stored) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    render() {
+      const products = this.getRecentlyViewed().slice(0, this.limit);
+
+      if (products.length === 0) {
+        this.style.display = 'none';
+        return;
+      }
+
+      this.innerHTML = `
+        <div class="recently-viewed__header">
+          <h2 class="recently-viewed__title">${this.title}</h2>
+        </div>
+        <div class="recently-viewed__grid">
+          ${products.map(product => `
+            <a href="/products/${product.handle}" class="recently-viewed__item">
+              <div class="recently-viewed__image">
+                ${product.image ? `<img src="${product.image}" alt="${product.title}" loading="lazy">` : ''}
+              </div>
+              <h3 class="recently-viewed__product-title">${product.title}</h3>
+              <p class="recently-viewed__price">$${product.price}</p>
+            </a>
+          `).join('')}
+        </div>
+      `;
+    }
+  }
+
+  customElements.define('recently-viewed-products', RecentlyViewedProducts);
+</script>
+
+<style>
+  .recently-viewed {
+    padding: 3rem 1rem;
+    background-color: var(--color-muted, #F5F5F4);
+  }
+
+  @media (min-width: 768px) {
+    .recently-viewed {
+      padding: 4rem 2rem;
+    }
+  }
+
+  .recently-viewed__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .recently-viewed__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .recently-viewed__title {
+    font-family: var(--font-heading, serif);
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  .recently-viewed__grid {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .recently-viewed__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .recently-viewed__item {
+    flex-shrink: 0;
+    width: 180px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (min-width: 768px) {
+    .recently-viewed__item {
+      width: 220px;
+    }
+  }
+
+  .recently-viewed__image {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: white;
+    margin-bottom: 0.75rem;
+  }
+
+  .recently-viewed__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .recently-viewed__item:hover .recently-viewed__image img {
+    transform: scale(1.05);
+  }
+
+  .recently-viewed__product-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    line-clamp: 1;
+  }
+
+  .recently-viewed__item:hover .recently-viewed__product-title {
+    color: var(--color-accent, #CA8A04);
+  }
+
+  .recently-viewed__price {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Recently Viewed",
+  "tag": "section",
+  "class": "section-recently-viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "default": 8,
+      "step": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed"
+    }
+  ]
+}
+{% endschema %}

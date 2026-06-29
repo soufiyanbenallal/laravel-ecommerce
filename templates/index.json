@@ -1,142 +1,96 @@
 {
   "sections": {
-    "editorial_hero": {
-      "type": "editorial-hero",
+    "hero": {
+      "type": "hero",
       "settings": {
-        "subheading": "Autumn / Winter 2025 — Vol. 07",
-        "title_1": "The Art of",
-        "title_2": "Dressing Well.",
-        "description": "Premium clothing sourced from artisan workshops across Europe and North Africa — made to last, not to be replaced.",
-        "button_label": "Explore Collection",
-        "button_link": "shopify://collections/all",
-        "story_label": "Our Story",
-        "story_link": "shopify://pages/about"
+        "subheading": "New Collection 2024",
+        "title": "Discover Your Style",
+        "description": "Explore our curated collection of premium fashion pieces crafted with exceptional attention to detail.",
+        "button_label": "Shop Now",
+        "button_url": "/collections/all",
+        "button_label_2": "Lookbook",
+        "button_url_2": "/pages/lookbook",
+        "full_height": true,
+        "overlay_opacity": 30
       }
     },
-    "marquee_strip": {
-      "type": "marquee-strip",
-      "settings": {}
-    },
-    "lookbook_strip": {
-      "type": "lookbook-strip",
+    "collection-list": {
+      "type": "collection-list",
       "settings": {
-        "subheading": "The Lookbook",
-        "heading": "Wear the story.",
-        "link_text": "All Looks",
-        "link_url": "shopify://collections/all"
+        "title": "Shop by Category"
       }
     },
-    "divider_kenz_1": {
-      "type": "divider-kenz",
-      "settings": {}
-    },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "featured-collection-1": {
+      "type": "featured-collection",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "title": "New Arrivals",
+        "limit": 4
       }
     },
-    "manifesto_strip": {
-      "type": "manifesto-strip",
+    "split-section-1": {
+      "type": "split-section",
       "settings": {
-        "blockquote": "\"We believe the most sustainable act of fashion is buying less, and wearing it more.\"",
-        "author": "— KENZ Maison, Founded 2019"
+        "subheading": "Our Story",
+        "title": "Crafted with Purpose",
+        "description": "<p>Every piece in our collection is designed with intention. We believe in timeless fashion that transcends seasons and trends.</p><p>From sustainable materials to ethical production, we're committed to creating clothing that looks good and does good.</p>",
+        "button_label": "Learn More",
+        "button_url": "/pages/about",
+        "show_features": true,
+        "feature_1": "Sustainable Materials",
+        "feature_2": "Ethical Production",
+        "feature_3": "Timeless Design",
+        "feature_4": "Premium Quality"
       }
     },
-    "editorial_promo_banner": {
-      "type": "editorial-promo-banner",
+    "rich-text-1": {
+      "type": "rich-text",
       "settings": {
-        "image_position": "left",
-        "brand_mark": "KENZ · Featured",
-        "sub_tag": "Featured Edit",
-        "title_1": "The Knitwear",
-        "title_2": "Collection.",
-        "description": "Twelve pieces in cashmere, lambswool and merino — knitted in small mills across Scotland and Italy. Built to outlast a decade of winters.",
-        "button_label": "Shop the Edit",
-        "button_link": "shopify://collections/all"
+        "subheading": "Why Choose Us",
+        "title": "The KENZ Difference",
+        "content": "<p>We don't just make clothes. We craft experiences. Each piece is thoughtfully designed to empower your personal style while maintaining the highest standards of quality and sustainability.</p>",
+        "center_text": true,
+        "button_label": "Shop Collection",
+        "button_url": "/collections/all"
       }
     },
-    "divider_kenz_2": {
-      "type": "divider-kenz",
-      "settings": {}
-    },
-    "home_collections": {
-      "type": "home-collections",
+    "featured-collection-2": {
+      "type": "featured-collection",
       "settings": {
-        "subheading": "The Edits",
-        "heading": "Shop by Edit."
-      }
-    },
-    "product_list_bestsellers": {
-      "type": "product-list",
-      "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "brand_pillars": {
-      "type": "brand-pillars",
-      "settings": {
-        "subheading": "Our Pillars",
-        "heading": "Values we stand by."
+        "title": "Best Sellers",
+        "limit": 4
       }
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {
-        "subheading": "The Experience",
-        "heading": "Worn. Kept. Repaired."
+        "title": "What Our Customers Say"
       }
     },
-    "newsletter_cta": {
-      "type": "newsletter-cta",
+    "newsletter": {
+      "type": "newsletter",
       "settings": {
-        "heading": "Join the inner circle. Receive the Edit first.",
-        "subheading": "Early access to new collections, exclusive pieces, and notes from the workshop.",
-        "footer_text": "No spam. Unsubscribe anytime."
+        "title": "Stay in Touch",
+        "description": "Subscribe to our newsletter for exclusive offers, new arrivals, and style inspiration.",
+        "button_label": "Subscribe"
+      }
+    },
+    "blog-featured": {
+      "type": "blog-featured",
+      "settings": {
+        "title": "From the Journal",
+        "limit": 3
       }
     }
   },
   "order": [
-    "editorial_hero",
-    "marquee_strip",
-    "lookbook_strip",
-    "divider_kenz_1",
-    "product_list_fa6P9H",
-    "manifesto_strip",
-    "editorial_promo_banner",
-    "divider_kenz_2",
-    "home_collections",
-    "product_list_bestsellers",
-    "brand_pillars",
+    "hero",
+    "collection-list",
+    "featured-collection-1",
+    "split-section-1",
+    "rich-text-1",
+    "featured-collection-2",
     "testimonials",
-    "newsletter_cta"
+    "newsletter",
+    "blog-featured"
   ]
 }

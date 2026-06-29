@@ -1,296 +1,406 @@
-<footer class="mt-24 border-t border-border/60" id="Footer-{{ section.id }}">
-  <!-- Upper footer -->
-  <div class="bg-secondary/30">
-    <div class="mx-auto max-w-7xl px-6 py-16">
-      <div class="grid gap-14 md:grid-cols-12">
-        <!-- Brand column -->
-        <div class="md:col-span-4">
-          <!-- Brand mark -->
-          <div class="font-display text-4xl font-light tracking-[0.14em] uppercase">
-            {{ section.settings.logo_text | default: 'K' }}<span class="text-accent">{{ section.settings.logo_accent | default: 'ENZ' }}</span>
-            <span class="ml-2.5 text-[13px] tracking-[0.28em] text-muted-foreground align-middle">{{ section.settings.logo_subtext | default: 'Maison' }}</span>
+{%- comment -%}
+  sections/footer.liquid
+{%- endcomment -%}
+
+<footer class="footer" id="footer-{{ section.id }}">
+  <div class="footer__inner">
+    {%- comment -%} Newsletter {%- endcomment -%}
+    {%- if section.settings.show_newsletter -%}
+      <div class="footer__newsletter">
+        <div class="footer__newsletter-content">
+          <h3 class="footer__newsletter-title">{{ section.settings.newsletter_title }}</h3>
+          <p class="footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+        </div>
+        <form class="footer__newsletter-form" method="post" action="/contact#footer-newsletter" id="footer-newsletter">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="footer__newsletter-input-group">
+            <input
+              type="email"
+              name="contact[email]"
+              class="footer__newsletter-input"
+              placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+              autocomplete="email"
+              required
+              aria-label="{{ 'general.newsletter.label' | t }}"
+            >
+            <button type="submit" class="footer__newsletter-button">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </div>
+        </form>
+      </div>
+    {%- endif -%}
 
-          <p class="mt-5 max-w-[280px] text-[13px] leading-relaxed text-muted-foreground font-light">
-            {{ section.settings.brand_description | default: 'Premium clothing designed with the workshops that craft them. Small batches, natural materials, built to outlast decades.' }}
-          </p>
-
-          <!-- Newsletter -->
-          <div class="mt-8">
-            <p class="text-[11px] uppercase tracking-[0.22em] text-foreground/60 mb-3">
-              {{ section.settings.newsletter_tag | default: 'Join the inner circle' }}
-            </p>
-            {%- form 'customer', class: 'flex max-w-[300px] items-center border-b border-foreground/25 pb-2.5 transition-colors focus-within:border-accent' -%}
-              <input type="hidden" name="contact[tags]" value="newsletter">
-              
-              {%- if form.posted_successfully? -%}
-                <p class="text-accent text-[13px] font-light">
-                  Thank you for subscribing.
-                </p>
-              {%- else -%}
-                <input
-                  type="email"
-                  name="contact[email]"
-                  value="{{ form.email }}"
-                  placeholder="{{ section.settings.newsletter_placeholder | default: 'your@email.com' }}"
-                  class="flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground/70 font-light border-none p-0 focus:ring-0"
-                  aria-label="Email for newsletter"
-                  required
-                >
-                <button
-                  type="submit"
-                  class="text-[11px] font-medium tracking-[0.18em] uppercase text-accent hover:text-foreground transition-colors duration-200 cursor-pointer ml-3 bg-transparent border-none p-0"
-                >
-                  {{ section.settings.newsletter_button_text | default: 'Subscribe' }}
-                </button>
+    {%- comment -%} Footer Links {%- endcomment -%}
+    <div class="footer__links">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'link_list' -%}
+            <div class="footer__links-column" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h4 class="footer__links-title">{{ block.settings.title }}</h4>
               {%- endif -%}
-            {%- endform -%}
-          </div>
 
-          <!-- Social links -->
-          <div class="mt-8 flex items-center gap-4">
-            {%- assign instagram = section.settings.social_instagram | default: settings.social_instagram_link -%}
-            {%- assign twitter = section.settings.social_twitter | default: settings.social_twitter_link -%}
-            {%- assign facebook = section.settings.social_facebook | default: settings.social_facebook_link -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="footer__links-list">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li class="footer__links-item">
+                      <a href="{{ link.url }}" class="footer__links-link">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
 
-            {%- if instagram != blank -%}
-              <a href="{{ instagram }}" aria-label="Instagram" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+      {%- comment -%} Social Links {%- endcomment -%}
+      {%- if section.settings.show_social -%}
+        <div class="footer__social">
+          <h4 class="footer__links-title">{{ 'layout.footer.follow_us' | t }}</h4>
+          <div class="footer__social-links">
+            {%- if settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" class="footer__social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                </svg>
               </a>
             {%- endif -%}
-            {%- if twitter != blank -%}
-              <a href="{{ twitter }}" aria-label="Twitter / X" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+
+            {%- if settings.social_facebook != blank -%}
+              <a href="{{ settings.social_facebook }}" class="footer__social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </a>
             {%- endif -%}
-            {%- if facebook != blank -%}
-              <a href="{{ facebook }}" aria-label="Facebook" class="text-muted-foreground hover:text-accent transition-colors duration-200 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+
+            {%- if settings.social_twitter != blank -%}
+              <a href="{{ settings.social_twitter }}" class="footer__social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 4C21.0424 4.67548 19.9821 5.19211 18.86 5.52997C18.3296 4.93656 17.6684 4.48785 16.93 4.22593C16.1916 3.96401 15.4016 3.89783 14.63 4.03393C13.8584 4.17003 13.1349 4.5047 12.5356 5.00469C11.9363 5.50469 11.4869 6.15357 11.236 6.87679C10.9851 7.60001 10.9435 8.37194 11.116 9.10997C9.24077 8.96887 7.41698 8.45562 5.79565 7.61196C4.17433 6.7683 2.80289 5.62046 1.79 4.25997C1.44167 4.86396 1.25781 5.54608 1.2583 6.24197C1.2583 6.93786 1.44273 7.61896 1.79 8.22197C2.70897 8.08748 3.59321 7.76744 4.4 7.27997V7.27997C4.39996 7.92494 4.21397 8.55565 3.86499 9.09485C3.51601 9.63405 3.01947 10.0601 2.435 10.32C3.20139 10.5293 4.00021 10.564 4.372 10.568C3.69511 11.1194 3.16639 11.8203 2.83359 12.6017C2.50079 13.3831 2.37505 14.2191 2.469 15.04C2.93325 15.6837 3.53399 16.2101 4.22199 16.578C4.90999 16.946 5.66699 17.145 6.44 17.16C5.74027 17.7093 4.91849 18.0941 4.042 18.288C3.16551 18.4819 2.25696 18.4799 1.38 18.282C2.12575 18.7661 2.94838 19.0963 3.81 19.254C2.75019 20.0906 1.93594 21.1813 1.46738 22.4036C0.998831 23.626 0.896273 24.9322 1.17072 26.1995C1.44516 27.4669 2.08528 28.6442 3.00999 29.58C3.79599 30.328 4.72199 30.888 5.72399 31.224C6.72599 31.56 7.77999 31.666 8.82 31.536C16.38 31.14 22.5 24.876 22.5 17.28C22.5 17.064 22.492 16.848 22.476 16.632C23.5128 15.8747 24.3955 14.9428 25.08 13.884C24.0254 14.3497 22.9113 14.617 21.78 14.676C22.8808 13.9388 23.6768 12.7925 24.0029 11.4762C24.329 10.1599 24.1629 8.77793 23.542 7.59197C24.5523 6.40873 25.2021 4.98622 25.41 3.47997C24.5492 3.96895 23.6172 4.30893 22.648 4.48797L22 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            {%- endif -%}
+
+            {%- if settings.social_tiktok != blank -%}
+              <a href="{{ settings.social_tiktok }}" class="footer__social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V5C15 3.89543 15.8954 3 17 3C18.1046 3 19 3.89543 19 5V12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12V8C5 6.89543 5.89543 6 7 6C8.10457 6 9 6.89543 9 8V12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </a>
             {%- endif -%}
           </div>
         </div>
-
-        <!-- Link columns -->
-        <div class="md:col-span-8 grid grid-cols-2 gap-10 sm:grid-cols-3">
-          <!-- Column 1: Shop -->
-          <div>
-            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
-              {{ section.settings.col_1_title | default: 'Shop' }}
-            </h4>
-            <ul class="space-y-3">
-              {%- for link in linklists[section.settings.col_1_menu].links -%}
-                <li>
-                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
-                    {{ link.title }}
-                  </a>
-                </li>
-              {%- else -%}
-                <!-- Fallbacks -->
-                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">New Arrivals</a></li>
-                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Women</a></li>
-                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Men</a></li>
-                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Footwear</a></li>
-                <li><a href="/collections/all" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Collections</a></li>
-              {%- endfor -%}
-            </ul>
-          </div>
-
-          <!-- Column 2: Maison -->
-          <div>
-            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
-              {{ section.settings.col_2_title | default: 'Maison' }}
-            </h4>
-            <ul class="space-y-3">
-              {%- for link in linklists[section.settings.col_2_menu].links -%}
-                <li>
-                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
-                    {{ link.title }}
-                  </a>
-                </li>
-              {%- else -%}
-                <!-- Fallbacks -->
-                <li><a href="/pages/about" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Our Story</a></li>
-                <li><a href="/pages/about" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Sourcing</a></li>
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Careers</a></li>
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Press</a></li>
-              {%- endfor -%}
-            </ul>
-          </div>
-
-          <!-- Column 3: Help -->
-          <div>
-            <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground mb-5">
-              {{ section.settings.col_3_title | default: 'Help' }}
-            </h4>
-            <ul class="space-y-3">
-              {%- for link in linklists[section.settings.col_3_menu].links -%}
-                <li>
-                  <a href="{{ link.url }}" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">
-                    {{ link.title }}
-                  </a>
-                </li>
-              {%- else -%}
-                <!-- Fallbacks -->
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Shipping & Returns</a></li>
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Size Guide</a></li>
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Care Instructions</a></li>
-                <li><a href="/pages/contact" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Contact Us</a></li>
-                <li><a href="#" class="text-[13px] font-light text-foreground/75 hover:text-accent transition-colors duration-200">Track Order</a></li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        </div>
-      </div>
+      {%- endif -%}
     </div>
-  </div>
 
-  <!-- Bottom bar -->
-  <div class="border-t border-border/50 bg-secondary/20">
-    <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-3 px-6 py-5 text-[11px] text-muted-foreground sm:flex-row sm:items-center">
-      <div class="tracking-wide">
-        &copy; {{ 'now' | date: '%Y' }} <span class="font-medium uppercase tracking-[0.14em]">{{ section.settings.logo_text | default: 'K' }}{{ section.settings.logo_accent | default: 'ENZ' }} {{ section.settings.logo_subtext | default: 'Maison' }}</span>. All rights reserved.
+    {%- comment -%} Bottom Bar {%- endcomment -%}
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        <p>&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ 'layout.footer.all_rights_reserved' | t }}</p>
       </div>
-      <div class="flex flex-wrap items-center gap-4 uppercase tracking-[0.18em]">
-        {%- for link in linklists[section.settings.bottom_menu].links -%}
-          <a href="{{ link.url }}" class="hover:text-foreground transition-colors duration-200">{{ link.title }}</a>
-        {%- else -%}
-          <!-- Fallbacks -->
-          <a href="#" class="hover:text-foreground transition-colors duration-200">Privacy</a>
-          <a href="#" class="hover:text-foreground transition-colors duration-200">Terms</a>
-          <a href="#" class="hover:text-foreground transition-colors duration-200">Cookies</a>
-          <a href="#" class="hover:text-foreground transition-colors duration-200">Accessibility</a>
-        {%- endfor -%}
-      </div>
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="footer__payments">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </footer>
 
+<style>
+  .footer {
+    background-color: var(--color-foreground, #0C0A09);
+    color: var(--color-background, #FAFAF9);
+    padding: 4rem 1rem 2rem;
+  }
+
+  .footer__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  /* Newsletter */
+  .footer__newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__newsletter {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .footer__newsletter-title {
+    font-family: var(--font-heading, serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__newsletter-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+  }
+
+  .footer__newsletter-form {
+    flex-shrink: 0;
+  }
+
+  .footer__newsletter-input-group {
+    display: flex;
+    gap: 0;
+  }
+
+  .footer__newsletter-input {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: none;
+    border-radius: 0.375rem 0 0 0.375rem;
+    color: white;
+    font-size: 0.875rem;
+    min-width: 250px;
+  }
+
+  .footer__newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__newsletter-button {
+    padding: 0.75rem 1rem;
+    background-color: var(--color-accent, #CA8A04);
+    border: none;
+    border-radius: 0 0.375rem 0.375rem 0;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .footer__newsletter-button:hover {
+    background-color: color-mix(in srgb, var(--color-accent, #CA8A04) 90%, black);
+  }
+
+  /* Links */
+  .footer__links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__links {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .footer__links-title {
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer__links-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__links-link {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer__links-link:hover {
+    color: var(--color-accent, #CA8A04);
+  }
+
+  /* Social */
+  .footer__social {
+    grid-column: 1 / -1;
+  }
+
+  .footer__social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.2s;
+  }
+
+  .footer__social-link:hover {
+    color: var(--color-accent, #CA8A04);
+  }
+
+  /* Bottom */
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  .footer__copyright p {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__payments {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .footer__payment-icon {
+    height: 24px;
+    width: auto;
+    opacity: 0.7;
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Footer (KENZ Maison)",
-  "tag": "footer",
-  "class": "shopify-section-footer-kenz",
+  "name": "Footer",
+  "tag": "section",
+  "class": "section-footer",
   "settings": [
     {
       "type": "header",
-      "content": "Brand Details"
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter",
+      "default": true
     },
     {
       "type": "text",
-      "id": "logo_text",
-      "label": "Logo Text",
-      "default": "K"
+      "id": "newsletter_title",
+      "label": "Newsletter Title",
+      "default": "Stay in Touch"
     },
     {
       "type": "text",
-      "id": "logo_accent",
-      "label": "Logo Gold Accent",
-      "default": "ENZ"
-    },
-    {
-      "type": "text",
-      "id": "logo_subtext",
-      "label": "Logo Subtext",
-      "default": "Maison"
-    },
-    {
-      "type": "textarea",
-      "id": "brand_description",
-      "label": "Brand Description",
-      "default": "Premium clothing designed with the workshops that craft them. Small batches, natural materials, built to outlast decades."
+      "id": "newsletter_text",
+      "label": "Newsletter Text",
+      "default": "Subscribe to receive updates, access to exclusive deals, and more."
     },
     {
       "type": "header",
-      "content": "Newsletter Details"
+      "content": "Social"
     },
     {
-      "type": "text",
-      "id": "newsletter_tag",
-      "label": "Newsletter Tag",
-      "default": "Join the inner circle"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_placeholder",
-      "label": "Newsletter Placeholder",
-      "default": "your@email.com"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_button_text",
-      "label": "Newsletter Button Text",
-      "default": "Subscribe"
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show Social Links",
+      "default": true
     },
     {
       "type": "header",
-      "content": "Social Links Override"
+      "content": "Payments"
     },
     {
-      "type": "url",
-      "id": "social_instagram",
-      "label": "Instagram URL"
-    },
-    {
-      "type": "url",
-      "id": "social_twitter",
-      "label": "Twitter URL"
-    },
-    {
-      "type": "url",
-      "id": "social_facebook",
-      "label": "Facebook URL"
-    },
-    {
-      "type": "header",
-      "content": "Link Columns"
-    },
-    {
-      "type": "text",
-      "id": "col_1_title",
-      "label": "Column 1 Title",
-      "default": "Shop"
-    },
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Icons",
+      "default": true
+    }
+  ],
+  "blocks": [
     {
       "type": "link_list",
-      "id": "col_1_menu",
-      "label": "Column 1 Menu"
-    },
-    {
-      "type": "text",
-      "id": "col_2_title",
-      "label": "Column 2 Title",
-      "default": "Maison"
-    },
-    {
-      "type": "link_list",
-      "id": "col_2_menu",
-      "label": "Column 2 Menu"
-    },
-    {
-      "type": "text",
-      "id": "col_3_title",
-      "label": "Column 3 Title",
-      "default": "Help"
-    },
-    {
-      "type": "link_list",
-      "id": "col_3_menu",
-      "label": "Column 3 Menu"
-    },
-    {
-      "type": "header",
-      "content": "Bottom Bar Menu"
-    },
-    {
-      "type": "link_list",
-      "id": "bottom_menu",
-      "label": "Bottom Bar Menu"
+      "name": "Link List",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Footer (KENZ Maison)"
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop",
+            "menu": "footer"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Company",
+            "menu": "footer"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support",
+            "menu": "footer"
+          }
+        }
+      ]
     }
   ]
 }

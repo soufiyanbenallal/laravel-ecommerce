@@ -1,0 +1,107 @@
+{
+  "_cart-C6lM_P_i.js": {
+    "file": "cart-C6lM_P_i.js",
+    "name": "cart",
+    "imports": [
+      "_index-CT7cca0K.js",
+      "_vanilla-m3Xdu9cz.js"
+    ]
+  },
+  "_index-CT7cca0K.js": {
+    "file": "index-CT7cca0K.js",
+    "name": "index",
+    "imports": [
+      "src/main.tsx"
+    ]
+  },
+  "_utils-U4FFVzQ1.js": {
+    "file": "utils-U4FFVzQ1.js",
+    "name": "utils"
+  },
+  "_vanilla-m3Xdu9cz.js": {
+    "file": "vanilla-m3Xdu9cz.js",
+    "name": "vanilla"
+  },
+  "src/islands/3d/Hero3DIsland.tsx": {
+    "file": "Hero3DIsland-C227A55B.js",
+    "name": "Hero3DIsland",
+    "src": "src/islands/3d/Hero3DIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js",
+      "_vanilla-m3Xdu9cz.js"
+    ]
+  },
+  "src/islands/cart/CartIsland.tsx": {
+    "file": "CartIsland-f9rm0yoe.js",
+    "name": "CartIsland",
+    "src": "src/islands/cart/CartIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js",
+      "_utils-U4FFVzQ1.js",
+      "_cart-C6lM_P_i.js",
+      "_vanilla-m3Xdu9cz.js"
+    ]
+  },
+  "src/islands/header/HeaderIsland.tsx": {
+    "file": "HeaderIsland-CZ1qE_O5.js",
+    "name": "HeaderIsland",
+    "src": "src/islands/header/HeaderIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js",
+      "_utils-U4FFVzQ1.js",
+      "_cart-C6lM_P_i.js",
+      "_vanilla-m3Xdu9cz.js"
+    ]
+  },
+  "src/islands/product/ProductIsland.tsx": {
+    "file": "ProductIsland-KHHCjl9A.js",
+    "name": "ProductIsland",
+    "src": "src/islands/product/ProductIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js"
+    ]
+  },
+  "src/islands/search/SearchIsland.tsx": {
+    "file": "SearchIsland-nhW43tbR.js",
+    "name": "SearchIsland",
+    "src": "src/islands/search/SearchIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js"
+    ]
+  },
+  "src/islands/wishlist/WishlistIsland.tsx": {
+    "file": "WishlistIsland-DA_VN7m6.js",
+    "name": "WishlistIsland",
+    "src": "src/islands/wishlist/WishlistIsland.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.tsx",
+      "_index-CT7cca0K.js",
+      "_utils-U4FFVzQ1.js"
+    ]
+  },
+  "src/main.tsx": {
+    "file": "app.js",
+    "name": "main",
+    "src": "src/main.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/islands/header/HeaderIsland.tsx",
+      "src/islands/product/ProductIsland.tsx",
+      "src/islands/cart/CartIsland.tsx",
+      "src/islands/search/SearchIsland.tsx",
+      "src/islands/wishlist/WishlistIsland.tsx",
+      "src/islands/3d/Hero3DIsland.tsx"
+    ]
+  }
+}

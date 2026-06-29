@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "register-page": {
+      "type": "register-page"
+    }
+  },
+  "order": ["register-page"]
+}

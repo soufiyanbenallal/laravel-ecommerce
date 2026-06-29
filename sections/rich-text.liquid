@@ -1,0 +1,229 @@
+{%- comment -%}
+  sections/rich-text.liquid
+  Editorial rich text section
+{%- endcomment -%}
+
+<div
+  class="rich-text"
+  data-section-id="{{ section.id }}"
+  data-section-type="rich-text"
+>
+  <div class="rich-text__inner {% if section.settings.center_text %}rich-text__inner--center{% endif %}">
+    {%- if section.settings.subheading != blank -%}
+      <p class="rich-text__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="rich-text__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.content != blank -%}
+      <div class="rich-text__content">{{ section.settings.content }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="rich-text__buttons">
+        <a
+          href="{{ section.settings.button_url | default: '#' }}"
+          class="rich-text__button"
+        >
+          {{ section.settings.button_label }}
+        </a>
+
+        {%- if section.settings.button_label_2 != blank -%}
+          <a
+            href="{{ section.settings.button_url_2 | default: '#' }}"
+            class="rich-text__button rich-text__button--secondary"
+          >
+            {{ section.settings.button_label_2 }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .rich-text {
+    padding: 4rem 1.5rem;
+    background-color: var(--color-background, #FAFAF9);
+  }
+
+  @media (min-width: 768px) {
+    .rich-text {
+      padding: 6rem 3rem;
+    }
+  }
+
+  .rich-text__inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .rich-text__inner--center {
+    text-align: center;
+  }
+
+  /* Typography */
+  .rich-text__subheading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent, #CA8A04);
+    margin-bottom: 1rem;
+  }
+
+  .rich-text__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .rich-text__title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .rich-text__content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-muted, #78716C);
+  }
+
+  .rich-text__content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .rich-text__content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .rich-text__content h3 {
+    font-family: var(--font-heading, serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-foreground, #0C0A09);
+    margin-bottom: 1rem;
+  }
+
+  .rich-text__content ul,
+  .rich-text__content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .rich-text__content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .rich-text__content blockquote {
+    border-left: 3px solid var(--color-accent, #CA8A04);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-foreground, #0C0A09);
+  }
+
+  /* Buttons */
+  .rich-text__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .rich-text__inner--center .rich-text__buttons {
+    justify-content: center;
+  }
+
+  .rich-text__button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 1.75rem;
+    background-color: var(--color-foreground, #0C0A09);
+    color: var(--color-background, #FAFAF9);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .rich-text__button:hover {
+    opacity: 0.9;
+  }
+
+  .rich-text__button--secondary {
+    background-color: transparent;
+    color: var(--color-foreground, #0C0A09);
+    border: 1px solid var(--color-border, #E7E5E4);
+  }
+
+  .rich-text__button--secondary:hover {
+    border-color: var(--color-foreground, #0C0A09);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Rich Text",
+  "tag": "section",
+  "class": "section-rich-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Story"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "center_text",
+      "label": "Center Text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Second Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url_2",
+      "label": "Second Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich Text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,328 @@
+{%- comment -%}
+  sections/image-with-text.liquid
+  Full-width image with text overlay
+{%- endcomment -%}
+
+<div
+  class="image-with-text"
+  data-section-id="{{ section.id }}"
+  data-section-type="image-with-text"
+>
+  <div class="image-with-text__media">
+    {%- if section.settings.image != blank -%}
+      <img
+        class="image-with-text__image"
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        alt="{{ section.settings.image.alt | default: section.settings.title }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="image-with-text__placeholder">
+        {{ 'lifestyle-2' | placeholder_svg_tag }}
+      </div>
+    {%- endif -%}
+
+    <div
+      class="image-with-text__overlay"
+      style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}; background-color: {{ section.settings.overlay_color }}"
+    ></div>
+  </div>
+
+  <div class="image-with-text__content {{ section.settings.text_position }}">
+    <div class="image-with-text__text">
+      {%- if section.settings.subheading != blank -%}
+        <p class="image-with-text__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.title != blank -%}
+        <h2 class="image-with-text__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <p class="image-with-text__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a
+          href="{{ section.settings.button_url | default: '#' }}"
+          class="image-with-text__button"
+        >
+          {{ section.settings.button_label }}
+          <svg class="image-with-text__button-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .image-with-text {
+    position: relative;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .image-with-text {
+      min-height: 600px;
+    }
+  }
+
+  /* Media */
+  .image-with-text__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .image-with-text__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .image-with-text__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      135deg,
+      var(--color-muted, #F5F5F4) 0%,
+      var(--color-border, #E7E5E4) 100%
+    );
+  }
+
+  .image-with-text__placeholder svg {
+    width: 80px;
+    height: 80px;
+    color: var(--color-muted, #78716C);
+  }
+
+  .image-with-text__overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Content */
+  .image-with-text__content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    min-height: inherit;
+    padding: 3rem 1.5rem;
+    color: var(--color-background, #FAFAF9);
+  }
+
+  @media (min-width: 768px) {
+    .image-with-text__content {
+      padding: 4rem 3rem;
+    }
+  }
+
+  /* Positions */
+  .image-with-text__content.bottom-left {
+    align-items: flex-end;
+  }
+
+  .image-with-text__content.bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .image-with-text__content.bottom-right {
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .image-with-text__content.center-left {
+    align-items: center;
+  }
+
+  .image-with-text__content.center-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .image-with-text__content.center-right {
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .image-with-text__content.top-left {
+    align-items: flex-start;
+  }
+
+  .image-with-text__content.top-center {
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .image-with-text__content.top-right {
+    align-items: flex-start;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  /* Text */
+  .image-with-text__text {
+    max-width: 600px;
+  }
+
+  .image-with-text__subheading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  .image-with-text__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .image-with-text__title {
+      font-size: 3.5rem;
+    }
+  }
+
+  .image-with-text__description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+
+  .image-with-text__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--color-background, #FAFAF9);
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .image-with-text__button:hover {
+    background-color: var(--color-accent, #CA8A04);
+    color: var(--color-background, #FAFAF9);
+  }
+
+  .image-with-text__button-icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .image-with-text__button:hover .image-with-text__button-icon {
+    transform: translateX(4px);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Image with Text",
+  "tag": "section",
+  "class": "section-image-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: 1920x1080px"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#0C0A09"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text Position",
+      "options": [
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right", "label": "Bottom Right" },
+        { "value": "center-left", "label": "Center Left" },
+        { "value": "center-center", "label": "Center" },
+        { "value": "center-right", "label": "Center Right" },
+        { "value": "top-left", "label": "Top Left" },
+        { "value": "top-center", "label": "Top Center" },
+        { "value": "top-right", "label": "Top Right" }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Image with Text"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text"
+    }
+  ]
+}
+{% endschema %}

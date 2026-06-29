@@ -1,65 +1,206 @@
-<section class="border-y border-border/40 py-20 bg-background" id="Testimonials-{{ section.id }}">
-  <div class="mx-auto max-w-7xl px-6">
-    <div class="flex items-baseline gap-3 mb-3">
-      <span class="font-display text-[11px] text-accent tracking-[0.3em]">✦</span>
-      <span class="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">{{ section.settings.subheading }}</span>
-    </div>
-    <h2 class="font-display text-4xl font-light md:text-5xl mb-12">
-      {{ section.settings.heading }}
-    </h2>
+{%- comment -%}
+  sections/testimonials.liquid
+  Customer testimonials carousel
+{%- endcomment -%}
 
-    <div class="grid gap-8 md:grid-cols-3">
-      {%- if section.blocks.size > 0 -%}
-        {%- for block in section.blocks -%}
-          <div class="flex flex-col justify-between border-b border-border/40 pb-8 md:border-b-0 md:border-r md:border-border/30 md:pb-0 md:pr-8 last:border-0 last:pr-0" {{ block.shopify_attributes }}>
-            <div>
-              <div class="flex gap-0.5 text-accent mb-4">
-                {%- for i in (1..5) -%}
-                  <svg class="h-3 w-3 fill-current" viewBox="0 0 24 24" stroke-width="0">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                {%- endfor -%}
+<div
+  class="testimonials"
+  data-section-id="{{ section.id }}"
+  data-section-type="testimonials"
+>
+  <div class="testimonials__inner">
+    {%- if section.settings.title != blank -%}
+      <div class="testimonials__header">
+        <h2 class="testimonials__title">{{ section.settings.title }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="testimonials__grid">
+      {%- for block in section.blocks -%}
+        <div class="testimonials__item" {{ block.shopify_attributes }}>
+          <div class="testimonials__stars">
+            {%- for i in (1..5) -%}
+              <svg class="testimonials__star" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+              </svg>
+            {%- endfor -%}
+          </div>
+
+          {%- if block.settings.quote != blank -%}
+            <blockquote class="testimonials__quote">
+              {{ block.settings.quote }}
+            </blockquote>
+          {%- endif -%}
+
+          <div class="testimonials__author">
+            {%- if block.settings.image != blank -%}
+              <img
+                class="testimonials__avatar"
+                src="{{ block.settings.image | image_url: width: 100 }}"
+                alt="{{ block.settings.author }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="testimonials__avatar-placeholder">
+                {{ block.settings.author | slice: 0 }}
               </div>
-              <blockquote class="font-display text-lg font-light leading-relaxed italic text-foreground/80">
-                "{{ block.settings.quote }}"
-              </blockquote>
-            </div>
-            <div class="mt-6">
-              <p class="text-[12px] font-medium uppercase tracking-[0.16em] text-foreground">{{ block.settings.author }}</p>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">Verified Buyer · {{ block.settings.product_name }}</p>
+            {%- endif -%}
+
+            <div class="testimonials__author-info">
+              <span class="testimonials__author-name">{{ block.settings.author }}</span>
+              {%- if block.settings.title != blank -%}
+                <span class="testimonials__author-title">{{ block.settings.title }}</span>
+              {%- endif -%}
             </div>
           </div>
-        {%- endfor -%}
-      {%- else -%}
-        <!-- Fallbacks -->
-        {%- assign fallback_quotes = "The wool overcoat is a masterpiece. The weight, the drape, the stitching—it rivals coats three times the price.,KENZ has completely changed how I buy. I have three of their shirts now, and they look better after a year of wear than when they arrived.,The lifetime repair service is real. They fixed a snag in my cashmere sweater within a week. Outstanding commitment." | split: "," -%}
-        {%- assign fallback_authors = "Marcus K., Berlin,Elena R., Milan,Thomas S., London" | split: "," -%}
-        {%- assign fallback_products = "Double-Breasted Wool Coat,Artisan Linen Shirt,Artisan Knit Sweater" | split: "," -%}
-        
-        {%- for index in (0..2) -%}
-          <div class="flex flex-col justify-between border-b border-border/40 pb-8 md:border-b-0 md:border-r md:border-border/30 md:pb-0 md:pr-8 last:border-0 last:pr-0">
-            <div>
-              <div class="flex gap-0.5 text-accent mb-4">
-                {%- for i in (1..5) -%}
-                  <svg class="h-3 w-3 fill-current" viewBox="0 0 24 24" stroke-width="0">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                {%- endfor -%}
-              </div>
-              <blockquote class="font-display text-lg font-light leading-relaxed italic text-foreground/80">
-                "{{ fallback_quotes[index] }}"
-              </blockquote>
+
+          {%- if block.settings.verified -%}
+            <div class="testimonials__verified">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Verified Purchase
             </div>
-            <div class="mt-6">
-              <p class="text-[12px] font-medium uppercase tracking-[0.16em] text-foreground">{{ fallback_authors[index] }}</p>
-              <p class="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">Verified Buyer · {{ fallback_products[index] }}</p>
-            </div>
-          </div>
-        {%- endfor -%}
-      {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
     </div>
   </div>
-</section>
+</div>
+
+<style>
+  .testimonials {
+    padding: 4rem 1.5rem;
+    background-color: var(--color-muted, #F5F5F4);
+  }
+
+  @media (min-width: 768px) {
+    .testimonials {
+      padding: 6rem 3rem;
+    }
+  }
+
+  .testimonials__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .testimonials__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .testimonials__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+  }
+
+  /* Grid */
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .testimonials__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Item */
+  .testimonials__item {
+    background: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .testimonials__stars {
+    display: flex;
+    gap: 0.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .testimonials__star {
+    width: 16px;
+    height: 16px;
+    color: var(--color-accent, #CA8A04);
+  }
+
+  .testimonials__quote {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-foreground, #0C0A09);
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .testimonials__author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .testimonials__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .testimonials__avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--color-accent, #CA8A04);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .testimonials__author-name {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .testimonials__author-title {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-muted, #78716C);
+  }
+
+  .testimonials__verified {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border, #E7E5E4);
+    font-size: 0.75rem;
+    color: var(--color-muted, #78716C);
+  }
+
+  .testimonials__verified svg {
+    width: 14px;
+    height: 14px;
+    color: #16A34A;
+  }
+</style>
 
 {% schema %}
 {
@@ -69,39 +210,43 @@
   "settings": [
     {
       "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "The Experience"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Worn. Kept. Repaired."
+      "id": "title",
+      "label": "Title",
+      "default": "What Our Customers Say"
     }
   ],
   "blocks": [
     {
       "type": "testimonial",
-      "name": "Testimonial Block",
+      "name": "Testimonial",
       "settings": [
         {
           "type": "textarea",
           "id": "quote",
           "label": "Quote",
-          "default": "The wool overcoat is a masterpiece. The weight, the drape, the stitching—it rivals coats three times the price."
+          "default": "Absolutely love this piece! The quality is exceptional and it fits perfectly."
         },
         {
           "type": "text",
           "id": "author",
-          "label": "Author",
-          "default": "Marcus K., Berlin"
+          "label": "Author Name",
+          "default": "Sarah M."
         },
         {
           "type": "text",
-          "id": "product_name",
-          "label": "Product Referenced",
-          "default": "Double-Breasted Wool Coat"
+          "id": "title",
+          "label": "Title/Location"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Author Photo"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified Purchase",
+          "default": true
         }
       ]
     }
@@ -110,9 +255,9 @@
     {
       "name": "Testimonials",
       "blocks": [
-        { "type": "testimonial", "settings": { "quote": "The wool overcoat is a masterpiece. The weight, the drape, the stitching—it rivals coats three times the price.", "author": "Marcus K., Berlin", "product_name": "Double-Breasted Wool Coat" } },
-        { "type": "testimonial", "settings": { "quote": "KENZ has completely changed how I buy. I have three of their shirts now, and they look better after a year of wear than when they arrived.", "author": "Elena R., Milan", "product_name": "Artisan Linen Shirt" } },
-        { "type": "testimonial", "settings": { "quote": "The lifetime repair service is real. They fixed a snag in my cashmere sweater within a week. Outstanding commitment.", "author": "Thomas S., London", "product_name": "Artisan Knit Sweater" } }
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
       ]
     }
   ]

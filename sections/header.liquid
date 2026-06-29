@@ -1,255 +1,435 @@
-<header
-  class="sticky top-0 z-40 border-b border-border/50 bg-background/90 backdrop-blur-xl transition-shadow duration-300"
-  id="Header-{{ section.id }}"
->
-  <div class="mx-auto flex h-[60px] max-w-7xl items-center justify-between px-6">
-    <!-- Left Navigation (Desktop) -->
-    <nav class="hidden flex-1 items-center gap-7 text-[13px] font-light tracking-wide md:flex" aria-label="Primary">
-      {%- for link in linklists[section.settings.menu].links -%}
-        <div class="group relative py-4">
-          <a
-            href="{{ link.url }}"
-            class="text-foreground/65 hover:text-accent transition-colors duration-200 py-2 cursor-pointer font-light tracking-wide"
-          >
-            {{ link.title }}
-          </a>
-          
-          {%- if link.links != blank -%}
-            <!-- Mega Menu Panel -->
-            <div class="absolute left-[-150px] top-full z-50 hidden group-hover:block border-b border-border/50 bg-background/95 backdrop-blur-xl shadow-[0_24px_48px_-20px_rgba(28,25,23,0.18)] min-w-[700px] p-10 transition-all duration-300">
-              <div class="grid grid-cols-12 gap-10">
-                <!-- Feature column -->
-                <div class="col-span-5">
-                  {%- assign feat_collection = link.object -%}
-                  {%- assign feat_image = feat_collection.featured_image | default: section.settings.fallback_feature_image -%}
-                  <div class="overflow-hidden bg-secondary">
-                    {%- if feat_image != blank -%}
-                      <img
-                        src="{{ feat_image | image_url: width: 500 }}"
-                        alt="{{ link.title }}"
-                        loading="lazy"
-                        class="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
-                      >
-                    {%- else -%}
-                      <div class="aspect-[4/3] w-full bg-neutral-200 flex items-center justify-center text-muted-foreground">
-                        No Image
-                      </div>
-                    {%- endif -%}
-                  </div>
-                  <div class="mt-4 flex items-center justify-between">
-                    <div>
-                      <div class="text-[10px] uppercase tracking-[0.26em] text-accent">Featured</div>
-                      <div class="mt-1 font-display text-xl font-light">{{ link.title }} Edit</div>
-                    </div>
-                    <a
-                      href="{{ link.url }}"
-                      class="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-[0.16em] text-foreground/60 hover:text-accent transition-colors duration-200"
-                    >
-                      Shop &rarr;
-                    </a>
-                  </div>
-                </div>
-                
-                <!-- Links columns -->
-                <div class="col-span-7 grid grid-cols-3 gap-8">
-                  {%- for sub_link in link.links -%}
-                    <div>
-                      <h4 class="text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
-                        {{ sub_link.title }}
-                      </h4>
-                      <ul class="mt-5 space-y-3">
-                        {%- for grandchild_link in sub_link.links -%}
-                          <li>
-                            <a
-                              href="{{ grandchild_link.url }}"
-                              class="text-[13px] font-light text-foreground/70 transition-colors duration-200 hover:text-accent"
-                            >
-                              {{ grandchild_link.title }}
-                            </a>
-                          </li>
-                        {%- else -%}
-                          <!-- If no grandchildren, link to sub_link itself -->
-                          <li>
-                            <a
-                              href="{{ sub_link.url }}"
-                              class="text-[13px] font-light text-foreground/70 transition-colors duration-200 hover:text-accent"
-                            >
-                              All {{ sub_link.title }}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    </div>
-                  {%- endfor -%}
-                </div>
-              </div>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
-    </nav>
+{%- comment -%}
+  sections/header.liquid
+  Static header that works without JavaScript
+{%- endcomment -%}
 
-    <!-- Mobile Burger Menu -->
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    {%- comment -%} Mobile Menu Toggle {%- endcomment -%}
     <button
-      type="button"
-      class="md:hidden text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
-      onclick="document.getElementById('MobileMenuDrawer').classList.remove('hidden')"
-      aria-label="Open navigation menu"
+      class="site-header__menu-toggle"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Menu"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
 
-    <!-- Center Brand Mark -->
-    <div class="absolute left-1/2 -translate-x-1/2">
-      <a href="/" class="group flex items-center gap-0 select-none cursor-pointer">
-        <span class="font-display text-[22px] tracking-[0.16em] uppercase text-foreground transition-opacity duration-300 group-hover:opacity-80" style="font-weight: 500; letter-spacing: 0.18em;">
-          K<span class="text-accent">ENZ</span>
-        </span>
-        <span class="ml-2.5 mt-[3px] hidden text-[9px] tracking-[0.28em] uppercase text-muted-foreground sm:block" style="letter-spacing: 0.3em;">
-          Maison
-        </span>
-      </a>
+    {%- comment -%} Logo {%- endcomment -%}
+    <div class="site-header__logo">
+      {%- if settings.logo != blank -%}
+        <a href="/" class="site-header__logo-link">
+          <img
+            src="{{ settings.logo | image_url: width: 200 }}"
+            alt="{{ shop.name }}"
+            class="site-header__logo-img"
+            width="{{ settings.logo_width }}"
+            loading="eager"
+          >
+        </a>
+      {%- else -%}
+        <a href="/" class="site-header__logo-text">{{ shop.name }}</a>
+      {%- endif -%}
     </div>
 
-    <!-- Right Icons -->
-    <div class="flex flex-1 items-center justify-end gap-4 text-foreground/70">
-      <!-- Search Trigger -->
-      <button
-        aria-label="Search"
-        on:click="#search-modal/showDialog"
-        aria-haspopup="dialog"
-        class="hover:text-foreground transition-colors duration-200 cursor-pointer p-1"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-[17px] w-[17px]"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </button>
+    {%- comment -%} Desktop Navigation {%- endcomment -%}
+    <nav class="site-header__nav" aria-label="Main navigation">
+      <ul class="site-header__nav-list">
+        {%- for link in linklists['main-menu'].links -%}
+          <li class="site-header__nav-item">
+            <a href="{{ link.url }}" class="site-header__nav-link">
+              {{ link.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
 
-      <!-- Wishlist Link -->
-      <a
-        href="/pages/wishlist"
-        aria-label="Wishlist"
-        class="relative hidden hover:text-foreground transition-colors duration-200 sm:block p-1"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-[17px] w-[17px]"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+    {%- comment -%} Icons {%- endcomment -%}
+    <div class="site-header__actions">
+      {%- comment -%} Search {%- endcomment -%}
+      <a href="/search" class="site-header__icon" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </a>
 
-      <!-- Account Link -->
-      <a
-        href="/account"
-        aria-label="My account"
-        class="hidden hover:text-foreground transition-colors duration-200 sm:block p-1"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-[17px] w-[17px]"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      </a>
+      {%- comment -%} Account {%- endcomment -%}
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="/account" class="site-header__icon site-header__icon--account" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {%- endif -%}
 
-      <!-- Cart Drawer Trigger -->
-      <button
-        aria-label="Shopping bag"
-        on:click="#cart-drawer/toggle"
-        aria-controls="cart-drawer"
-        aria-haspopup="dialog"
-        class="relative hover:text-foreground transition-colors duration-200 cursor-pointer p-1"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-[17px] w-[17px]"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-        <span class="absolute -right-1.5 -top-1.5 flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-accent px-[3px] text-[9px] font-medium text-accent-foreground leading-none {% if cart.item_count == 0 %}hidden{% endif %}" id="CartCountBadge">
-          {{ cart.item_count }}
-        </span>
-      </button>
+      {%- comment -%} Cart {%- endcomment -%}
+      <a href="/cart" class="site-header__icon site-header__icon--cart" aria-label="Cart ({{ cart.item_count }})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 6H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="site-header__cart-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
     </div>
   </div>
 </header>
 
-<!-- Mobile Menu Drawer Overlay -->
-<div id="MobileMenuDrawer" class="fixed inset-0 z-50 bg-background hidden md:hidden flex flex-col">
-  <!-- Mobile header -->
-  <div class="flex items-center justify-between border-b border-border/50 px-6 py-4">
-    <a href="/" class="group flex items-center gap-0 select-none cursor-pointer">
-      <span class="font-display text-[22px] tracking-[0.16em] uppercase text-foreground">
-        K<span class="text-accent">ENZ</span>
-      </span>
-      <span class="ml-2.5 mt-[3px] text-[9px] tracking-[0.28em] uppercase text-muted-foreground">
-        Maison
-      </span>
-    </a>
-    <button
-      type="button"
-      onclick="document.getElementById('MobileMenuDrawer').classList.add('hidden')"
-      aria-label="Close menu"
-      class="text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+{%- comment -%} Mobile Menu {%- endcomment -%}
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu__header">
+    <span class="mobile-menu__title">Menu</span>
+    <button class="mobile-menu__close" id="menu-close" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
   </div>
-
-  <!-- Mobile nav -->
-  <nav class="flex-1 overflow-y-auto px-6 py-8 space-y-8" aria-label="Mobile navigation">
-    {%- for link in linklists[section.settings.menu].links -%}
-      <div>
-        <div class="font-display text-3xl font-light text-foreground">{{ link.title }}</div>
-        {%- if link.links != blank -%}
-          <ul class="mt-3 space-y-2.5 pl-0.5">
-            {%- for sub_link in link.links -%}
-              <li>
-                <a
-                  href="{{ sub_link.url }}"
-                  onclick="document.getElementById('MobileMenuDrawer').classList.add('hidden')"
-                  class="text-[15px] text-foreground/65 hover:text-accent transition-colors duration-200"
-                >
-                  {{ sub_link.title }}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
-
-    <!-- Flat links + account -->
-    <div class="space-y-4 border-t border-border/50 pt-7">
-      <a
-        href="/pages/wishlist"
-        onclick="document.getElementById('MobileMenuDrawer').classList.add('hidden')"
-        class="block font-display text-2xl font-light text-foreground hover:text-accent transition-colors duration-200"
-      >
-        Wishlist
-      </a>
-      <a
-        href="/account"
-        onclick="document.getElementById('MobileMenuDrawer').classList.add('hidden')"
-        class="block font-display text-2xl font-light text-foreground hover:text-accent transition-colors duration-200"
-      >
-        Account
-      </a>
-    </div>
+  <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+    <ul class="mobile-menu__list">
+      {%- for link in linklists['main-menu'].links -%}
+        <li class="mobile-menu__item">
+          <a href="{{ link.url }}" class="mobile-menu__link">{{ link.title }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
   </nav>
-
-  <!-- Mobile footer strip -->
-  <div class="border-t border-border/50 px-6 py-5 flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-    <a href="#" class="hover:text-accent transition-colors">EN</a>
-    <a href="#" class="hover:text-accent transition-colors">USD</a>
-    <a href="/apps/track-order" class="hover:text-accent transition-colors">Track Order</a>
+  <div class="mobile-menu__footer">
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="/account" class="mobile-menu__footer-link">Account</a>
+    {%- endif -%}
+    <a href="/cart" class="mobile-menu__footer-link">Cart ({{ cart.item_count }})</a>
   </div>
 </div>
+<div class="mobile-menu__overlay" id="menu-overlay"></div>
 
 <script>
-  // Dynamically listen to Shopify cart events to update badge
-  document.addEventListener('cart:updated', (event) => {
-    const badge = document.getElementById('CartCountBadge');
-    if (badge && event.detail && typeof event.detail.item_count !== 'undefined') {
-      badge.textContent = event.detail.item_count;
-      if (event.detail.item_count > 0) {
-        badge.classList.remove('hidden');
+  (function() {
+    const header = document.getElementById('site-header');
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuClose = document.getElementById('menu-close');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    // Sticky header
+    let lastScroll = 0;
+    window.addEventListener('scroll', function() {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 100) {
+        header.classList.add('site-header--scrolled');
       } else {
-        badge.classList.add('hidden');
+        header.classList.remove('site-header--scrolled');
       }
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    // Mobile menu
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', function() {
+        mobileMenu.classList.add('is-open');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        menuToggle.setAttribute('aria-expanded', 'true');
+      });
+
+      function closeMenu() {
+        mobileMenu.classList.remove('is-open');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      if (menuClose) menuClose.addEventListener('click', closeMenu);
+      if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
     }
-  });
+  })();
 </script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-background, #FAFAF9);
+    border-bottom: 1px solid var(--color-border, #E7E5E4);
+    transition: all 0.3s ease;
+  }
+
+  .site-header--scrolled {
+    background-color: rgba(250, 250, 249, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 1rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__inner {
+      height: 72px;
+      padding: 0 2rem;
+    }
+  }
+
+  /* Menu Toggle */
+  .site-header__menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    color: var(--color-foreground, #0C0A09);
+    cursor: pointer;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__menu-toggle {
+      display: none;
+    }
+  }
+
+  /* Logo */
+  .site-header__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__logo {
+      position: static;
+      transform: none;
+    }
+  }
+
+  .site-header__logo-link {
+    display: block;
+  }
+
+  .site-header__logo-img {
+    height: 28px;
+    width: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__logo-img {
+      height: 32px;
+    }
+  }
+
+  .site-header__logo-text {
+    font-family: var(--font-heading, serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+  }
+
+  /* Desktop Navigation */
+  .site-header__nav {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__nav {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .site-header__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header__nav-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+    transition: color 0.2s;
+    padding: 0.5rem 0;
+  }
+
+  .site-header__nav-link:hover {
+    color: var(--color-accent, #CA8A04);
+  }
+
+  /* Actions */
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .site-header__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .site-header__icon:hover {
+    color: var(--color-accent, #CA8A04);
+  }
+
+  .site-header__icon--cart {
+    position: relative;
+  }
+
+  .site-header__cart-count {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background-color: var(--color-accent, #CA8A04);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 320px;
+    background-color: var(--color-background, #FAFAF9);
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .mobile-menu.is-open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border, #E7E5E4);
+  }
+
+  .mobile-menu__title {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .mobile-menu__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    color: var(--color-foreground, #0C0A09);
+    cursor: pointer;
+  }
+
+  .mobile-menu__nav {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .mobile-menu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  .mobile-menu__item {
+    border-bottom: 1px solid var(--color-border, #E7E5E4);
+  }
+
+  .mobile-menu__link {
+    display: block;
+    padding: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+
+  .mobile-menu__link:hover {
+    background-color: var(--color-muted, #F5F5F4);
+  }
+
+  .mobile-menu__footer {
+    padding: 1rem;
+    border-top: 1px solid var(--color-border, #E7E5E4);
+    display: flex;
+    gap: 1rem;
+  }
+
+  .mobile-menu__footer-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground, #0C0A09);
+    text-decoration: none;
+  }
+
+  .mobile-menu__overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu.is-open ~ .mobile-menu__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
 
 {% schema %}
 {
-  "name": "Header (KENZ Maison)",
+  "name": "Header",
   "tag": "section",
-  "class": "shopify-section-header-kenz",
+  "class": "section-header",
   "settings": [
     {
       "type": "link_list",
@@ -258,14 +438,21 @@
       "default": "main-menu"
     },
     {
-      "type": "image_picker",
-      "id": "fallback_feature_image",
-      "label": "Fallback Feature Image (for Mega Menu)"
+      "type": "checkbox",
+      "id": "transparent_header",
+      "label": "Transparent Header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Sticky Header",
+      "default": true
     }
   ],
   "presets": [
     {
-      "name": "Header (KENZ Maison)"
+      "name": "Header"
     }
   ]
 }

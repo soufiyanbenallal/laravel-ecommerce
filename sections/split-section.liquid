@@ -1,0 +1,401 @@
+{%- comment -%}
+  sections/split-section.liquid
+  Versatile split layout section for editorial content
+{%- endcomment -%}
+
+<div
+  class="split-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="split-section"
+>
+  <div class="split-section__inner">
+    {%- comment -%} Image Side {%- endcomment -%}
+    <div class="split-section__media">
+      {%- if section.settings.video != blank -%}
+        <video
+          class="split-section__video"
+          autoplay
+          loop
+          muted
+          playsinline
+          aria-hidden="true"
+        >
+          <source src="{{ section.settings.video }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.image != blank -%}
+        <img
+          class="split-section__image"
+          src="{{ section.settings.image | image_url: width: 1200 }}"
+          alt="{{ section.settings.image.alt | default: section.settings.title }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="split-section__placeholder">
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Content Side {%- endcomment -%}
+    <div
+      class="split-section__content {% if section.settings.center_content %}split-section__content--center{% endif %}"
+      style="background-color: {{ section.settings.background_color }}"
+    >
+      <div class="split-section__text">
+        {%- if section.settings.subheading != blank -%}
+          <p class="split-section__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="split-section__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="split-section__description">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="split-section__buttons">
+            <a
+              href="{{ section.settings.button_url | default: '#' }}"
+              class="split-section__button split-section__button--primary"
+            >
+              {{ section.settings.button_label }}
+            </a>
+
+            {%- if section.settings.button_label_2 != blank -%}
+              <a
+                href="{{ section.settings.button_url_2 | default: '#' }}"
+                class="split-section__button split-section__button--secondary"
+              >
+                {{ section.settings.button_label_2 }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Features List {%- endcomment -%}
+        {%- if section.settings.show_features -%}
+          <ul class="split-section__features">
+            {%- for i in (1..4) -%}
+              {%- assign feature_key = 'feature_' | append: i -%}
+              {%- if section.settings[feature_key] != blank -%}
+                <li class="split-section__feature">
+                  <svg class="split-section__feature-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ section.settings[feature_key] }}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .split-section {
+    padding: 0;
+    background-color: var(--color-background, #FAFAF9);
+  }
+
+  .split-section__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 500px;
+  }
+
+  @media (min-width: 1024px) {
+    .split-section__inner {
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+  }
+
+  /* Media */
+  .split-section__media {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-muted, #F5F5F4);
+    min-height: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    .split-section__media {
+      min-height: auto;
+    }
+  }
+
+  .split-section__image,
+  .split-section__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+
+  .split-section__placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-muted, #F5F5F4);
+  }
+
+  .split-section__placeholder svg {
+    width: 80px;
+    height: 80px;
+    color: var(--color-muted, #78716C);
+  }
+
+  /* Content */
+  .split-section__content {
+    display: flex;
+    align-items: center;
+    padding: 3rem 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .split-section__content {
+      padding: 4rem 3rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .split-section__content {
+      padding: 5rem 4rem;
+    }
+  }
+
+  .split-section__text {
+    max-width: 480px;
+  }
+
+  .split-section__content--center {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .split-section__content--center .split-section__text {
+    margin: 0 auto;
+  }
+
+  /* Typography */
+  .split-section__subheading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent, #CA8A04);
+    margin-bottom: 1rem;
+  }
+
+  .split-section__title {
+    font-family: var(--font-heading, serif);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .split-section__title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .split-section__description {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  /* Buttons */
+  .split-section__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .split-section__content--center .split-section__buttons {
+    justify-content: center;
+  }
+
+  .split-section__button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .split-section__button--primary {
+    background-color: var(--color-foreground, #0C0A09);
+    color: var(--color-background, #FAFAF9);
+  }
+
+  .split-section__button--primary:hover {
+    opacity: 0.9;
+  }
+
+  .split-section__button--secondary {
+    background-color: transparent;
+    color: var(--color-foreground, #0C0A09);
+    border: 1px solid var(--color-foreground, #0C0A09);
+  }
+
+  .split-section__button--secondary:hover {
+    background-color: var(--color-foreground, #0C0A09);
+    color: var(--color-background, #FAFAF9);
+  }
+
+  /* Features */
+  .split-section__features {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .split-section__feature {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .split-section__feature-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-accent, #CA8A04);
+    flex-shrink: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Split Section",
+  "tag": "section",
+  "class": "section-split",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: 1200x1200px"
+    },
+    {
+      "type": "text",
+      "id": "video",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FAFAF9"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Story"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "center_content",
+      "label": "Center Content",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Second Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url_2",
+      "label": "Second Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show Features List",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "feature_1",
+      "label": "Feature 1"
+    },
+    {
+      "type": "text",
+      "id": "feature_2",
+      "label": "Feature 2"
+    },
+    {
+      "type": "text",
+      "id": "feature_3",
+      "label": "Feature 3"
+    },
+    {
+      "type": "text",
+      "id": "feature_4",
+      "label": "Feature 4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split Section"
+    }
+  ]
+}
+{% endschema %}
