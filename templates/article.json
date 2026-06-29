@@ -1,8 +1,0 @@
-{
-  "sections": {
-    "article-template": {
-      "type": "article-template"
-    }
-  },
-  "order": ["article-template"]
-}
