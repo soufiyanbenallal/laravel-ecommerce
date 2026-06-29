@@ -1,8 +1,0 @@
-{
-  "sections": {
-    "wishlist-page": {
-      "type": "wishlist-page"
-    }
-  },
-  "order": ["wishlist-page"]
-}

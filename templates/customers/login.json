@@ -1,8 +1,0 @@
-{
-  "sections": {
-    "login-page": {
-      "type": "login-page"
-    }
-  },
-  "order": ["login-page"]
-}
