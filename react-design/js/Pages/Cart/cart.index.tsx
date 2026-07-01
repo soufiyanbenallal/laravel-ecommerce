@@ -8,7 +8,7 @@ export default function CartPage() {
   const shipping = subtotal > 250 || subtotal === 0 ? 0 : 18;
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
+    <div className="mx-auto max-w-7xl md:px-6 px-2 py-16">
       <Head title="Your Bag — Atelier Nord">
         <meta name="description" content="Review the objects in your bag." />
       </Head>

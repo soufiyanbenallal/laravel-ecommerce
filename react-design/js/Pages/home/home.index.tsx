@@ -68,12 +68,12 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
       ══════════════════════════════════════════ */}
       <LookbookStrip />
 
-      <KenzDivider className="mx-auto max-w-7xl px-6" />
+      <KenzDivider className="mx-auto max-w-7xl md:px-6 px-2" />
 
       {/* ══════════════════════════════════════════
           04 · NEW ARRIVALS — The Edit
       ══════════════════════════════════════════ */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl md:px-6 py-20 px-2">
         <div className="flex items-end justify-between gap-6">
           <div>
             <SectionMark n="04" label="New This Season" />
@@ -102,7 +102,7 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
       {/* ══════════════════════════════════════════
           06 · PROMO BANNER — editorial split
       ══════════════════════════════════════════ */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl md:px-6 py-20 px-2">
         <div className="relative grid items-stretch overflow-hidden md:grid-cols-[3fr_2fr]">
           <div className="overflow-hidden">
             <img
@@ -135,12 +135,12 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
         </div>
       </section>
 
-      <KenzDivider className="mx-auto max-w-7xl px-6" />
+      <KenzDivider className="mx-auto max-w-7xl md:px-6 px-2" />
 
       {/* ══════════════════════════════════════════
           07 · COLLECTIONS
       ══════════════════════════════════════════ */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl md:px-6 px-2 py-16">
         <div className="flex items-end justify-between gap-6">
           <div>
             <SectionMark n="07" label="Collections" />
@@ -192,7 +192,7 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
           08 · BESTSELLERS
       ══════════════════════════════════════════ */}
       <section className="bg-secondary/25 py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl md:px-6 px-2">
           <SectionMark n="08" label="Loved Most" />
           <h2 className="font-display text-4xl font-light md:text-5xl">Bestsellers.</h2>
 
@@ -245,7 +245,7 @@ export default function Home({ flash_deals, new_arrivals, collections, testimoni
       {/* ══════════════════════════════════════════
           10 · TESTIMONIALS
       ══════════════════════════════════════════ */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
+      <section className="mx-auto max-w-7xl md:px-6 px-2 py-24">
         <div className="text-center mb-14">
           <SectionMark n="✦" label="In Their Words" />
           <h2 className="font-display text-4xl font-light md:text-5xl">Worn. Kept. Repaired.</h2>

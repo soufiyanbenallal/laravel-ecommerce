@@ -154,7 +154,7 @@ export default function ProductsList({
       </div>
 
       {/* ── Product Grid ── */}
-      <section className="mx-auto max-w-7xl px-6 py-14">
+      <section className="mx-auto max-w-7xl md:px-6 px-2 py-14">
         <div className="flex gap-10">
           <FiltersSidebar
             state={filters}

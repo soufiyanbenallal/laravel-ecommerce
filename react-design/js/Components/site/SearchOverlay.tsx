@@ -74,7 +74,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           </button>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 py-10">
+        <div className="mx-auto max-w-7xl md:px-6 px-2 py-10">
           {q ? (
             loading ? (
               <div className="py-12 text-center text-muted-foreground">Searching…</div>

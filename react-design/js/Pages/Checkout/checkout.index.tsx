@@ -45,7 +45,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12">
+    <div className="mx-auto max-w-7xl md:px-6 px-2 py-12">
       <div className="flex items-center justify-between">
         <h1 className="font-display text-3xl">Checkout</h1>
         <Link to="/cart" className="text-sm text-muted-foreground underline-offset-4 hover:underline">

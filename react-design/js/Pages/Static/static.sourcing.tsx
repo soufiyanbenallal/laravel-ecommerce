@@ -9,7 +9,7 @@ export default function SourcingPage() {
 
       {/* Header Banner */}
       <section className="bg-[#FFF6EE] border-b border-border/40 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 text-center">
+        <div className="mx-auto max-w-7xl md:px-6 px-2 text-center">
           <span className="text-[11px] font-bold text-primary tracking-[0.2em] uppercase bg-primary/10 px-3.5 py-1.5 rounded-full">
             Service Premium
           </span>
@@ -23,7 +23,7 @@ export default function SourcingPage() {
       </section>
 
       {/* Sourcing Process and Form */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl md:px-6 py-20 px-2">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Sourcing Info / Steps */}

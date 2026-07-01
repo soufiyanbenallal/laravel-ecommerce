@@ -39,7 +39,7 @@ export default function CollectionPage({ collection, products }: CollectionsShow
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl md:px-6 px-2 py-16">
         {products.length === 0 ? (
           <div className="py-24 text-center text-muted-foreground">
             No products found in this collection.

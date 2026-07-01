@@ -1,0 +1,176 @@
+ WARN  Unsupported engine: wanted: {"node":"^22 || ^24"} (current: {"node":"v23.6.0","pnpm":"10.30.3"})
+
+> hydrogen-quickstart@2026.4.3 build /Users/user/Documents/AS/laravel-ecommerce
+> shopify hydrogen build --codegen
+
+[33mThe `envFile` option is deprecated, please use `envDir: false` instead.[39m
+[33m  ⚠️  Future Flag Warning: Request handling behavior is changing in React Router v8.
+     You can use the `future.v8_passThroughRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_passThroughRequests[39m
+[33m  ⚠️  Future Flag Warning: Data request URL formats are changing in React Router v8.
+     You can use the `future.v8_trailingSlashAwareDataRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_trailingSlashAwareDataRequests[39m
+[33m  ⚠️  Future Flag Warning: Request handling behavior is changing in React Router v8.
+     You can use the `future.v8_passThroughRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_passThroughRequests[39m
+[33m  ⚠️  Future Flag Warning: Data request URL formats are changing in React Router v8.
+     You can use the `future.v8_trailingSlashAwareDataRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_trailingSlashAwareDataRequests[39m
+[33mThe `envFile` option is deprecated, please use `envDir: false` instead.[39m
+[33mThe `envFile` option is deprecated, please use `envDir: false` instead.[39m
+[33m  ⚠️  Future Flag Warning: Request handling behavior is changing in React Router v8.
+     You can use the `future.v8_passThroughRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_passThroughRequests[39m
+[33m  ⚠️  Future Flag Warning: Data request URL formats are changing in React Router v8.
+     You can use the `future.v8_trailingSlashAwareDataRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_trailingSlashAwareDataRequests[39m
+[33m  ⚠️  Future Flag Warning: Request handling behavior is changing in React Router v8.
+     You can use the `future.v8_passThroughRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_passThroughRequests[39m
+[33m  ⚠️  Future Flag Warning: Data request URL formats are changing in React Router v8.
+     You can use the `future.v8_trailingSlashAwareDataRequests` flag to opt in early.
+     -> https://reactrouter.com/upgrading/future-flags#v8_trailingSlashAwareDataRequests[39m
+[33mThe `envFile` option is deprecated, please use `envDir: false` instead.[39m
+[36mvite v8.1.0 [32mbuilding client environment for production...[36m[39m
+[2Ktransforming...✓ 129 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/oxygen.json                                            0.05 kB │ gzip:  0.07 kB
+dist/client/.vite/manifest.json                                   13.36 kB │ gzip:  1.48 kB
+dist/client/assets/_robots.txt_-BvRk9kiK.js                        0.00 kB │ gzip:  0.02 kB
+dist/client/assets/_sitemap.xml_-BvRk9kiK.js                       0.00 kB │ gzip:  0.02 kB
+dist/client/assets/account._-BvRk9kiK.js                           0.00 kB │ gzip:  0.02 kB
+dist/client/assets/account._index-BvRk9kiK.js                      0.00 kB │ gzip:  0.02 kB
+dist/client/assets/account_.authorize-BvRk9kiK.js                  0.00 kB │ gzip:  0.02 kB
+dist/client/assets/account_.login-BvRk9kiK.js                      0.00 kB │ gzip:  0.02 kB
+dist/client/assets/account_.logout-BvRk9kiK.js                     0.00 kB │ gzip:  0.02 kB
+dist/client/assets/api.wishlist-BvRk9kiK.js                        0.00 kB │ gzip:  0.02 kB
+dist/client/assets/category._handle-BvRk9kiK.js                    0.00 kB │ gzip:  0.02 kB
+dist/client/assets/collections._index-BvRk9kiK.js                  0.00 kB │ gzip:  0.02 kB
+dist/client/assets/collections.all-BvRk9kiK.js                     0.00 kB │ gzip:  0.02 kB
+dist/client/assets/discount._code-BvRk9kiK.js                      0.00 kB │ gzip:  0.02 kB
+dist/client/assets/sitemap._type._page_.xml_-BvRk9kiK.js           0.00 kB │ gzip:  0.02 kB
+dist/client/assets/_-BF-mbSsg.js                                   0.10 kB │ gzip:  0.11 kB
+dist/client/assets/cart._lines-BF-mbSsg.js                         0.10 kB │ gzip:  0.11 kB
+dist/client/assets/wishlist-BhNaJB7o.js                            0.34 kB │ gzip:  0.28 kB
+dist/client/assets/about-YP8rGGVB.js                               0.36 kB │ gzip:  0.29 kB
+dist/client/assets/cart-3BZo0T_z.js                                0.38 kB │ gzip:  0.28 kB
+dist/client/assets/contact-BRA7jBDu.js                             0.39 kB │ gzip:  0.31 kB
+dist/client/assets/policies._index-cvkKsKau.js                     0.40 kB │ gzip:  0.27 kB
+dist/client/assets/pages._handle-BtUdtQgc.js                       0.41 kB │ gzip:  0.30 kB
+dist/client/assets/policies._handle-uLih9IFd.js                    0.54 kB │ gzip:  0.34 kB
+dist/client/assets/blogs._index-CDPqTGrP.js                        0.61 kB │ gzip:  0.36 kB
+dist/client/assets/jsx-runtime-BYL4Qmoo.js                         0.68 kB │ gzip:  0.45 kB
+dist/client/assets/blogs._blogHandle._articleHandle-D0C_mglg.js    0.79 kB │ gzip:  0.49 kB
+dist/client/assets/catalog-Du6ORSIW.js                             0.89 kB │ gzip:  0.57 kB
+dist/client/assets/collections._handle-amX5S3ml.js                 0.98 kB │ gzip:  0.57 kB
+dist/client/assets/search-BoxueNWr.js                              1.11 kB │ gzip:  0.57 kB
+dist/client/assets/account-BA37xz0B.js                             1.12 kB │ gzip:  0.54 kB
+dist/client/assets/blogs._blogHandle._index-BxTiWv0y.js            1.17 kB │ gzip:  0.61 kB
+dist/client/assets/account.profile-B_R5AIL8.js                     1.22 kB │ gzip:  0.56 kB
+dist/client/assets/_index-z5r6W4QS.js                              1.31 kB │ gzip:  0.81 kB
+dist/client/assets/log-seo-tags-TY72EQWZ-BddnyHPq.js               1.33 kB │ gzip:  0.66 kB
+dist/client/assets/root-CAhNYugf.js                                2.27 kB │ gzip:  1.02 kB
+dist/client/assets/account.orders._id-CzuB6yus.js                  3.22 kB │ gzip:  0.94 kB
+dist/client/assets/account.orders._index-UMxL6dRo.js               3.29 kB │ gzip:  1.28 kB
+dist/client/assets/Money-CS3f8EKU.js                               3.53 kB │ gzip:  1.45 kB
+dist/client/assets/Image-CCBOllp-.js                               3.93 kB │ gzip:  1.64 kB
+dist/client/assets/account.addresses-CjD1UPMS.js                   4.71 kB │ gzip:  1.36 kB
+dist/client/assets/products._handle-B6VRS9j4.js                    5.67 kB │ gzip:  2.41 kB
+dist/client/assets/production-Dw3XwwRX.js                         29.82 kB │ gzip: 10.63 kB
+dist/client/assets/chunk-QUQL4437-YKwyQlQ6.js                    130.68 kB │ gzip: 43.08 kB
+dist/client/assets/entry.client-BzWhLwQR.js                      137.58 kB │ gzip: 44.94 kB
+
+[31m✗[39m Build failed in 520ms
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  Build failed with 1 error:                                                  │
+│                                                                              │
+│  Error: [vite]: Rolldown failed to resolve import                            │
+│  "~/pages/contact/contact.index.tsx" from                                    │
+│  "/Users/user/Documents/AS/laravel-ecommerce/app/routes/contact.jsx".        │
+│  This is most likely unintended because it can break your application at     │
+│  runtime.                                                                    │
+│  If you do want to externalize this module explicitly add it to              │
+│  `build.rolldownOptions.external`                                            │
+│      at viteLog (file:///Users/user/Documents/AS/laravel-ecommerce/node_mod  │
+│  ules/.pnpm/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.  │
+│  9.0/node_modules/vite/dist/node/chunks/node.js:32668:57)                    │
+│      at file:///Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnp  │
+│  m/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_  │
+│  modules/vite/dist/node/chunks/node.js:32704:71                              │
+│      at onwarn (/Users/user/Documents/AS/laravel-ecommerce/node_modules/.pn  │
+│  pm/@react-router+dev@7.16.0_@types+node@26.0.1_jiti@2.7.0_lightningcss@1.3  │
+│  2.0_react-router_7709934afca971cfbb894b558ce8fab8/node_modules/@react-rout  │
+│  er/dev/dist/vite.js:5520:11)                                                │
+│      at file:///Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnp  │
+│  m/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_  │
+│  modules/vite/dist/node/chunks/node.js:32704:28                              │
+│      at onRollupLog (file:///Users/user/Documents/AS/laravel-ecommerce/node  │
+│  _modules/.pnpm/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yam  │
+│  l@2.9.0/node_modules/vite/dist/node/chunks/node.js:32699:63)                │
+│      at onLog (file:///Users/user/Documents/AS/laravel-ecommerce/node_modul  │
+│  es/.pnpm/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.  │
+│  0/node_modules/vite/dist/node/chunks/node.js:32467:4)                       │
+│      at file:///Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnp  │
+│  m/rolldown@1.1.3/node_modules/rolldown/dist/shared/rolldown-build-DR0wzp0V  │
+│  .mjs:50:26                                                                  │
+│      at logger (file:///Users/user/Documents/AS/laravel-ecommerce/node_modu  │
+│  les/.pnpm/rolldown@1.1.3/node_modules/rolldown/dist/shared/rolldown-build-  │
+│  DR0wzp0V.mjs:41:3)                                                          │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at viteLog (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm  │
+│    /vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node  │
+│    _modules/vite/dist/node/chunks/node.js:32668)                             │
+│    at (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/vite@8.  │
+│    1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_modules  │
+│    /vite/dist/node/chunks/node.js:32704)                                     │
+│    at onwarn (.pnpm/@react-router+dev@7.16.0_@types+node@26.0.1_jiti@2.7.0_  │
+│    lightningcss@1.32.0_react-router_7709934afca971cfbb894b558ce8fab8/node_m  │
+│    odules/@react-router/dev/dist/vite.js:5520)                               │
+│    at (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/vite@8.  │
+│    1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_modules  │
+│    /vite/dist/node/chunks/node.js:32704)                                     │
+│    at onRollupLog (Users/user/Documents/AS/laravel-ecommerce/node_modules/.  │
+│    pnpm/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/  │
+│    node_modules/vite/dist/node/chunks/node.js:32699)                         │
+│    at onLog (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/v  │
+│    ite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_m  │
+│    odules/vite/dist/node/chunks/node.js:32467)                               │
+│    at                                                                        │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/rolldown@1  │
+│    .1.3/node_modules/rolldown/dist/shared/rolldown-build-DR0wzp0V.mjs:50)    │
+│    at logger                                                                 │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/rolldown@1  │
+│    .1.3/node_modules/rolldown/dist/shared/rolldown-build-DR0wzp0V.mjs:41)    │
+│    at aggregateBindingErrorsIntoJsError                                      │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/rolldown@1  │
+│    .1.3/node_modules/rolldown/dist/shared/error-B68YLzl3.mjs:48)             │
+│    at unwrapBindingResult                                                    │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/rolldown@1  │
+│    .1.3/node_modules/rolldown/dist/shared/error-B68YLzl3.mjs:18)             │
+│    at #build                                                                 │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/rolldown@1  │
+│    .1.3/node_modules/rolldown/dist/shared/rolldown-build-DR0wzp0V.mjs:3256)  │
+│    at buildEnvironment (Users/user/Documents/AS/laravel-ecommerce/node_modu  │
+│    les/.pnpm/vite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2  │
+│    .9.0/node_modules/vite/dist/node/chunks/node.js:32575)                    │
+│    at build (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/v  │
+│    ite@8.1.0_@types+node@26.0.1_esbuild@0.28.1_jiti@2.7.0_yaml@2.9.0/node_m  │
+│    odules/vite/dist/node/chunks/node.js:32997)                               │
+│    at pR (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/@sho  │
+│    pify+cli@3.93.2/node_modules/@shopify/cli/dist/index.js:2930)             │
+│    at run (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/@sh  │
+│    opify+cli@3.93.2/node_modules/@shopify/cli/dist/index.js:2930)            │
+│    at _run (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/@s  │
+│    hopify+cli@3.93.2/node_modules/@shopify/cli/dist/chunk-XVFYDYZA.js:581)   │
+│    at runCommand                                                             │
+│    (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/@shopify+c  │
+│    li@3.93.2/node_modules/@shopify/cli/dist/chunk-XVFYDYZA.js:567)           │
+│    at YIt (Users/user/Documents/AS/laravel-ecommerce/node_modules/.pnpm/@sh  │
+│    opify+cli@3.93.2/node_modules/@shopify/cli/dist/chunk-XVFYDYZA.js:581)    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+ ELIFECYCLE  Command failed with exit code 1.

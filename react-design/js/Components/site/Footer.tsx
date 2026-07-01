@@ -32,7 +32,7 @@ export function Footer() {
 
       {/* ── Upper footer ── */}
       <div className="bg-secondary/30">
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mx-auto max-w-7xl md:px-6 px-2 py-16">
           <div className="grid gap-14 md:grid-cols-12">
 
             {/* Brand column */}

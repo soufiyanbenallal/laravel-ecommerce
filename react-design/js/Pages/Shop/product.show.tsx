@@ -95,7 +95,7 @@ export default function ProductPage({
       </Head>
 
       {/* ── Breadcrumb ── */}
-      <div className="mx-auto max-w-7xl px-6 pt-7">
+      <div className="mx-auto max-w-7xl md:px-6 px-2 pt-7">
         <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
           <Link href="/" className="hover:text-accent transition-colors duration-200">Home</Link>
           <span className="text-accent">✦</span>
@@ -434,10 +434,10 @@ export default function ProductPage({
       </section>
 
       {/* ── Divider ── */}
-      <KenzDivider className="mx-auto max-w-7xl px-6" />
+      <KenzDivider className="mx-auto max-w-7xl md:px-6 px-2" />
 
       {/* ── Reviews ── */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
+      <section className="mx-auto max-w-7xl md:px-6 py-20 px-2">
         <div className="grid gap-16 md:grid-cols-3">
 
           {/* Review summary */}
@@ -521,7 +521,7 @@ export default function ProductPage({
       {/* ── Related Products ── */}
       {related_products && related_products.length > 0 && (
         <section className="border-t border-border/40 bg-secondary/20 py-20">
-          <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-7xl md:px-6 px-2">
             <SectionMark n="✦" label="You May Also Like" />
             <h2 className="font-display text-4xl font-light md:text-5xl">Complete the look.</h2>
             <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4">

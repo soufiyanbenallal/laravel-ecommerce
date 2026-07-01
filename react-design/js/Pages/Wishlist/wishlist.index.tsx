@@ -35,7 +35,7 @@ export default function WishlistPage() {
   }, [ids]);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
+    <div className="mx-auto max-w-7xl md:px-6 px-2 py-16">
       <Head title="Wishlist — Atelier Nord">
         <meta name="description" content="Objects you've saved for later." />
       </Head>

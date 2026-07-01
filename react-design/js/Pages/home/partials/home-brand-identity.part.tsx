@@ -193,7 +193,7 @@ export function LookbookStrip() {
   return (
     <div className="py-16 overflow-hidden">
       {/* Header */}
-      <div className="mx-auto max-w-7xl px-6 mb-8 flex items-end justify-between">
+      <div className="mx-auto max-w-7xl md:px-6 px-2 mb-8 flex items-end justify-between">
         <div>
           <SectionMark n="✦" label="The Lookbook" />
           <h2 className="font-display text-4xl font-light md:text-5xl">
@@ -241,7 +241,7 @@ export function LookbookStrip() {
         ))}
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 mt-4">
+      <div className="mx-auto max-w-7xl md:px-6 px-2 mt-4">
         <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/60">
           ← Drag to explore
         </p>

@@ -3,7 +3,7 @@
         "target": "ESNext",
         "useDefineForClassFields": true,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "allowJs": false,
+        "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
@@ -16,12 +16,16 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "paths": {
-            "@/*": ["the store will be convert/js/*"]
+            "@/*": ["./app/*"]
         }
     },
     "include": [
-        "the store will be convert/js/**/*.ts",
-        "the store will be convert/js/**/*.tsx",
-        "the store will be convert/js/**/*.d.ts"
+        "app/**/*.ts",
+        "app/**/*.tsx",
+        "app/**/*.js",
+        "app/**/*.jsx",
+        "app/**/*.d.ts",
+        "env.d.ts",
+        ".react-router/types/**/*"
     ]
 }

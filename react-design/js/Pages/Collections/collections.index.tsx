@@ -22,7 +22,7 @@ export default function CollectionsIndex({ collections }: CollectionsIndexPropsT
       </Head>
 
       <header className="border-b border-border/60">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl md:px-6 px-2 py-16 md:py-24">
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">The Edits</p>
           <h1 className="mt-4 font-display text-5xl md:text-6xl">Collections</h1>
           <p className="mt-4 max-w-xl text-muted-foreground">
@@ -31,7 +31,7 @@ export default function CollectionsIndex({ collections }: CollectionsIndexPropsT
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
+      <section className="mx-auto max-w-7xl md:px-6 px-2 py-16">
         <div className="grid gap-12 md:grid-cols-2">
           {collections.map((c, i) => (
             <Link

@@ -1,58 +1,45 @@
-import {Await, useLoaderData, Link} from 'react-router';
+import {Await, useLoaderData} from 'react-router';
 import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
-import {MockShopNotice} from '~/components/MockShopNotice';
+import Home from '~/pages/home/home.index';
 
-/**
- * @type {Route.MetaFunction}
- */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [
+    {title: 'KENZ Maison — The Art of Dressing Well'},
+    {
+      name: 'description',
+      content: 'Premium clothing sourced from artisan workshops across Europe and North Africa — designed to last decades, not seasons.',
+    },
+  ];
 };
 
-/**
- * @param {Route.LoaderArgs} args
- */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return {...deferredData, ...criticalData};
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {Route.LoaderArgs}
- */
 async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
-
-  return {
-    isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
-    featuredCollection: collections.nodes[0],
-  };
+  const {storefront} = context;
+  try {
+    const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
+    return {
+      isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
+      shopifyCollections: collections?.nodes ?? [],
+    };
+  } catch (error) {
+    console.error('Error loading critical home data:', error);
+    return {
+      isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
+      shopifyCollections: [],
+    };
+  }
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
- */
 function loadDeferredData({context}) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      console.error(error);
+      console.error('Error loading recommended products:', error);
       return null;
     });
 
@@ -62,92 +49,71 @@ function loadDeferredData({context}) {
 }
 
 export default function Homepage() {
-  /** @type {LoaderReturnData} */
   const data = useLoaderData();
-  return (
-    <div className="home">
-      {data.isShopLinked ? null : <MockShopNotice />}
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
 
-/**
- * @param {{
- *   collection: FeaturedCollectionFragment;
- * }}
- */
-function FeaturedCollection({collection}) {
-  if (!collection) return null;
-  const image = collection?.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image
-            data={image}
-            sizes="100vw"
-            alt={image.altText || collection.title}
-          />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
+  // Helper function to map Shopify GraphQL product nodes to ProductModelType
+  const mapProduct = (node) => {
+    if (!node) return null;
+    return {
+      id: node.id,
+      name: node.title,
+      slug: node.handle,
+      price: parseFloat(node.priceRange?.minVariantPrice?.amount || '0'),
+      currency: node.priceRange?.minVariantPrice?.currencyCode || 'USD',
+      image: node.featuredImage?.url || '',
+      rating: 4.8,
+      reviews_count: 86,
+      stock_status: 'in_stock',
+      colors: [],
+      sizes: [],
+      materials: [],
+      gender: 'unisex',
+    };
+  };
 
-/**
- * @param {{
- *   products: Promise<RecommendedProductsQuery | null>;
- * }}
- */
-function RecommendedProducts({products}) {
   return (
-    <section
-      className="recommended-products"
-      aria-labelledby="recommended-products"
-    >
-      <h2 id="recommended-products">Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : null}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </section>
+    <Suspense fallback={<div className="h-screen bg-background flex items-center justify-center font-display text-lg tracking-widest text-muted-foreground">KENZ MAISON</div>}>
+      <Await resolve={data.recommendedProducts}>
+        {(productsResponse) => {
+          const rawProducts = productsResponse?.products?.nodes ?? [];
+          const mappedProducts = rawProducts.map(mapProduct).filter(Boolean);
+
+          // Map collections
+          const mappedCollections = data.shopifyCollections?.map((c) => ({
+            name: c.title,
+            slug: c.handle,
+            image: c.image?.url ?? '',
+            description: c.description || 'Editorial curated collection.',
+          })).filter(c => c.image !== '');
+
+          return (
+            <Home 
+              products={mappedProducts} 
+              collections={mappedCollections?.length ? mappedCollections : undefined}
+            />
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 }
 
 const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
-    id
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    handle
-  }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
+    collections(first: 3, sortKey: UPDATED_AT, reverse: true) {
       nodes {
-        ...FeaturedCollection
+        id
+        title
+        handle
+        description
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
       }
     }
   }
@@ -174,15 +140,10 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 8, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }
     }
   }
 `;
-
-/** @typedef {import('./+types/_index').Route} Route */
-/** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
-/** @typedef {import('storefrontapi.generated').RecommendedProductsQuery} RecommendedProductsQuery */
-/** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */

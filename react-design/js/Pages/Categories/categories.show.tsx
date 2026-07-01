@@ -148,7 +148,7 @@ export default function CategoryPage({ category, products }: CategoryShowPropsTy
       </div>
 
       {/* ── Product Grid ── */}
-      <div className="mx-auto max-w-7xl px-6 py-14">
+      <div className="mx-auto max-w-7xl md:px-6 px-2 py-14">
         <div className="mt-0 flex gap-10">
           <FiltersSidebar
             state={filters}

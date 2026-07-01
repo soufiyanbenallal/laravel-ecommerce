@@ -22,7 +22,7 @@ export default function ContactPage() {
     <div className="bg-background">
       <Head title="Contactez-nous | Chine to Maroc" />
 
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl md:px-6 px-2 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           
           {/* Contact Details */}

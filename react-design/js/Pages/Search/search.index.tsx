@@ -9,7 +9,7 @@ type SearchPropsType = {
 
 export default function SearchPage({ products, q }: SearchPropsType) {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16">
+    <div className="mx-auto max-w-7xl md:px-6 px-2 py-16">
       <Head title="Search — Atelier Nord">
         <meta name="description" content="Search objects." />
       </Head>
